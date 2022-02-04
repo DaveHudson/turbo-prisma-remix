@@ -1,24 +1,36 @@
 {
-  "name": "turborepo-basic-shared",
+  "name": "turbo-prisma-remix",
   "version": "0.0.0",
   "private": true,
   "workspaces": [
     "apps/*",
-    "packages/*"
+    "packages/*",
+    "prisma"
   ],
+  "prisma": {
+    "seed": "node --require esbuild-register prisma/seed.ts"
+  },
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev --parallel",
+    "dev": "turbo run dev --no-cache --parallel --continue",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
+    "@types/node": "^17.0.14",
+    "esbuild-register": "^3.3.2",
     "prettier": "^2.5.1",
-    "turbo": "latest"
+    "prisma": "^3.9.1",
+    "ts-node": "^10.4.0",
+    "turbo": "latest",
+    "typescript": "^4.5.5"
   },
   "engines": {
     "npm": ">=7.0.0",
     "node": ">=14.0.0"
   },
-  "packageManager": "npm@8.4.0"
+  "packageManager": "npm@8.4.0",
+  "dependencies": {
+    "@prisma/client": "^3.9.1"
+  }
 }
