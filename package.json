@@ -14,19 +14,18 @@
     "build": "turbo run build",
     "dev": "turbo run dev --no-cache --parallel --continue",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "start": "remix-serve build"
   },
   "devDependencies": {
-    "@types/node": "^17.0.14",
     "esbuild-register": "^3.3.2",
     "prettier": "^2.5.1",
     "prisma": "^3.9.1",
-    "ts-node": "^10.4.0",
-    "turbo": "latest",
+    "turbo": "^1.1.2",
     "typescript": "^4.5.5"
   },
   "engines": {
-    "npm": ">=7.0.0",
+    "npm": ">=8.0.0",
     "node": ">=14.0.0"
   },
   "packageManager": "npm@8.4.0",
