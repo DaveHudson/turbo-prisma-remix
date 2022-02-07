@@ -1,7 +1,7 @@
 # -----------------------------------------------
 # BASE NODE IMAGE!!
 # -----------------------------------------------
-FROM node:16-bullseye as base
+FROM node:16-bullseye-slim as base
 
 # Install openssl for Prisma & git for Turbo repo 
 

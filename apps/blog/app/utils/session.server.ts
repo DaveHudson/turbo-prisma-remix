@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { db } from "./db.server";
 import { createCookieSessionStorage, redirect } from "remix";
 import { User } from "@prisma/client";
