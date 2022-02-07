@@ -25,6 +25,6 @@ COPY /apps/blog/public /app/public
 
 # Running this in package.json leads to an error
 # Myabe it was because above was not in place?
-RUN npx remix setup node
+# RUN npx remix setup node
 
 CMD ["npm", "run", "start"]
