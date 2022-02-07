@@ -1304,8 +1304,8 @@ select {
   max-width: 80rem;
 }
 
-.max-w-3xl {
-  max-width: 48rem;
+.max-w-2xl {
+  max-width: 42rem;
 }
 
 .max-w-lg {
@@ -1547,8 +1547,8 @@ select {
   padding: 0.5rem;
 }
 
-.p-12 {
-  padding: 3rem;
+.p-4 {
+  padding: 1rem;
 }
 
 .p-0\.5 {
