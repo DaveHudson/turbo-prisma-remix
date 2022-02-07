@@ -34,7 +34,7 @@ export default function Index() {
 
   return (
     <>
-      <div className="p-12">
+      <div className="p-4">
         <p className="text-center text-3xl font-bold tracking-wide text-light subpixel-antialiased dark:text-dark md:text-4xl lg:text-5xl">
           My name is Dave Hudson
         </p>
@@ -57,7 +57,7 @@ export default function Index() {
           </Link>
         </p>
         <div className="flex flex-row justify-center pt-6">
-          <div className="flex max-w-3xl flex-col">
+          <div className="flex max-w-2xl flex-col">
             <p className="pt-6 text-lg tracking-wide text-light subpixel-antialiased dark:text-dark">
               I'm an experienced software engineer, technical lead and certified
               Scrum Master / Product Owner (Scrum Alliance).
