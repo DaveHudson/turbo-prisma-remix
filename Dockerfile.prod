@@ -87,4 +87,4 @@ COPY --from=build /app/start_with_migrations.sh /app/start_with_migrations.sh
 COPY package.json /app/package.json
 
 
-# CMD ["npm", "run", "start"]
+CMD ["npm", "run", "start"]
