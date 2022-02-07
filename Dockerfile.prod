@@ -81,5 +81,6 @@ COPY --from=build /app/apps/blog/public /app/public
 COPY --from=build /app/prisma /app/prisma
 COPY --from=build /app/start_with_migrations.sh /app/start_with_migrations.sh
 COPY package.json /app/package.json
+COPY fly.toml /app/fly.toml
 
-CMD ["npm", "run", "start"]
+# CMD ["npm", "run", "start"]
