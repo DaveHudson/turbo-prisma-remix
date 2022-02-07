@@ -6,7 +6,7 @@
   "license": "",
   "scripts": {
     "build": "remix build",
-    "dev:postinstall": "remix setup node",
+    "postinstall": "remix setup node",
     "deploy": "fly deploy --remote-only",
     "start": "remix-serve build"
   },
