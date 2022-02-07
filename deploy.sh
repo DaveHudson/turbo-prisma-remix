@@ -6,4 +6,4 @@
 #
 echo Deploying Remix Blog to Fly
 
-fly deploy --config ./fly.toml --dockerfile ./Dockerfile
+fly deploy --config ./fly.toml --dockerfile ./Dockerfile.prod
