@@ -53,7 +53,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules /app/node_modules
 COPY package.json package-lock.json ./
 COPY turbo.json ./
-COPY fly.toml ./
+# COPY fly.toml ./
 COPY . . 
 # COPY PRISMA SCHEMA AND GENERATE MODELS / TYPES
 COPY prisma .
@@ -81,7 +81,7 @@ COPY --from=build /app/apps/blog/build /app/build
 COPY --from=build /app/apps/blog/public /app/public
 COPY --from=build /app/prisma /app/prisma
 COPY --from=build /app/start_with_migrations.sh /app/start_with_migrations.sh
-COPY --from=build /app/fly.toml /app/fly.toml
+# COPY --from=build /app/fly.toml /app/fly.toml
 COPY package.json /app/package.json
 
 
