@@ -129,7 +129,7 @@ export default function Index() {
                 type="submit"
                 className="flex w-full items-center justify-center rounded-md border border-transparent bg-sky-600 px-5 py-3 text-base font-medium text-white hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
               >
-                Notify me
+                Notify me!
               </button>
             </div>
           </form>
