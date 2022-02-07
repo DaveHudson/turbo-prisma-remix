@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y openssl && apt-get install -y git
 RUN mkdir /app
 WORKDIR /app
 
-COPY package.json ./
+COPY package.json package-lock.json ./
 COPY . . 
 
 RUN npm install 
