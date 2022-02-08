@@ -15,7 +15,8 @@
     "dev": "turbo run dev --no-cache --parallel --continue",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "start": "remix-serve build"
+    "start": "remix-serve build",
+    "storybook": "turbo run storybook"
   },
   "devDependencies": {
     "esbuild-register": "^3.3.2",
