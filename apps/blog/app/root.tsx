@@ -4,6 +4,7 @@ import {
   LiveReload,
   LoaderFunction,
   Meta,
+  NavLink,
   Outlet,
   Scripts,
   ScrollRestoration,
@@ -131,6 +132,9 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
     return classes.filter(Boolean).join(" ");
   }
 
+  const navBaseStyle = `inline-flex items-center rounded-md py-2 px-3 text-sm font-medium text-light-accent dark:text-dark-accent`;
+  const activeClassName = `${navBaseStyle} text-light dark:text-dark bg-gray-100 dark:text-dark dark:bg-gray-800`;
+
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <Disclosure as="header">
@@ -243,19 +247,16 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
                 aria-label="Global"
               >
                 {navigation.map((item) => (
-                  <Link
+                  <NavLink
                     to={`${item.href}`}
                     key={item.name}
-                    className={classNames(
-                      item.current
-                        ? "bg-gray-100 text-light dark:text-dark"
-                        : "text-light hover:bg-gray-50 hover:text-gray-900 dark:text-dark",
-                      "inline-flex items-center rounded-md py-2 px-3 text-sm font-medium"
-                    )}
+                    className={({ isActive }) =>
+                      isActive ? activeClassName : navBaseStyle
+                    }
                     aria-current={item.current ? "page" : undefined}
                   >
                     {item.name}
-                  </Link>
+                  </NavLink>
                 ))}
               </nav>
             </div>
