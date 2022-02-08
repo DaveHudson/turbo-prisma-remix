@@ -57,7 +57,10 @@ function Document({
   title?: string;
 }) {
   return (
-    <html lang="en" className="text-light-accent dark:text-dark-accent">
+    <html
+      lang="en"
+      className="h-full bg-gradient-to-b from-white to-gray-200 text-light-accent dark:bg-gradient-to-b dark:from-gray-900 dark:to-gray-800 dark:text-dark-accent"
+    >
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -65,7 +68,7 @@ function Document({
         <Meta />
         <Links />
       </head>
-      <body className="bg-light dark:bg-dark">
+      <body>
         {children}
         <ScrollRestoration />
         <Scripts />
