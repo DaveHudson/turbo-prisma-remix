@@ -2301,6 +2301,10 @@ a {
     display: flex;
   }
 
+  .sm\:h-full {
+    height: 100%;
+  }
+
   .sm\:max-w-xs {
     max-width: 20rem;
   }
@@ -2371,6 +2375,10 @@ a {
 
   .md\:flex {
     display: flex;
+  }
+
+  .md\:h-full {
+    height: 100%;
   }
 
   .md\:max-w-3xl {

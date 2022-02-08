@@ -60,7 +60,7 @@ function Document({
   return (
     <html
       lang="en"
-      className="h-full bg-gradient-to-b from-white to-gray-200 text-light-accent dark:bg-gradient-to-b dark:from-gray-900 dark:to-gray-800 dark:text-dark-accent"
+      className="bg-gradient-to-b from-white to-gray-200 text-light-accent dark:bg-gradient-to-b dark:from-gray-900 dark:to-gray-800 dark:text-dark-accent sm:h-full"
     >
       <head>
         <meta charSet="utf-8" />
