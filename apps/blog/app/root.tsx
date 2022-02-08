@@ -18,6 +18,9 @@ import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import type { MetaFunction } from "remix";
 import { getUser } from "./utils/session.server";
 import styles from "./tailwind.css";
+import favicon from "./images/logo-light.svg";
+import favicondark from "./images/logo-dark.svg";
+import faviconapple from "./images/favicon.png";
 
 export function links() {
   return [
@@ -78,6 +81,19 @@ function Document({
         {title ? <title>{title}</title> : null}
         <Meta />
         <Links />
+        <link rel="icon" href={faviconapple} type="image/png"></link>
+        <link
+          rel="icon"
+          type="image/svg+xml"
+          href={favicon}
+          media="(prefers-color-scheme: light)"
+        />
+        <link
+          rel="icon"
+          type="image/svg+xml"
+          href={favicondark}
+          media="(prefers-color-scheme: dark)"
+        />
       </head>
       <body className="h-fit bg-gradient-to-b from-gray-50 to-gray-200 text-light-accent selection:bg-yellow-500 selection:text-neutral-900 dark:bg-gradient-to-b dark:from-gray-900 dark:to-gray-800">
         {children}
