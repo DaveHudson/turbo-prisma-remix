@@ -110,9 +110,7 @@ export default function Login() {
         <label className="text-base font-medium text-light dark:text-dark">
           Login or Register
         </label>
-        <p className="text-sm leading-5 text-light-accent dark:text-dark-accent">
-          Do you want to login or register?
-        </p>
+        <p className="text-sm leading-5">Do you want to login or register?</p>
         <fieldset className="mt-4">
           <legend className="sr-only">Login method</legend>
           <div className="space-y-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-10">
@@ -137,10 +135,7 @@ export default function Login() {
           </div>
 
           <div className="pt-4">
-            <label
-              htmlFor="username"
-              className="block text-sm font-medium text-light-accent dark:text-dark-accent"
-            >
+            <label htmlFor="username" className="block text-sm font-medium">
               username
             </label>
             <div className="relative mt-1 rounded-md shadow-sm">
@@ -172,10 +167,7 @@ export default function Login() {
           </div>
 
           <div className="pt-4">
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-light-accent dark:text-dark-accent"
-            >
+            <label htmlFor="password" className="block text-sm font-medium">
               password
             </label>
             <div className="relative mt-1 rounded-md shadow-sm">

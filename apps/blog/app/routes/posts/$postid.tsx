@@ -43,17 +43,22 @@ export default function Post() {
   const transition = useTransition();
 
   return (
-    <div className="pt-16 pb-20 px-4 sm:px-6 lg:pt-16 lg:pb-14 lg:px-8">
-      <div className="relative max-w-lg mx-auto  divide-gray-200 md:max-w-3xl lg:max-w-5xl">
+    <div className="px-4 pt-16 pb-20 sm:px-6 lg:px-8 lg:pt-16 lg:pb-14">
+      <div className="relative mx-auto max-w-lg divide-gray-200 md:max-w-3xl lg:max-w-5xl">
         <div>
-          <h2 className="text-3xl tracking-tight font-extrabold text-light dark:text-dark sm:text-4xl">{post.title}</h2>
+          <h2 className="text-3xl font-extrabold tracking-tight text-light dark:text-dark sm:text-4xl">
+            {post.title}
+          </h2>
 
           <div className="relative mt-1">
-            <div className="absolute inset-0 flex items-center" aria-hidden="true">
+            <div
+              className="absolute inset-0 flex items-center"
+              aria-hidden="true"
+            >
               <div className="w-full border-t border-gray-300" />
             </div>
             <div className="relative flex justify-center">
-              <span className="bg-light dark:bg-dark px-2 text-gray-500">
+              <span className="bg-light px-2 text-gray-500 dark:bg-dark">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6"
@@ -74,8 +79,19 @@ export default function Post() {
 
           <div className="flex justify-center space-x-3 pt-3">
             {post.tags.map(
-              (tag: { color: any; name: boolean | ReactChild | ReactFragment | ReactPortal | null | undefined }) => (
-                <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${tag.color}`}>
+              (tag: {
+                color: any;
+                name:
+                  | boolean
+                  | ReactChild
+                  | ReactFragment
+                  | ReactPortal
+                  | null
+                  | undefined;
+              }) => (
+                <span
+                  className={`inline-flex items-center rounded px-2 py-0.5 text-xs font-medium ${tag.color}`}
+                >
                   {tag.name}
                 </span>
               )
@@ -83,36 +99,43 @@ export default function Post() {
           </div>
 
           <div className="flex justify-center space-x-3 pt-4">
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+            <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
               3 min read
             </span>
           </div>
 
-          <p className="pt-4 mt-3 text-xl text-light-accent dark:text-dark-accent sm:mt-4">{post.description}</p>
+          <p className="mt-3 pt-4 text-xl sm:mt-4">{post.description}</p>
 
           <div className="mt-6 flex items-center">
             <div className="flex-shrink-0">
               <Link to={post.user.id}>
                 <span className="sr-only">{post.user.name}</span>
-                <img className="h-10 w-10 rounded-full" src={post.user.profileUrl} alt="" />
+                <img
+                  className="h-10 w-10 rounded-full"
+                  src={post.user.profileUrl}
+                  alt=""
+                />
               </Link>
             </div>
             <div className="ml-3">
               <p className="text-sm font-medium text-light dark:text-dark">
                 <Link to={post.user.id}>{post.user.name}</Link>
               </p>
-              <div className="flex space-x-1 text-sm text-light-accent dark:text-dark-accent">
+              <div className="flex space-x-1 text-sm">
                 <time dateTime={post.datetime}>{post.date}</time>
               </div>
             </div>
           </div>
 
           <div className="relative mt-6">
-            <div className="absolute inset-0 flex items-center" aria-hidden="true">
+            <div
+              className="absolute inset-0 flex items-center"
+              aria-hidden="true"
+            >
               <div className="w-full border-t border-gray-300" />
             </div>
             <div className="relative flex justify-center">
-              <span className="bg-light dark:bg-dark px-2 text-gray-500">
+              <span className="bg-light px-2 text-gray-500 dark:bg-dark">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6"
@@ -132,8 +155,11 @@ export default function Post() {
           </div>
         </div>
 
-        <div className="text-lg prose mx-auto pt-8">
-          <div className="prose prose-pink dark:prose-invert" dangerouslySetInnerHTML={{ __html: post.body }} />
+        <div className="prose mx-auto pt-8 text-lg">
+          <div
+            className="prose prose-pink dark:prose-invert"
+            dangerouslySetInnerHTML={{ __html: post.body }}
+          />
         </div>
 
         {/* {user?.id === post.userId && (

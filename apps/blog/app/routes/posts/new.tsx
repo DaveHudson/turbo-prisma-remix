@@ -79,16 +79,13 @@ export default function NewPost() {
           <h3 className="text-lg font-medium leading-6 text-light dark:text-dark">
             New Post
           </h3>
-          <p className="mt-1 text-sm text-light-accent dark:text-dark-accent">
+          <p className="mt-1 text-sm">
             Use this form to create a new blog post using markdown syntax.
           </p>
         </div>
 
         <fieldset disabled={transition.state === "submitting"} className="pt-6">
-          <label
-            htmlFor="title"
-            className="block text-sm font-medium text-light-accent dark:text-dark-accent"
-          >
+          <label htmlFor="title" className="block text-sm font-medium">
             Title
           </label>
           <div className="relative mt-1 rounded-md shadow-sm">

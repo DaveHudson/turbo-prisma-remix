@@ -38,7 +38,7 @@ export default function Index() {
         <p className="text-center text-3xl font-bold tracking-wide text-light subpixel-antialiased dark:text-dark md:text-4xl lg:text-5xl">
           My name is Dave Hudson
         </p>
-        <p className="pt-2 text-center text-2xl tracking-wide text-light-accent subpixel-antialiased dark:text-dark-accent md:text-3xl lg:text-4xl">
+        <p className="pt-2 text-center text-2xl tracking-wide subpixel-antialiased md:text-3xl lg:text-4xl">
           I{" "}
           <Link
             to="about/build-software"
@@ -67,7 +67,7 @@ export default function Index() {
               leading small teams to deliver.
             </p>
 
-            <p className="text-md pt-6 tracking-wide text-light-accent subpixel-antialiased dark:text-dark-accent">
+            <p className="text-md pt-6 tracking-wide subpixel-antialiased">
               Preferred tech stack:
             </p>
 
@@ -91,7 +91,7 @@ export default function Index() {
                           {tech.title}
                         </Link>
                       </h3>
-                      <p className="text-md mt-1 text-light-accent line-clamp-2 dark:text-dark-accent">
+                      <p className="text-md mt-1 line-clamp-2">
                         {tech.description}
                       </p>
                     </div>
@@ -104,7 +104,7 @@ export default function Index() {
       </div>
 
       <div className="flex flex-row justify-center">
-        <div className="mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
+        <div className="mx-auto py-12 px-4 text-center sm:px-6 lg:py-16 lg:px-8">
           <h2 className="inline text-center text-3xl font-bold tracking-tight text-light dark:text-dark sm:block sm:text-3xl">
             Want blog post updates?
           </h2>
