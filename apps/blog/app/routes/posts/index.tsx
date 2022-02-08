@@ -71,7 +71,7 @@ export default function Posts() {
                     <time
                       dateTime={dayjs(post.createdAt).format("MMM D, YYYY")}
                     >
-                      {post.createdAt}
+                      {dayjs(post.createdAt).format("MMM D, YYYY")}
                     </time>
                     <span aria-hidden="true">&middot;</span>
                     <span>{post.readingTime} read</span>
