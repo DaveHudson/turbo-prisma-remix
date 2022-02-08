@@ -1154,6 +1154,10 @@ a {
   margin: 0px;
 }
 
+.m-2 {
+  margin: 0.5rem;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -1219,6 +1223,14 @@ a {
 
 .mt-px {
   margin-top: 1px;
+}
+
+.mr-3 {
+  margin-right: 0.75rem;
+}
+
+.mt-5 {
+  margin-top: 1.25rem;
 }
 
 .block {
@@ -1574,6 +1586,10 @@ a {
   background-image: linear-gradient(to top, var(--tw-gradient-stops));
 }
 
+.bg-none {
+  background-image: none;
+}
+
 .from-cyan-500 {
   --tw-gradient-from: #06b6d4;
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgb(6 182 212 / 0));
@@ -1654,6 +1670,10 @@ a {
 
 .p-0 {
   padding: 0px;
+}
+
+.p-1 {
+  padding: 0.25rem;
 }
 
 .px-4 {
@@ -1779,6 +1799,10 @@ a {
 
 .pb-12 {
   padding-bottom: 3rem;
+}
+
+.pl-2 {
+  padding-left: 0.5rem;
 }
 
 .text-center {
@@ -2031,6 +2055,42 @@ a {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
+.outline {
+  outline-style: solid;
+}
+
+.outline-dashed {
+  outline-style: dashed;
+}
+
+.outline-double {
+  outline-style: double;
+}
+
+.outline-1 {
+  outline-width: 1px;
+}
+
+.outline-2 {
+  outline-width: 2px;
+}
+
+.outline-gray-500 {
+  outline-color: #6b7280;
+}
+
+.outline-gray-100 {
+  outline-color: #f3f4f6;
+}
+
+.outline-gray-300 {
+  outline-color: #d1d5db;
+}
+
+.outline-gray-400 {
+  outline-color: #9ca3af;
+}
+
 .ring-1 {
   --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
   --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
@@ -2079,6 +2139,36 @@ a {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+}
+
+.first-letter\:float-left::first-letter {
+  float: left;
+}
+
+.first-letter\:mr-3::first-letter {
+  margin-right: 0.75rem;
+}
+
+.first-letter\:text-7xl::first-letter {
+  font-size: 4.5rem;
+  line-height: 1;
+}
+
+.first-letter\:font-bold::first-letter {
+  font-weight: 700;
+}
+
+.first-letter\:text-white::first-letter {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.first-line\:uppercase::first-line {
+  text-transform: uppercase;
+}
+
+.first-line\:tracking-widest::first-line {
+  letter-spacing: 0.1em;
 }
 
 .selection\:bg-fuchsia-300 *::-moz-selection {
@@ -2526,8 +2616,17 @@ a {
     background-color: rgb(17 24 39 / var(--tw-bg-opacity));
   }
 
+  .dark\:bg-gray-500 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(107 114 128 / var(--tw-bg-opacity));
+  }
+
   .dark\:bg-gradient-to-b {
     background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
+  }
+
+  .dark\:bg-none {
+    background-image: none;
   }
 
   .dark\:from-gray-900 {
@@ -2551,6 +2650,14 @@ a {
   .dark\:text-dark {
     --tw-text-opacity: 1;
     color: rgb(209 209 209 / var(--tw-text-opacity));
+  }
+
+  .dark\:outline-2 {
+    outline-width: 2px;
+  }
+
+  .dark\:first-line\:uppercase::first-line {
+    text-transform: uppercase;
   }
 }
 

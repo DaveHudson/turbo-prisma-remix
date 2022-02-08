@@ -50,7 +50,7 @@ export default function Post() {
             {post.title}
           </h2>
 
-          <div className="relative mt-1">
+          <div className="relative mt-8">
             <div
               className="absolute inset-0 flex items-center"
               aria-hidden="true"
@@ -58,10 +58,10 @@ export default function Post() {
               <div className="w-full border-t border-gray-300" />
             </div>
             <div className="relative flex justify-center">
-              <span className="bg-light px-2 text-gray-500 dark:bg-dark">
+              <span className="rounded-lg bg-light py-1 px-2 text-gray-500 outline outline-1 outline-gray-400 dark:bg-gray-900 dark:outline-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
+                  className="h-5 w-5"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -135,10 +135,10 @@ export default function Post() {
               <div className="w-full border-t border-gray-300" />
             </div>
             <div className="relative flex justify-center">
-              <span className="bg-light px-2 text-gray-500 dark:bg-dark">
+              <span className="rounded-lg bg-light py-1 px-2 text-gray-500 outline outline-1 outline-gray-400 dark:bg-gray-900 dark:outline-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
+                  className="h-5 w-5"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -157,7 +157,9 @@ export default function Post() {
 
         <div className="prose mx-auto pt-8 text-lg">
           <div
-            className="prose prose-pink dark:prose-invert"
+            className="prose prose-pink first-letter:float-left first-letter:mr-3 first-letter:text-7xl
+  first-letter:font-bold first-line:uppercase
+  first-line:tracking-widest dark:prose-invert"
             dangerouslySetInnerHTML={{ __html: post.body }}
           />
         </div>
