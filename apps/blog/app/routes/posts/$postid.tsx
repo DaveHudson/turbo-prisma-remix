@@ -58,7 +58,7 @@ export default function Post() {
               <div className="w-full border-t border-gray-300" />
             </div>
             <div className="relative flex justify-center">
-              <span className="rounded-lg bg-light py-1 px-2 text-gray-500 outline outline-1 outline-gray-400 dark:bg-gray-900 dark:outline-2">
+              <span className="rounded-lg bg-light py-1 px-2 text-gray-500 ring-1 ring-gray-400 dark:bg-gray-900">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-5 w-5"
@@ -135,7 +135,7 @@ export default function Post() {
               <div className="w-full border-t border-gray-300" />
             </div>
             <div className="relative flex justify-center">
-              <span className="rounded-lg bg-light py-1 px-2 text-gray-500 outline outline-1 outline-gray-400 dark:bg-gray-900 dark:outline-2">
+              <span className="rounded-lg bg-light py-1 px-2 text-gray-500 ring-1 ring-gray-400 dark:bg-gray-900">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-5 w-5"
