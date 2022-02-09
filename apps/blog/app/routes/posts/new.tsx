@@ -11,6 +11,7 @@ import Highlight from "@tiptap/extension-highlight";
 import Typography from "@tiptap/extension-typography";
 import Image from "@tiptap/extension-image";
 import Dropcursor from "@tiptap/extension-dropcursor";
+import { PhotographIcon, CodeIcon } from "@heroicons/react/solid";
 
 function validateTitle(title: string) {
   if (typeof title !== "string" || title.length < 3) {
@@ -70,7 +71,8 @@ export default function NewPost() {
     extensions: [StarterKit, Highlight, Typography, Image, Dropcursor],
     editorProps: {
       attributes: {
-        class: "prose prose-gray focus:outline-none",
+        class:
+          "prose prose-gray focus:outline-none mt-2 w-full p-3 border-t-2 border-white",
       },
     },
     content: ``,
@@ -131,21 +133,47 @@ export default function NewPost() {
           </p>
 
           <div className="pt-6">
-            <button onClick={addImage}>add image from URL</button>
+            <span className="relative z-0 inline-flex rounded-md shadow-sm">
+              <button
+                onClick={addImage}
+                type="button"
+                className="relative inline-flex items-center rounded-l-md border border-gray-50 bg-light px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:bg-dark dark:hover:text-gray-100"
+              >
+                <span className="sr-only">Previous</span>
+                <PhotographIcon className="h-5 w-5" aria-hidden="true" />
+              </button>
+              <button
+                onClick={addImage}
+                type="button"
+                className="relative inline-flex items-center border-t border-b border-gray-50 bg-light px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:bg-dark dark:hover:text-gray-100"
+              >
+                <span className="sr-only">Previous</span>
+                <PhotographIcon className="h-5 w-5" aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                className="0 relative -ml-px inline-flex items-center rounded-r-md border border-gray-50 bg-light px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:bg-dark dark:hover:text-gray-100"
+              >
+                <span className="sr-only">Next</span>
+                <CodeIcon className="h-5 w-5" aria-hidden="true" />
+              </button>
+            </span>
 
-            <EditorContent editor={editor} className="prose" />
-            <input
-              type="hidden"
-              name="body"
-              id="body"
-              value={JSON.stringify(json)}
-            />
-            <p className="mt-2 text-sm text-red-600" id="body-error">
-              {actionData?.errors.body && actionData?.errors.body}
-            </p>
-            <p className="mt-2 text-sm text-red-600" id="userid-error">
-              {actionData?.errors.userId && actionData?.errors.userId}
-            </p>
+            <div>
+              <EditorContent editor={editor} />
+              <input
+                type="hidden"
+                name="body"
+                id="body"
+                value={JSON.stringify(json)}
+              />
+              <p className="mt-2 text-sm text-red-600" id="body-error">
+                {actionData?.errors.body && actionData?.errors.body}
+              </p>
+              <p className="mt-2 text-sm text-red-600" id="userid-error">
+                {actionData?.errors.userId && actionData?.errors.userId}
+              </p>
+            </div>
           </div>
 
           <div className="pt-5">
