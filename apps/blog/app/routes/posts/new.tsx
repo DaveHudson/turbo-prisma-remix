@@ -5,24 +5,14 @@ import { createPost } from "~/utils/db/post.server";
 import { Post, Prisma } from "@prisma/client";
 import { ExclamationCircleIcon } from "@heroicons/react/solid";
 import invariant from "tiny-invariant";
-import { useState } from "react";
-import { Tab } from "@headlessui/react";
-import { AtSymbolIcon, CodeIcon, LinkIcon } from "@heroicons/react/solid";
-import { marked } from "marked";
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Highlight from "@tiptap/extension-highlight";
+import Typography from "@tiptap/extension-typography";
 
 function validateTitle(title: string) {
   if (typeof title !== "string" || title.length < 3) {
     return "Title should be at least 3 characters long";
-  }
-}
-
-function validateBody(body: string) {
-  if (typeof body !== "string" || body.length < 10) {
-    return "Body should be at least 10 characters long";
   }
 }
 
@@ -38,10 +28,14 @@ export const action: ActionFunction = async ({ request }) => {
 
   const form = await request.formData();
 
+  const formbody = form.get("body");
+  invariant(formbody, "expect formbody to exist");
+
   const post = {
     title: form.get("title"),
     description: "the best 90's tunes",
-    body: form.get("body"),
+    //@ts-ignore
+    body: JSON.parse(formbody) as unknown as Prisma.JsonObject,
     tags: [] as Prisma.JsonArray,
     imageUrl: "http",
     userId: user.id,
@@ -49,7 +43,7 @@ export const action: ActionFunction = async ({ request }) => {
 
   const errors = {
     title: validateTitle(post.title),
-    body: validateBody(post.body),
+    body: "",
     category: "",
     imageUrl: "",
     readingTime: "",
@@ -70,7 +64,17 @@ export default function NewPost() {
   const actionData = useActionData();
   const transition = useTransition();
 
-  const [text, setText] = useState("");
+  const editor = useEditor({
+    extensions: [StarterKit, Highlight, Typography],
+    editorProps: {
+      attributes: {
+        class: "prose prose-pink focus:outline-none",
+      },
+    },
+    content: ``,
+  });
+
+  const json = editor?.getJSON();
 
   return (
     <Form method="post" className="space-y-8 divide-y divide-gray-200">
@@ -116,108 +120,16 @@ export default function NewPost() {
           </p>
 
           <div className="pt-6">
-            <Tab.Group>
-              {({ selectedIndex }) => (
-                <>
-                  <Tab.List className="flex items-center">
-                    <Tab
-                      className={({ selected }) =>
-                        classNames(
-                          selected
-                            ? "bg-gray-100 text-gray-900 hover:bg-gray-200"
-                            : "bg-white text-gray-500 hover:bg-gray-100 hover:text-gray-900",
-                          "rounded-md border border-transparent px-3 py-1.5 text-sm font-medium"
-                        )
-                      }
-                    >
-                      Write
-                    </Tab>
-                    <Tab
-                      className={({ selected }) =>
-                        classNames(
-                          selected
-                            ? "bg-gray-100 text-gray-900 hover:bg-gray-200"
-                            : "bg-white text-gray-500 hover:bg-gray-100 hover:text-gray-900",
-                          "ml-2 rounded-md border border-transparent px-3 py-1.5 text-sm font-medium"
-                        )
-                      }
-                    >
-                      Preview
-                    </Tab>
-
-                    {/* These buttons are here simply as examples and don't actually do anything. */}
-                    {selectedIndex === 0 ? (
-                      <div className="ml-auto flex items-center space-x-5">
-                        <div className="flex items-center">
-                          <button
-                            type="button"
-                            className="-m-2.5 inline-flex h-10 w-10 items-center justify-center rounded-full text-gray-400 hover:text-gray-500"
-                          >
-                            <span className="sr-only">Insert link</span>
-                            <LinkIcon className="h-5 w-5" aria-hidden="true" />
-                          </button>
-                        </div>
-                        <div className="flex items-center">
-                          <button
-                            type="button"
-                            className="-m-2.5 inline-flex h-10 w-10 items-center justify-center rounded-full text-gray-400 hover:text-gray-500"
-                          >
-                            <span className="sr-only">Insert code</span>
-                            <CodeIcon className="h-5 w-5" aria-hidden="true" />
-                          </button>
-                        </div>
-                        <div className="flex items-center">
-                          <button
-                            type="button"
-                            className="-m-2.5 inline-flex h-10 w-10 items-center justify-center rounded-full text-gray-400 hover:text-gray-500"
-                          >
-                            <span className="sr-only">Mention someone</span>
-                            <AtSymbolIcon
-                              className="h-5 w-5"
-                              aria-hidden="true"
-                            />
-                          </button>
-                        </div>
-                      </div>
-                    ) : null}
-                  </Tab.List>
-                  <Tab.Panels className="mt-2">
-                    <Tab.Panel className="-m-0.5 rounded-lg p-0.5">
-                      <label htmlFor="body" className="sr-only">
-                        Body
-                      </label>
-                      <div>
-                        <textarea
-                          rows={5}
-                          name="body"
-                          id="body"
-                          className={`${
-                            actionData?.errors.title
-                              ? "block w-full rounded-md border-red-300 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm"
-                              : "block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 sm:text-sm"
-                          }`}
-                          defaultValue={text}
-                          onChange={(e) => setText(e.target.value)}
-                        />
-                      </div>
-                    </Tab.Panel>
-                    <Tab.Panel className="-m-0.5 rounded-lg p-0.5">
-                      <div className="border-b">
-                        <div
-                          className="prose prose-pink mx-px mt-px px-3 pt-2 pb-12 text-sm leading-5 dark:prose-invert"
-                          dangerouslySetInnerHTML={{ __html: marked(text) }}
-                        ></div>
-                      </div>
-                    </Tab.Panel>
-                  </Tab.Panels>
-                </>
-              )}
-            </Tab.Group>
-
+            <EditorContent editor={editor} className="prose" />
+            <input
+              type="hidden"
+              name="body"
+              id="body"
+              value={JSON.stringify(json)}
+            />
             <p className="mt-2 text-sm text-red-600" id="body-error">
               {actionData?.errors.body && actionData?.errors.body}
             </p>
-
             <p className="mt-2 text-sm text-red-600" id="userid-error">
               {actionData?.errors.userId && actionData?.errors.userId}
             </p>

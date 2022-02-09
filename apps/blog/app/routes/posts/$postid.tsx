@@ -8,8 +8,6 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
 import Typography from "@tiptap/extension-typography";
-import Document from "@tiptap/extension-document";
-import Placeholder from "@tiptap/extension-placeholder";
 import { Prisma } from "@prisma/client";
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -49,30 +47,11 @@ export default function Post() {
   const { post } = useLoaderData();
   const transition = useTransition();
 
-  const CustomDocument = Document.extend({
-    content: "heading block*",
-  });
-
   const content = post.body as Prisma.JsonObject;
 
   const editor = useEditor({
     editable: false,
-    extensions: [
-      CustomDocument,
-      StarterKit.configure({
-        document: false,
-      }),
-      Placeholder.configure({
-        // @ts-ignore
-        placeholder: ({ node }) => {
-          if (node.type.name === "heading") {
-            return "Whats the title?";
-          }
-        },
-      }),
-      Highlight,
-      Typography,
-    ],
+    extensions: [StarterKit, Highlight, Typography],
     editorProps: {
       attributes: {
         class: "prose prose-pink focus:outline-none",
@@ -195,14 +174,6 @@ export default function Post() {
         </div>
 
         <EditorContent editor={editor} />
-        {/* <div className="prose mx-auto pt-8 text-lg">
-          <div
-            className="prose prose-pink first-letter:float-left first-letter:mr-3 first-letter:text-7xl
-  first-letter:font-bold first-line:uppercase
-  first-line:tracking-widest dark:prose-invert"
-            dangerouslySetInnerHTML={{ __html: post.body }}
-          />
-        </div> */}
 
         {/* {user?.id === post.userId && (
           <div className="pt-3">
