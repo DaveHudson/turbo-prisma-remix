@@ -56,7 +56,7 @@ export default function Post() {
     extensions: [StarterKit, Highlight, Typography, Image, Dropcursor],
     editorProps: {
       attributes: {
-        class: "prose prose-pink focus:outline-none",
+        class: "prose prose-gray focus:outline-none",
       },
     },
     content,

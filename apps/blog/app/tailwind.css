@@ -904,38 +904,38 @@ a {
 }
 
 .prose {
-  --tw-prose-body: #374151;
-  --tw-prose-headings: #111827;
-  --tw-prose-lead: #4b5563;
-  --tw-prose-links: #111827;
-  --tw-prose-bold: #111827;
-  --tw-prose-counters: #6b7280;
-  --tw-prose-bullets: #d1d5db;
+  --tw-prose-body: #e5e7eb;
+  --tw-prose-headings: #e5e7eb;
+  --tw-prose-lead: #e5e7eb;
+  --tw-prose-links: #e5e7eb;
+  --tw-prose-bold: #e5e7eb;
+  --tw-prose-counters: #e5e7eb;
+  --tw-prose-bullets: #e5e7eb;
   --tw-prose-hr: #e5e7eb;
-  --tw-prose-quotes: #111827;
+  --tw-prose-quotes: #e5e7eb;
   --tw-prose-quote-borders: #e5e7eb;
-  --tw-prose-captions: #6b7280;
-  --tw-prose-code: #111827;
+  --tw-prose-captions: #e5e7eb;
+  --tw-prose-code: #e5e7eb;
   --tw-prose-pre-code: #e5e7eb;
-  --tw-prose-pre-bg: #1f2937;
-  --tw-prose-th-borders: #d1d5db;
+  --tw-prose-pre-bg: #111827;
+  --tw-prose-th-borders: #e5e7eb;
   --tw-prose-td-borders: #e5e7eb;
-  --tw-prose-invert-body: #d1d5db;
-  --tw-prose-invert-headings: #fff;
-  --tw-prose-invert-lead: #9ca3af;
+  --tw-prose-invert-body: #e5e7eb;
+  --tw-prose-invert-headings: #D1D1D1;
+  --tw-prose-invert-lead: #e5e7eb;
   --tw-prose-invert-links: #fff;
   --tw-prose-invert-bold: #fff;
-  --tw-prose-invert-counters: #9ca3af;
-  --tw-prose-invert-bullets: #4b5563;
-  --tw-prose-invert-hr: #374151;
-  --tw-prose-invert-quotes: #f3f4f6;
-  --tw-prose-invert-quote-borders: #374151;
-  --tw-prose-invert-captions: #9ca3af;
+  --tw-prose-invert-counters: #e5e7eb;
+  --tw-prose-invert-bullets: #e5e7eb;
+  --tw-prose-invert-hr: #e5e7eb;
+  --tw-prose-invert-quotes: #e5e7eb;
+  --tw-prose-invert-quote-borders: #e5e7eb;
+  --tw-prose-invert-captions: #e5e7eb;
   --tw-prose-invert-code: #fff;
-  --tw-prose-invert-pre-code: #d1d5db;
+  --tw-prose-invert-pre-code: #e5e7eb;
   --tw-prose-invert-pre-bg: rgb(0 0 0 / 50%);
-  --tw-prose-invert-th-borders: #4b5563;
-  --tw-prose-invert-td-borders: #374151;
+  --tw-prose-invert-th-borders: #e5e7eb;
+  --tw-prose-invert-td-borders: #e5e7eb;
   font-size: 1rem;
   line-height: 1.75;
 }
@@ -1047,39 +1047,39 @@ a {
   margin-bottom: 0;
 }
 
-.prose-pink {
-  --tw-prose-links: #831843;
-  --tw-prose-invert-links: #fff;
-  --tw-prose-body: #9d174d;
-  --tw-prose-headings: #831843;
-  --tw-prose-lead: #be185d;
-  --tw-prose-bold: #831843;
-  --tw-prose-counters: #db2777;
-  --tw-prose-bullets: #f472b6;
-  --tw-prose-hr: #f9a8d4;
-  --tw-prose-quotes: #831843;
-  --tw-prose-quote-borders: #f9a8d4;
-  --tw-prose-captions: #be185d;
-  --tw-prose-code: #831843;
-  --tw-prose-pre-code: #fce7f3;
-  --tw-prose-pre-bg: #831843;
-  --tw-prose-th-borders: #f9a8d4;
-  --tw-prose-td-borders: #fbcfe8;
-  --tw-prose-invert-body: #fbcfe8;
+.prose-gray {
+  --tw-prose-body: #e5e7eb;
+  --tw-prose-headings: #e5e7eb;
+  --tw-prose-lead: #e5e7eb;
+  --tw-prose-links: #e5e7eb;
+  --tw-prose-bold: #e5e7eb;
+  --tw-prose-counters: #e5e7eb;
+  --tw-prose-bullets: #e5e7eb;
+  --tw-prose-hr: #e5e7eb;
+  --tw-prose-quotes: #e5e7eb;
+  --tw-prose-quote-borders: #e5e7eb;
+  --tw-prose-captions: #e5e7eb;
+  --tw-prose-code: #e5e7eb;
+  --tw-prose-pre-code: #e5e7eb;
+  --tw-prose-pre-bg: #111827;
+  --tw-prose-th-borders: #e5e7eb;
+  --tw-prose-td-borders: #e5e7eb;
+  --tw-prose-invert-body: #e5e7eb;
   --tw-prose-invert-headings: #D1D1D1;
-  --tw-prose-invert-lead: #f9a8d4;
+  --tw-prose-invert-lead: #e5e7eb;
+  --tw-prose-invert-links: #fff;
   --tw-prose-invert-bold: #fff;
-  --tw-prose-invert-counters: #f472b6;
-  --tw-prose-invert-bullets: #db2777;
-  --tw-prose-invert-hr: #be185d;
-  --tw-prose-invert-quotes: #fce7f3;
-  --tw-prose-invert-quote-borders: #be185d;
-  --tw-prose-invert-captions: #f472b6;
+  --tw-prose-invert-counters: #e5e7eb;
+  --tw-prose-invert-bullets: #e5e7eb;
+  --tw-prose-invert-hr: #e5e7eb;
+  --tw-prose-invert-quotes: #e5e7eb;
+  --tw-prose-invert-quote-borders: #e5e7eb;
+  --tw-prose-invert-captions: #e5e7eb;
   --tw-prose-invert-code: #fff;
-  --tw-prose-invert-pre-code: #f9a8d4;
+  --tw-prose-invert-pre-code: #e5e7eb;
   --tw-prose-invert-pre-bg: rgb(0 0 0 / 50%);
-  --tw-prose-invert-th-borders: #db2777;
-  --tw-prose-invert-td-borders: #be185d;
+  --tw-prose-invert-th-borders: #e5e7eb;
+  --tw-prose-invert-td-borders: #e5e7eb;
 }
 
 .sr-only {
