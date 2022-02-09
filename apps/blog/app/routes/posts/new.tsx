@@ -30,8 +30,8 @@ export const action: ActionFunction = async ({ request }) => {
   invariant(user?.id, "expected user id");
 
   const form = await request.formData();
-
   const formbody = form.get("body");
+
   invariant(formbody, "expect formbody to exist");
 
   const post = {
@@ -90,7 +90,11 @@ export default function NewPost() {
   const json = editor?.getJSON();
 
   return (
-    <Form method="post" className="space-y-8 divide-y divide-gray-200">
+    <Form
+      method="post"
+      encType="multipart/form-data"
+      className="space-y-8 divide-y divide-gray-200"
+    >
       <div className="space-y-8 divide-y divide-gray-200">
         <div>
           <h3 className="text-lg font-medium leading-6 text-light dark:text-dark">

@@ -120,7 +120,7 @@ export default function Post() {
 
           <div className="flex justify-center space-x-3 pt-4">
             <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
-              3 min read
+              {post.readingTime}
             </span>
           </div>
 
