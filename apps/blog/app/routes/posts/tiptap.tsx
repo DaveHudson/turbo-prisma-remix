@@ -17,6 +17,7 @@ const Tiptap = () => {
         document: false,
       }),
       Placeholder.configure({
+        // @ts-ignore
         placeholder: ({ node }) => {
           if (node.type.name === "heading") {
             return "Whats the title?";
@@ -31,8 +32,12 @@ const Tiptap = () => {
         class: "prose prose-pink focus:outline-none",
       },
     },
-    content: "",
+    content: ``,
   });
+
+  const json = editor?.getJSON();
+  console.log("json", json);
+  // So essentially just pick up the JSON from the editor and save it to the database instead....
 
   return <EditorContent editor={editor} className="prose" />;
 };

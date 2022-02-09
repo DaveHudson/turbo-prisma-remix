@@ -42,11 +42,11 @@ export async function getPost(postid: number) {
 
   if (!post) throw new Error("Post not found");
 
-  const postHtml = marked(post.body);
+  // const postHtml = marked(post.body);
 
   const postData = {
     ...post,
-    body: postHtml,
+    // body: postHtml,
   };
 
   return postData as PostWithUser;
@@ -56,7 +56,8 @@ export async function createPost(fields: Post) {
   const post = {
     ...fields,
     tags: fields.tags as Prisma.JsonArray,
-    readingTime: calculateReadingTime(fields.body),
+    readingTime: "3 mins",
+    // readingTime: calculateReadingTime(fields.body),
   };
 
   const res = await db.post.create({ data: { ...post, userId: post.userId } });
