@@ -8,6 +8,8 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
 import Typography from "@tiptap/extension-typography";
+import Image from "@tiptap/extension-image";
+import Dropcursor from "@tiptap/extension-dropcursor";
 import { Prisma } from "@prisma/client";
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -51,7 +53,7 @@ export default function Post() {
 
   const editor = useEditor({
     editable: false,
-    extensions: [StarterKit, Highlight, Typography],
+    extensions: [StarterKit, Highlight, Typography, Image, Dropcursor],
     editorProps: {
       attributes: {
         class: "prose prose-pink focus:outline-none",

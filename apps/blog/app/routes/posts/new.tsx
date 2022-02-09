@@ -9,6 +9,8 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
 import Typography from "@tiptap/extension-typography";
+import Image from "@tiptap/extension-image";
+import Dropcursor from "@tiptap/extension-dropcursor";
 
 function validateTitle(title: string) {
   if (typeof title !== "string" || title.length < 3) {
@@ -65,7 +67,7 @@ export default function NewPost() {
   const transition = useTransition();
 
   const editor = useEditor({
-    extensions: [StarterKit, Highlight, Typography],
+    extensions: [StarterKit, Highlight, Typography, Image, Dropcursor],
     editorProps: {
       attributes: {
         class: "prose prose-pink focus:outline-none",
@@ -73,6 +75,15 @@ export default function NewPost() {
     },
     content: ``,
   });
+
+  const addImage = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    const url = window.prompt("URL");
+
+    if (url) {
+      editor?.chain().focus().setImage({ src: url }).run();
+    }
+  };
 
   const json = editor?.getJSON();
 
@@ -120,6 +131,8 @@ export default function NewPost() {
           </p>
 
           <div className="pt-6">
+            <button onClick={addImage}>add image from URL</button>
+
             <EditorContent editor={editor} className="prose" />
             <input
               type="hidden"
