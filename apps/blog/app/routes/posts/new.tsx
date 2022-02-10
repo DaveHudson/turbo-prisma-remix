@@ -11,7 +11,12 @@ import Highlight from "@tiptap/extension-highlight";
 import Typography from "@tiptap/extension-typography";
 import Image from "@tiptap/extension-image";
 import Dropcursor from "@tiptap/extension-dropcursor";
-import { PhotographIcon, CodeIcon } from "@heroicons/react/solid";
+import Link from "@tiptap/extension-link";
+import {
+  PhotographIcon,
+  CodeIcon,
+  DotsHorizontalIcon,
+} from "@heroicons/react/solid";
 
 function validateTitle(title: string) {
   if (typeof title !== "string" || title.length < 3) {
@@ -68,7 +73,7 @@ export default function NewPost() {
   const transition = useTransition();
 
   const editor = useEditor({
-    extensions: [StarterKit, Highlight, Typography, Image, Dropcursor],
+    extensions: [StarterKit, Highlight, Typography, Image, Dropcursor, Link],
     editorProps: {
       attributes: {
         class:
@@ -85,6 +90,11 @@ export default function NewPost() {
     if (url) {
       editor?.chain().focus().setImage({ src: url }).run();
     }
+  };
+
+  const addHR = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    editor?.commands.setHorizontalRule();
   };
 
   const json = editor?.getJSON();
@@ -143,22 +153,22 @@ export default function NewPost() {
                 type="button"
                 className="relative inline-flex items-center rounded-l-md border border-gray-50 bg-light px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:bg-dark dark:hover:text-gray-100"
               >
-                <span className="sr-only">Previous</span>
+                <span className="sr-only">Add image</span>
                 <PhotographIcon className="h-5 w-5" aria-hidden="true" />
               </button>
               <button
-                onClick={addImage}
+                onClick={addHR}
                 type="button"
                 className="relative inline-flex items-center border-t border-b border-gray-50 bg-light px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:bg-dark dark:hover:text-gray-100"
               >
-                <span className="sr-only">Previous</span>
-                <PhotographIcon className="h-5 w-5" aria-hidden="true" />
+                <span className="sr-only">Add hr</span>
+                <DotsHorizontalIcon className="h-5 w-5" aria-hidden="true" />
               </button>
               <button
                 type="button"
                 className="0 relative -ml-px inline-flex items-center rounded-r-md border border-gray-50 bg-light px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:bg-dark dark:hover:text-gray-100"
               >
-                <span className="sr-only">Next</span>
+                <span className="sr-only">Add code block</span>
                 <CodeIcon className="h-5 w-5" aria-hidden="true" />
               </button>
             </span>
