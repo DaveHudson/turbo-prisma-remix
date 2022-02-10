@@ -4,6 +4,19 @@
 
 @layer base {
   a {
-    @apply text-sky-600;
+    @apply text-sky-600 underline underline-offset-2;
   }
+  a:hover {
+    @apply text-pink-600 decoration-dotted underline-offset-4 hover:underline-offset-4;
+  }
+}
+
+/* Placeholder (on every new line) */
+.ProseMirror .is-empty::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #ced4da;
+  pointer-events: none;
+  height: 0;
+  opacity: 0.5;
 }

@@ -42,7 +42,7 @@ export default function Index() {
           I{" "}
           <Link
             to="about/build-software"
-            className="underline decoration-yellow-500 decoration-4 underline-offset-2 hover:underline-offset-4"
+            className="decoration-yellow-500 decoration-4 hover:text-sky-500 hover:decoration-solid"
             prefetch="intent"
           >
             build software
@@ -50,7 +50,7 @@ export default function Index() {
           &amp;{" "}
           <Link
             to="about/lead-teams"
-            className="underline decoration-pink-600 decoration-4 underline-offset-2 hover:underline-offset-4"
+            className="decoration-pink-600 decoration-4 hover:text-sky-500 hover:decoration-solid"
             prefetch="intent"
           >
             lead teams

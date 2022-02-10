@@ -13,7 +13,6 @@ import {
 } from "remix";
 import { Fragment, SVGProps } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { SearchIcon } from "@heroicons/react/solid";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import type { MetaFunction } from "remix";
 import { getUser } from "./utils/session.server";
@@ -159,15 +158,16 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
     return classes.filter(Boolean).join(" ");
   }
 
-  const navBaseStyle = `inline-flex items-center rounded-md py-2 px-3 text-sm font-medium text-light-accent dark:text-dark-accent`;
-  const activeClassName = `${navBaseStyle} text-light dark:text-dark bg-gray-100 dark:text-dark dark:bg-gray-800`;
+  const navBaseStyle = `inline-flex items-center rounded-md py-2 px-3 text-lg font-medium text-light-accent dark:text-dark-accent hover:text-gray-100`;
+  const inactiveClassName = `${navBaseStyle} no-underline hover:underline`;
+  const activeClassName = `${navBaseStyle} text-light dark:text-dark dark:text-dark underline-offset-4`;
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <Disclosure as="header">
         {({ open }) => (
           <>
-            <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:divide-y lg:divide-gray-200 lg:px-8">
+            <div className="mx-auto max-w-7xl px-2 sm:px-4  lg:px-8 ">
               <div className="relative flex h-16 justify-between">
                 <div className="relative z-10 flex px-2 lg:px-0">
                   <div className="flex-shrink-0 items-center">
@@ -239,7 +239,9 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
                                 <a
                                   href={item.href}
                                   className={classNames(
-                                    active ? "bg-gray-100" : "",
+                                    active
+                                      ? "bg-gray-100 no-underline"
+                                      : "no-underline",
                                     "block py-2 px-4 text-sm text-gray-700"
                                   )}
                                 >
@@ -251,7 +253,7 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
                           <form action="/auth/signout" method="POST">
                             <button
                               type="submit"
-                              className={`bg-gray-100" block py-2 px-4 text-sm text-gray-700`}
+                              className={`bg-gray-100" block w-full py-2 px-4 text-left text-sm text-gray-700 hover:bg-gray-100 hover:text-pink-600`}
                             >
                               Sign out
                             </button>
@@ -279,7 +281,7 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
                     to={`${item.href}`}
                     key={item.name}
                     className={({ isActive }) =>
-                      isActive ? activeClassName : navBaseStyle
+                      isActive ? activeClassName : inactiveClassName
                     }
                     aria-current={item.current ? "page" : undefined}
                   >
@@ -302,7 +304,7 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
                     href={item.href}
                     className={classNames(
                       item.current
-                        ? "bg-gray-100 text-light dark:text-dark"
+                        ? "bg-gray-100 text-light dark:text-pink-600"
                         : "text-light hover:bg-gray-50 hover:text-gray-900 dark:text-dark",
                       "block rounded-md py-2 px-3 text-base font-medium"
                     )}
@@ -313,7 +315,7 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
                 ))}
               </div>
               {user ? (
-                <div className="border-t border-gray-200 pt-4 pb-3">
+                <div className="mb-5 border-b border-gray-200 pt-4 pb-3">
                   <div className="flex items-center px-4">
                     <div className="flex-shrink-0">
                       <img
@@ -342,6 +344,14 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
                         {item.name}
                       </Disclosure.Button>
                     ))}
+                    <form action="/auth/signout" method="POST">
+                      <button
+                        type="submit"
+                        className={`block w-full rounded-md py-2 px-3 text-left text-base font-medium text-light underline hover:bg-gray-50 hover:text-gray-900 dark:text-dark`}
+                      >
+                        Sign out
+                      </button>
+                    </form>
                   </div>
                 </div>
               ) : (

@@ -4,6 +4,14 @@ import { getUser } from "~/utils/session.server";
 import { deletePost, getPost } from "~/utils/db/post.server";
 import invariant from "tiny-invariant";
 import { ReactChild, ReactFragment, ReactPortal } from "react";
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Highlight from "@tiptap/extension-highlight";
+import Typography from "@tiptap/extension-typography";
+import Image from "@tiptap/extension-image";
+import Dropcursor from "@tiptap/extension-dropcursor";
+import TTLink from "@tiptap/extension-link";
+import { Prisma } from "@prisma/client";
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(params.postid, "expected params.postid");
@@ -41,6 +49,20 @@ export const action: ActionFunction = async ({ request, params }) => {
 export default function Post() {
   const { post } = useLoaderData();
   const transition = useTransition();
+
+  const content = post.body as Prisma.JsonObject;
+
+  const editor = useEditor({
+    editable: false,
+    extensions: [StarterKit, Highlight, Typography, Image, Dropcursor, TTLink],
+    editorProps: {
+      attributes: {
+        class:
+          "prose focus:outline-none dark:prose-invert max-w-none max-w-3xl prose-img:rounded-lg pt-8",
+      },
+    },
+    content,
+  });
 
   return (
     <div className="px-4 pt-16 pb-20 sm:px-6 lg:px-8 lg:pt-16 lg:pb-14">
@@ -100,7 +122,7 @@ export default function Post() {
 
           <div className="flex justify-center space-x-3 pt-4">
             <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
-              3 min read
+              {post.readingTime}
             </span>
           </div>
 
@@ -155,13 +177,8 @@ export default function Post() {
           </div>
         </div>
 
-        <div className="prose mx-auto pt-8 text-lg">
-          <div
-            className="prose prose-pink first-letter:float-left first-letter:mr-3 first-letter:text-7xl
-  first-letter:font-bold first-line:uppercase
-  first-line:tracking-widest dark:prose-invert"
-            dangerouslySetInnerHTML={{ __html: post.body }}
-          />
+        <div className="md:flex md:justify-center">
+          <EditorContent editor={editor} />
         </div>
 
         {/* {user?.id === post.userId && (

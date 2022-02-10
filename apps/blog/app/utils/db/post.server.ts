@@ -1,13 +1,22 @@
 import { Post, Prisma, User } from "@prisma/client";
+import invariant from "tiny-invariant";
 import { db } from "~/utils/db.server";
-import { marked } from "marked";
 
 export interface PostWithUser extends Post {
   user: User;
 }
 
-function calculateReadingTime(text: string) {
-  const words = text.split(" ").length;
+let allWordsInPost = "";
+function calculateReadingTime(text: Prisma.JsonObject) {
+  // ? Text is sotred in JSON blocks we need to dig into each block to get all the words
+  //@ts-ignore
+  text.content?.forEach((element: any) => {
+    element.content?.forEach((item: any) => {
+      allWordsInPost = `${allWordsInPost} ${item.text}`;
+    });
+  });
+
+  const words = allWordsInPost.split(" ").length;
   const readingTimeMin = Number(words / 200).toFixed(1);
   const readingTimeSecs = Number((words / 200).toFixed(3).substring(3)) * 0.6;
   let finalReadingTime;
@@ -42,21 +51,22 @@ export async function getPost(postid: number) {
 
   if (!post) throw new Error("Post not found");
 
-  const postHtml = marked(post.body);
-
   const postData = {
     ...post,
-    body: postHtml,
   };
 
   return postData as PostWithUser;
 }
 
 export async function createPost(fields: Post) {
+  const body = fields.body as Prisma.JsonObject;
+  invariant(body, "expected body to exits");
+
   const post = {
     ...fields,
+    body: body as Prisma.JsonObject,
     tags: fields.tags as Prisma.JsonArray,
-    readingTime: calculateReadingTime(fields.body),
+    readingTime: calculateReadingTime(body),
   };
 
   const res = await db.post.create({ data: { ...post, userId: post.userId } });
