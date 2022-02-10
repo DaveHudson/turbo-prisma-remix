@@ -1439,6 +1439,10 @@ a:hover:hover {
   border-width: 1px;
 }
 
+.border-0 {
+  border-width: 0px;
+}
+
 .border-t {
   border-top-width: 1px;
 }
@@ -1478,6 +1482,16 @@ a:hover:hover {
 .border-gray-50 {
   --tw-border-opacity: 1;
   border-color: rgb(249 250 251 / var(--tw-border-opacity));
+}
+
+.border-gray-400 {
+  --tw-border-opacity: 1;
+  border-color: rgb(156 163 175 / var(--tw-border-opacity));
+}
+
+.border-gray-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(107 114 128 / var(--tw-border-opacity));
 }
 
 .bg-white {
@@ -1567,6 +1581,10 @@ a:hover:hover {
 
 .bg-gradient-to-b {
   background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
+}
+
+.bg-none {
+  background-image: none;
 }
 
 .from-gray-50 {
@@ -2271,6 +2289,20 @@ a:hover:hover {
     border-color: rgb(249 250 251 / var(--tw-divide-opacity));
   }
 
+  .dark\:border-t-2 {
+    border-top-width: 2px;
+  }
+
+  .dark\:border-white {
+    --tw-border-opacity: 1;
+    border-color: rgb(255 255 255 / var(--tw-border-opacity));
+  }
+
+  .dark\:border-gray-300 {
+    --tw-border-opacity: 1;
+    border-color: rgb(209 213 219 / var(--tw-border-opacity));
+  }
+
   .dark\:bg-gray-800 {
     --tw-bg-opacity: 1;
     background-color: rgb(31 41 55 / var(--tw-bg-opacity));
@@ -2288,6 +2320,10 @@ a:hover:hover {
 
   .dark\:bg-gradient-to-b {
     background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
+  }
+
+  .dark\:bg-none {
+    background-image: none;
   }
 
   .dark\:from-gray-900 {

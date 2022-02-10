@@ -86,7 +86,7 @@ export default function NewPost() {
     editorProps: {
       attributes: {
         class:
-          "prose dark:prose-invert focus:outline-none mt-2 w-full p-3 border-t-2 border-white max-w-none",
+          "prose dark:prose-invert focus:outline-none mt-2 w-full p-3 border-t-2 border-gray-300  max-w-none",
       },
     },
     content: ``,
@@ -112,9 +112,9 @@ export default function NewPost() {
     <Form
       method="post"
       encType="multipart/form-data"
-      className="space-y-8 divide-y divide-gray-200"
+      className="space-y-8 divide-y divide-gray-300"
     >
-      <div className="space-y-8 divide-y divide-gray-200">
+      <div className="space-y-8 divide-y divide-gray-300">
         <div>
           <h3 className="text-lg font-medium leading-6 text-light dark:text-dark">
             New Post
@@ -160,7 +160,7 @@ export default function NewPost() {
               <button
                 onClick={addImage}
                 type="button"
-                className="relative inline-flex items-center rounded-l-md border border-gray-50 bg-light px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:bg-dark dark:hover:text-gray-100"
+                className="relative inline-flex items-center rounded-l-md border border-gray-500 bg-none px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:hover:text-gray-100"
               >
                 <span className="sr-only">Add image</span>
                 <PhotographIcon className="h-5 w-5" aria-hidden="true" />
@@ -168,21 +168,21 @@ export default function NewPost() {
               <button
                 onClick={addHR}
                 type="button"
-                className="relative inline-flex items-center border-t border-b border-gray-50 bg-light px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:bg-dark dark:hover:text-gray-100"
+                className="relative inline-flex items-center border-t border-b border-gray-500 bg-none px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:hover:text-gray-100"
               >
                 <span className="sr-only">Add hr</span>
                 <DotsHorizontalIcon className="h-5 w-5" aria-hidden="true" />
               </button>
               <button
                 type="button"
-                className="0 relative -ml-px inline-flex items-center rounded-r-md border border-gray-50 bg-light px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:bg-dark dark:hover:text-gray-100"
+                className="0 relative -ml-px inline-flex items-center rounded-r-md border border-gray-500 bg-none px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:hover:text-gray-100"
               >
                 <span className="sr-only">Add code block</span>
                 <CodeIcon className="h-5 w-5" aria-hidden="true" />
               </button>
             </span>
 
-            <div>
+            <div className="pt-2">
               <EditorContent editor={editor} />
               <input
                 type="hidden"
