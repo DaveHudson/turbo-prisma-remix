@@ -57,7 +57,8 @@ export default function Post() {
     extensions: [StarterKit, Highlight, Typography, Image, Dropcursor, TTLink],
     editorProps: {
       attributes: {
-        class: "prose prose-gray focus:outline-none",
+        class:
+          "prose focus:outline-none dark:prose-invert max-w-none max-w-3xl prose-img:rounded-lg pt-8",
       },
     },
     content,
@@ -176,7 +177,9 @@ export default function Post() {
           </div>
         </div>
 
-        <EditorContent editor={editor} />
+        <div className="md:flex md:justify-center">
+          <EditorContent editor={editor} />
+        </div>
 
         {/* {user?.id === post.userId && (
           <div className="pt-3">

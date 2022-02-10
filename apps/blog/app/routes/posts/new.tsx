@@ -86,7 +86,7 @@ export default function NewPost() {
     editorProps: {
       attributes: {
         class:
-          "prose prose-gray focus:outline-none mt-2 w-full p-3 border-t-2 border-white",
+          "prose dark:prose-invert focus:outline-none mt-2 w-full p-3 border-t-2 border-white max-w-none",
       },
     },
     content: ``,
