@@ -11,6 +11,7 @@ import Highlight from "@tiptap/extension-highlight";
 import Typography from "@tiptap/extension-typography";
 import Image from "@tiptap/extension-image";
 import Dropcursor from "@tiptap/extension-dropcursor";
+import Gapcursor from "@tiptap/extension-gapcursor";
 import Link from "@tiptap/extension-link";
 import {
   PhotographIcon,
@@ -73,7 +74,15 @@ export default function NewPost() {
   const transition = useTransition();
 
   const editor = useEditor({
-    extensions: [StarterKit, Highlight, Typography, Image, Dropcursor, Link],
+    extensions: [
+      StarterKit,
+      Highlight,
+      Typography,
+      Image,
+      Dropcursor,
+      Link,
+      Gapcursor,
+    ],
     editorProps: {
       attributes: {
         class:
