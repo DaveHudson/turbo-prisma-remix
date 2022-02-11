@@ -13,6 +13,7 @@ import TTLink from "@tiptap/extension-link";
 import { Prisma } from "@prisma/client";
 import RenderTags from "~/components/RenderTags";
 import { getTags } from "~/utils/db/tag.server";
+import dayjs from "dayjs";
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(params.postid, "expected params.postid");
@@ -80,17 +81,7 @@ export default function Post() {
             </div>
           </div>
 
-          <RenderTags tags={post.tags} dbTags={dbTags} />
-
-          <div className="flex justify-center space-x-3 pt-4">
-            <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
-              {post.readingTime}
-            </span>
-          </div>
-
-          <p className="mt-3 pt-4 text-xl sm:mt-4">{post.description}</p>
-
-          <div className="mt-6 flex items-center">
+          <div className="mt-6 mb-3 flex justify-center">
             <div className="flex-shrink-0">
               <Link to={post.user.id}>
                 <span className="sr-only">{post.user.name}</span>
@@ -106,12 +97,29 @@ export default function Post() {
                 <Link to={post.user.id}>{post.user.name}</Link>
               </p>
               <div className="flex space-x-1 text-sm">
-                <time dateTime={post.datetime}>{post.date}</time>
+                <time dateTime={dayjs(post.createdAt).format("MMM D, YYYY")}>
+                  {dayjs(post.createdAt).format("MMM D, YYYY")}
+                </time>
               </div>
             </div>
           </div>
 
-          <div className="relative mt-6">
+          <RenderTags tags={post.tags} dbTags={dbTags} />
+
+          <div className="flex justify-center space-x-3 pt-4">
+            <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
+              {post.readingTime}
+            </span>
+          </div>
+
+          {user?.id === post.userId && (
+            <div className="flex justify-center space-x-3 pt-3">
+              <Link to={`/posts/${post.id}/edit`}>Edit Post</Link>
+              <Link to={`/posts/${post.id}/delete`}>Delete Post</Link>
+            </div>
+          )}
+
+          <div className="relative mt-8">
             <div
               className="absolute inset-0 flex items-center"
               aria-hidden="true"
@@ -142,13 +150,6 @@ export default function Post() {
         <div className="md:flex md:justify-center">
           <EditorContent editor={editor} />
         </div>
-
-        {user?.id === post.userId && (
-          <div className="pt-3">
-            <Link to={`/posts/${post.id}/edit`}>Edit Post</Link>
-            <Link to={`/posts/${post.id}/delete`}>Delete Post</Link>
-          </div>
-        )}
       </div>
     </div>
   );
