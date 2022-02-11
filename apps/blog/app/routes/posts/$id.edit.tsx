@@ -83,7 +83,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   const post = {
     id: Number(params.id),
     title: form.get("title"),
-    description: "the best 90's tunes",
+    description: form.get("description"),
     //@ts-ignore
     body: JSON.parse(formbody) as unknown as Prisma.JsonObject,
     tags: tags as Prisma.JsonArray,
@@ -198,6 +198,39 @@ export default function EditPost() {
             {actionData?.errors.title && actionData?.errors.title}
           </p>
 
+          <label htmlFor="description" className="block text-sm font-medium">
+            Description
+          </label>
+          <div className="relative mt-1 rounded-md shadow-sm">
+            <input
+              type="text"
+              name="description"
+              id="description"
+              className={`${
+                actionData?.errors.description
+                  ? "block w-full rounded-md border-red-300 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm"
+                  : "block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 sm:text-sm"
+              }`}
+              defaultValue={post.description}
+              aria-invalid="true"
+              aria-describedby="description-error"
+            />
+            {actionData?.errors.description && (
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                <ExclamationCircleIcon
+                  className="h-5 w-5 text-red-500"
+                  aria-hidden="true"
+                />
+              </div>
+            )}
+          </div>
+          <p className="mt-2 text-sm text-red-600" id="description-error">
+            {actionData?.errors.description && actionData?.errors.description}
+          </p>
+
+          <label htmlFor="tags" className="block text-sm font-medium">
+            Tags
+          </label>
           <Select
             name="tags"
             id="tags"
