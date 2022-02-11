@@ -75,6 +75,27 @@ export async function createPost(fields: Post) {
   return res.id;
 }
 
+export async function updatePost(fields: Post) {
+  const body = fields.body as Prisma.JsonObject;
+  invariant(body, "expected body to exits");
+
+  const tags = fields.tags as Number[];
+
+  const post = {
+    ...fields,
+    id: fields.id as number,
+    body: body as Prisma.JsonObject,
+    tags: tags as Prisma.JsonArray,
+    readingTime: calculateReadingTime(body),
+  };
+
+  const res = await db.post.update({
+    where: { id: post.id },
+    data: { ...post, userId: post.userId },
+  });
+  return res.id;
+}
+
 export async function deletePost(postid: number) {
   const res = await db.post.delete({ where: { id: postid } });
   return res;
