@@ -62,10 +62,12 @@ export async function createPost(fields: Post) {
   const body = fields.body as Prisma.JsonObject;
   invariant(body, "expected body to exits");
 
+  const tags = fields.tags as [];
+
   const post = {
     ...fields,
     body: body as Prisma.JsonObject,
-    tags: fields.tags as Prisma.JsonArray,
+    tags: tags as Prisma.JsonArray,
     readingTime: calculateReadingTime(body),
   };
 

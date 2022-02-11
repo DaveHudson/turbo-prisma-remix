@@ -1,8 +1,16 @@
-import { redirect, useActionData, json, Form, useTransition } from "remix";
+import {
+  redirect,
+  useActionData,
+  json,
+  Form,
+  useTransition,
+  LoaderFunction,
+  useLoaderData,
+} from "remix";
 import type { ActionFunction } from "remix";
 import { getUser } from "~/utils/session.server";
 import { createPost } from "~/utils/db/post.server";
-import { Post, Prisma } from "@prisma/client";
+import { Post, Prisma, Tag } from "@prisma/client";
 import { ExclamationCircleIcon } from "@heroicons/react/solid";
 import invariant from "tiny-invariant";
 import { useEditor, EditorContent } from "@tiptap/react";
@@ -18,6 +26,14 @@ import {
   CodeIcon,
   DotsHorizontalIcon,
 } from "@heroicons/react/solid";
+import Select from "react-select";
+import { getTags } from "~/utils/db/tag.server";
+
+export const loader: LoaderFunction = async () => {
+  const dbTags = getTags();
+
+  return dbTags;
+};
 
 function validateTitle(title: string) {
   if (typeof title !== "string" || title.length < 3) {
@@ -38,6 +54,8 @@ export const action: ActionFunction = async ({ request }) => {
   const form = await request.formData();
   const formbody = form.get("body");
 
+  const tags = form.getAll("tags");
+
   invariant(formbody, "expect formbody to exist");
 
   const post = {
@@ -45,7 +63,7 @@ export const action: ActionFunction = async ({ request }) => {
     description: "the best 90's tunes",
     //@ts-ignore
     body: JSON.parse(formbody) as unknown as Prisma.JsonObject,
-    tags: [] as Prisma.JsonArray,
+    tags: tags as Prisma.JsonArray,
     imageUrl: "http",
     userId: user.id,
   } as Post;
@@ -72,6 +90,8 @@ export const action: ActionFunction = async ({ request }) => {
 export default function NewPost() {
   const actionData = useActionData();
   const transition = useTransition();
+
+  const tags = useLoaderData<Tag[]>();
 
   const editor = useEditor({
     extensions: [
@@ -154,6 +174,15 @@ export default function NewPost() {
           <p className="mt-2 text-sm text-red-600" id="title-error">
             {actionData?.errors.title && actionData?.errors.title}
           </p>
+
+          <Select
+            name="tags"
+            id="tags"
+            options={tags}
+            getOptionValue={(tags) => tags.id.toString()}
+            getOptionLabel={(tags) => tags.name}
+            isMulti
+          />
 
           <div className="pt-6">
             <span className="relative z-0 inline-flex rounded-md shadow-sm">

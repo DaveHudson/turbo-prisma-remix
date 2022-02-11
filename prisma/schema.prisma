@@ -37,3 +37,11 @@ model Post {
 
   @@index([userId])
 }
+
+model Tag {
+  id        Int      @id @default(autoincrement())
+  name      String
+  color     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

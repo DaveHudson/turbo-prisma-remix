@@ -24,6 +24,14 @@ async function seed() {
     },
   });
 
+  // TAGS
+  await Promise.all(
+    getTags().map((tag) => {
+      const data = { ...tag };
+      return prisma.tag.create({ data });
+    })
+  );
+
   // POSTS
   await Promise.all(
     getPosts().map((post) => {
@@ -35,59 +43,72 @@ async function seed() {
 
 seed();
 
+function getTags() {
+  return [
+    {
+      name: "Remix",
+      color: "bg-red-100 text-red-800",
+    },
+    {
+      name: "React",
+      color: "bg-blue-100 text-blue-800",
+    },
+    {
+      name: "Tailwind",
+      color: "bg-green-100 text-green-800",
+    },
+  ];
+}
+
 function getPosts() {
   return [
     {
       title: "Boost your conversion rate",
       description: "This is a description",
-      body: "Nullam risus blandit ac aliquam justo ipsum. Quam mauris volutpat massa dictumst amet. Sapien tortor lacus arcu.",
+      body: {
+        type: "doc",
+        content: [
+          { type: "heading", attrs: { level: 2 }, content: [{ text: "This is a testing post", type: "text" }] },
+          {
+            type: "blockquote",
+            content: [{ type: "paragraph", content: [{ text: "it needs some content", type: "text" }] }],
+          },
+        ],
+      },
       readingTime: "3 min read",
-      tags: [
-        {
-          name: "Remix",
-          color: "bg-red-100 text-red-800",
-        },
-        {
-          name: "React",
-          color: "bg-blue-100 text-blue-800",
-        },
-      ],
+      tags: [1, 2],
     },
     {
       title: "Boost your conversion rate 1",
       description: "This is a description",
-      body: "Nullam risus blandit ac aliquam justo ipsum. Quam mauris volutpat massa dictumst amet. Sapien tortor lacus arcu.",
+      body: {
+        type: "doc",
+        content: [
+          { type: "heading", attrs: { level: 2 }, content: [{ text: "This is a testing post", type: "text" }] },
+          {
+            type: "blockquote",
+            content: [{ type: "paragraph", content: [{ text: "it needs some content", type: "text" }] }],
+          },
+        ],
+      },
       readingTime: "3 min read",
-      tags: [
-        {
-          name: "Remix",
-          color: "bg-red-100 text-red-800",
-        },
-        {
-          name: "React",
-          color: "bg-blue-100 text-blue-800",
-        },
-      ],
+      tags: [1, 3],
     },
     {
       title: "Boost your conversion rate 2",
       description: "This is a description",
-      body: "Nullam risus blandit ac aliquam justo ipsum. Quam mauris volutpat massa dictumst amet. Sapien tortor lacus arcu.",
+      body: {
+        type: "doc",
+        content: [
+          { type: "heading", attrs: { level: 2 }, content: [{ text: "This is a testing post", type: "text" }] },
+          {
+            type: "blockquote",
+            content: [{ type: "paragraph", content: [{ text: "it needs some content", type: "text" }] }],
+          },
+        ],
+      },
       readingTime: "3 min read",
-      tags: [
-        {
-          name: "Remix",
-          color: "bg-red-100 text-red-800",
-        },
-        {
-          name: "React",
-          color: "bg-blue-100 text-blue-800",
-        },
-        {
-          name: "Tailwind",
-          color: "bg-green-100 text-green-800",
-        },
-      ],
+      tags: [1, 2, 3],
     },
   ];
 }

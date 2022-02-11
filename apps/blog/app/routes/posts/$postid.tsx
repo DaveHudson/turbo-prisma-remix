@@ -12,14 +12,17 @@ import Image from "@tiptap/extension-image";
 import Dropcursor from "@tiptap/extension-dropcursor";
 import TTLink from "@tiptap/extension-link";
 import { Prisma } from "@prisma/client";
+import RenderTags from "~/components/RenderTags";
+import { getTags } from "~/utils/db/tag.server";
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(params.postid, "expected params.postid");
 
   const postid = params.postid;
   const post = await getPost(Number(postid));
+  const dbTags = await getTags();
 
-  const data = { post };
+  const data = { post, dbTags };
   return data;
 };
 
@@ -47,7 +50,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 };
 
 export default function Post() {
-  const { post } = useLoaderData();
+  const { post, dbTags } = useLoaderData();
   const transition = useTransition();
 
   const content = post.body as Prisma.JsonObject;
@@ -99,26 +102,7 @@ export default function Post() {
             </div>
           </div>
 
-          <div className="flex justify-center space-x-3 pt-3">
-            {post.tags.map(
-              (tag: {
-                color: any;
-                name:
-                  | boolean
-                  | ReactChild
-                  | ReactFragment
-                  | ReactPortal
-                  | null
-                  | undefined;
-              }) => (
-                <span
-                  className={`inline-flex items-center rounded px-2 py-0.5 text-xs font-medium ${tag.color}`}
-                >
-                  {tag.name}
-                </span>
-              )
-            )}
-          </div>
+          <RenderTags tags={post.tags} dbTags={dbTags} />
 
           <div className="flex justify-center space-x-3 pt-4">
             <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
