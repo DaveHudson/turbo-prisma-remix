@@ -1,3 +1,5 @@
+import { Link } from "remix";
+
 type Tag = {
   id: number;
   name: string;
@@ -18,9 +20,14 @@ export default function RenderTags({
         return (
           <span
             key={tag}
-            className={`inline-flex items-center rounded px-2 py-0.5 text-xs font-medium ${selectedTag?.color}`}
+            className={`inline-flex items-center rounded px-2 py-0.5 text-xs font-medium bg-${selectedTag?.color}-100`}
           >
-            {selectedTag?.name}
+            <Link
+              to={`/tags/${selectedTag?.name}`}
+              className={`no-underline text-${selectedTag?.color}-800`}
+            >
+              {selectedTag?.name}
+            </Link>
           </span>
         );
       })}

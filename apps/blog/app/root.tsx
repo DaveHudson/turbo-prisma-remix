@@ -253,7 +253,7 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
                           <form action="/auth/signout" method="POST">
                             <button
                               type="submit"
-                              className={`bg-gray-100" block w-full py-2 px-4 text-left text-sm text-gray-700 hover:bg-gray-100 hover:text-pink-600`}
+                              className={`bg-gray-100" block w-full py-2 px-4 text-left text-sm text-gray-700 hover:bg-gray-100`}
                             >
                               Sign out
                             </button>
@@ -304,7 +304,7 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
                     href={item.href}
                     className={classNames(
                       item.current
-                        ? "bg-gray-100 text-light dark:text-pink-600"
+                        ? "bg-gray-100 text-light"
                         : "text-light hover:bg-gray-50 hover:text-gray-900 dark:text-dark",
                       "block rounded-md py-2 px-3 text-base font-medium"
                     )}

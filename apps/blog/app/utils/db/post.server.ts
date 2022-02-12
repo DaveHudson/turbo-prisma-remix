@@ -44,6 +44,27 @@ export async function getPosts() {
   return posts as PostWithUser[];
 }
 
+export async function getPostsByTag(tag: string) {
+  const selectedTag = await db.tag.findFirst({
+    where: {
+      name: tag,
+    },
+  });
+
+  const posts = await db.post.findMany({
+    where: {
+      tags: {
+        array_contains: selectedTag?.id.toString(),
+      },
+    },
+    include: {
+      user: true,
+    },
+  });
+
+  return posts as PostWithUser[];
+}
+
 export async function getPost(postid: number) {
   const post = await db.post.findUnique({
     where: { id: postid },

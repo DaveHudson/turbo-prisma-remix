@@ -597,18 +597,6 @@ a {
   text-underline-offset: 2px;
 }
 
-a:hover {
-  --tw-text-opacity: 1;
-  color: rgb(219 39 119 / var(--tw-text-opacity));
-  -webkit-text-decoration-style: dotted;
-          text-decoration-style: dotted;
-  text-underline-offset: 4px;
-}
-
-a:hover:hover {
-  text-underline-offset: 4px;
-}
-
 *, ::before, ::after {
   --tw-translate-x: 0;
   --tw-translate-y: 0;
@@ -2127,11 +2115,6 @@ a:hover:hover {
   color: rgb(107 114 128 / var(--tw-text-opacity));
 }
 
-.hover\:text-pink-600:hover {
-  --tw-text-opacity: 1;
-  color: rgb(219 39 119 / var(--tw-text-opacity));
-}
-
 .hover\:text-gray-900:hover {
   --tw-text-opacity: 1;
   color: rgb(17 24 39 / var(--tw-text-opacity));
@@ -2300,11 +2283,6 @@ a:hover:hover {
   .dark\:text-dark {
     --tw-text-opacity: 1;
     color: rgb(209 209 209 / var(--tw-text-opacity));
-  }
-
-  .dark\:text-pink-600 {
-    --tw-text-opacity: 1;
-    color: rgb(219 39 119 / var(--tw-text-opacity));
   }
 
   .dark\:hover\:text-gray-100:hover {
