@@ -1557,6 +1557,11 @@ a:hover:hover {
   background-color: rgb(236 252 203 / var(--tw-bg-opacity));
 }
 
+.bg-teal-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(204 251 241 / var(--tw-bg-opacity));
+}
+
 .bg-gradient-to-b {
   background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
 }
@@ -1879,6 +1884,11 @@ a:hover:hover {
 .text-lime-800 {
   --tw-text-opacity: 1;
   color: rgb(63 98 18 / var(--tw-text-opacity));
+}
+
+.text-teal-800 {
+  --tw-text-opacity: 1;
+  color: rgb(17 94 89 / var(--tw-text-opacity));
 }
 
 .underline {
