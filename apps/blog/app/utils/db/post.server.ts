@@ -32,6 +32,9 @@ function calculateReadingTime(text: Prisma.JsonObject) {
 
 export async function getPosts() {
   const posts = await db.post.findMany({
+    where: {
+      published: true,
+    },
     take: 20,
     orderBy: { createdAt: "desc" },
     include: {
