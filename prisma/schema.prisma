@@ -11,6 +11,11 @@ generator client {
   // output   = "../node_modules/.prisma/client"
 }
 
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+}
+
 model User {
   id           Int      @id @default(autoincrement())
   username     String   @unique
@@ -23,18 +28,18 @@ model User {
 }
 
 model Post {
-  id          Int      @id @default(autoincrement())
+  id          Int        @id @default(autoincrement())
   title       String
   description String
-  body        Json     @default("{}")
+  body        Json       @default("{}")
   imageUrl    String?
   readingTime String?
   tags        Json?
-  published   Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  published   PostStatus @default(DRAFT)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
   userId      Int
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }

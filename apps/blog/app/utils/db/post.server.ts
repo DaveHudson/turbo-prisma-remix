@@ -1,4 +1,4 @@
-import { Post, Prisma, User } from "@prisma/client";
+import { Post, PostStatus, Prisma, User } from "@prisma/client";
 import invariant from "tiny-invariant";
 import { db } from "~/utils/db.server";
 
@@ -33,7 +33,7 @@ function calculateReadingTime(text: Prisma.JsonObject) {
 export async function getPosts() {
   const posts = await db.post.findMany({
     where: {
-      published: true,
+      published: PostStatus.PUBLISHED,
     },
     take: 20,
     orderBy: { createdAt: "desc" },
@@ -84,9 +84,12 @@ export async function updatePost(fields: Post) {
 
   const tags = fields.tags as Number[];
 
+  const published = fields.published;
+
   const post = {
     ...fields,
     id: fields.id as number,
+    published,
     body: body as Prisma.JsonObject,
     tags: tags as Prisma.JsonArray,
     readingTime: calculateReadingTime(body),

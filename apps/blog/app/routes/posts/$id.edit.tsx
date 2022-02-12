@@ -9,8 +9,8 @@ import {
 } from "remix";
 import type { ActionFunction } from "remix";
 import { getUser } from "~/utils/session.server";
-import { createPost, getPost, updatePost } from "~/utils/db/post.server";
-import { Post, Prisma, Tag } from "@prisma/client";
+import { getPost, updatePost } from "~/utils/db/post.server";
+import { Post, PostStatus, Prisma, Tag } from "@prisma/client";
 import { ExclamationCircleIcon } from "@heroicons/react/solid";
 import invariant from "tiny-invariant";
 import { useEditor, EditorContent } from "@tiptap/react";
@@ -75,7 +75,6 @@ export const action: ActionFunction = async ({ request, params }) => {
 
   const form = await request.formData();
   const formbody = form.get("body");
-
   const tags = form.getAll("tags");
 
   invariant(formbody, "expect formbody to exist");
@@ -84,6 +83,7 @@ export const action: ActionFunction = async ({ request, params }) => {
     id: Number(params.id),
     title: form.get("title"),
     description: form.get("description"),
+    published: form.get("published"),
     //@ts-ignore
     body: JSON.parse(formbody) as unknown as Prisma.JsonObject,
     tags: tags as Prisma.JsonArray,
@@ -241,12 +241,30 @@ export default function EditPost() {
             defaultValue={selectedTags}
           />
 
+          <div>
+            <label
+              htmlFor="published"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Published
+            </label>
+            <select
+              id="published"
+              name="published"
+              className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm"
+              defaultValue={post.published}
+            >
+              <option>{PostStatus.DRAFT}</option>
+              <option>{PostStatus.PUBLISHED}</option>
+            </select>
+          </div>
+
           <div className="pt-6">
             <span className="relative z-0 inline-flex rounded-md shadow-sm">
               <button
                 onClick={addImage}
                 type="button"
-                className="relative inline-flex items-center rounded-l-md border border-gray-500 bg-none px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:hover:text-gray-100"
+                className="relative inline-flex items-center rounded-l-md border border-gray-500 bg-none px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 dark:hover:text-gray-100"
               >
                 <span className="sr-only">Add image</span>
                 <PhotographIcon className="h-5 w-5" aria-hidden="true" />
@@ -254,14 +272,14 @@ export default function EditPost() {
               <button
                 onClick={addHR}
                 type="button"
-                className="relative inline-flex items-center border-t border-b border-gray-500 bg-none px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:hover:text-gray-100"
+                className="relative inline-flex items-center border-t border-b border-gray-500 bg-none px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 dark:hover:text-gray-100"
               >
                 <span className="sr-only">Add hr</span>
                 <DotsHorizontalIcon className="h-5 w-5" aria-hidden="true" />
               </button>
               <button
                 type="button"
-                className="0 relative -ml-px inline-flex items-center rounded-r-md border border-gray-500 bg-none px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:hover:text-gray-100"
+                className="0 relative -ml-px inline-flex items-center rounded-r-md border border-gray-500 bg-none px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 dark:hover:text-gray-100"
               >
                 <span className="sr-only">Add code block</span>
                 <CodeIcon className="h-5 w-5" aria-hidden="true" />
