@@ -3,14 +3,18 @@ import type { LoaderFunction } from "remix";
 import {
   getPosts,
   getPostsBySearchQuery,
+  getPublishedPosts,
   PostWithUser,
 } from "~/utils/db/post.server";
 import dayjs from "dayjs";
 import { getTags } from "~/utils/db/tag.server";
 import { Tag } from "@prisma/client";
 import RenderTags from "~/components/RenderTags";
+import { getUser } from "~/utils/session.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
+  const user = await getUser(request);
+
   let url = new URL(request.url);
   let search = url.searchParams.get("search");
 
@@ -18,7 +22,11 @@ export const loader: LoaderFunction = async ({ request }) => {
   if (search) {
     posts = await getPostsBySearchQuery(search);
   } else {
-    posts = await getPosts();
+    if (user?.id === 1) {
+      posts = await getPosts();
+    } else {
+      posts = await getPublishedPosts();
+    }
   }
 
   const tags = await getTags();
