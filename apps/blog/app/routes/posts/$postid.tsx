@@ -83,18 +83,16 @@ export default function Post() {
 
           <div className="mt-6 mb-3 flex justify-center">
             <div className="flex-shrink-0">
-              <Link to={post.user.id}>
-                <span className="sr-only">{post.user.name}</span>
-                <img
-                  className="h-10 w-10 rounded-full"
-                  src={post.user.profileUrl}
-                  alt=""
-                />
-              </Link>
+              <span className="sr-only">{post.user.name}</span>
+              <img
+                className="h-10 w-10 rounded-full"
+                src={post.user.profileUrl}
+                alt=""
+              />
             </div>
             <div className="ml-3">
               <p className="text-sm font-medium text-light dark:text-dark">
-                <Link to={post.user.id}>{post.user.name}</Link>
+                {post.user.name}
               </p>
               <div className="flex space-x-1 text-sm">
                 <time dateTime={dayjs(post.createdAt).format("MMM D, YYYY")}>
