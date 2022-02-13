@@ -31,6 +31,7 @@ model User {
 model Post {
   id          Int        @id @default(autoincrement())
   title       String
+  slug        String     @default("")
   description String
   body        Json       @default("{}")
   imageUrl    String?

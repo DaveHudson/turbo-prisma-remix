@@ -60,6 +60,7 @@ export const action: ActionFunction = async ({ request }) => {
 
   const post = {
     title: form.get("title"),
+    slug: form.get("slug"),
     description: form.get("description"),
     published: form.get("published"),
     //@ts-ignore
@@ -71,6 +72,7 @@ export const action: ActionFunction = async ({ request }) => {
 
   const errors = {
     title: validateTitle(post.title),
+    slug: "",
     body: "",
     category: "",
     imageUrl: "",
@@ -174,6 +176,36 @@ export default function NewPost() {
           </div>
           <p className="mt-2 text-sm text-red-600" id="title-error">
             {actionData?.errors.title && actionData?.errors.title}
+          </p>
+
+          <label htmlFor="slug" className="block text-sm font-medium">
+            Slug
+          </label>
+          <div className="relative mt-1 rounded-md shadow-sm">
+            <input
+              type="text"
+              name="slug"
+              id="slug"
+              className={`${
+                actionData?.errors.slug
+                  ? "block w-full rounded-md border-red-300 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm"
+                  : "block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 sm:text-sm"
+              }`}
+              defaultValue={actionData?.fields?.slug}
+              aria-invalid="true"
+              aria-describedby="slug-error"
+            />
+            {actionData?.errors.slug && (
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                <ExclamationCircleIcon
+                  className="h-5 w-5 text-red-500"
+                  aria-hidden="true"
+                />
+              </div>
+            )}
+          </div>
+          <p className="mt-2 text-sm text-red-600" id="slug-error">
+            {actionData?.errors.slug && actionData?.errors.slug}
           </p>
 
           <label htmlFor="description" className="block text-sm font-medium">

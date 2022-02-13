@@ -14,7 +14,7 @@ export default function SitePromo() {
               Tailwind CSS, TurboRepo and Fly
             </p>
             <Link
-              to="posts/22"
+              to="posts/remixing-this-blog"
               className="mt-8 inline-flex items-center rounded-md border border-transparent bg-white px-5 py-3 text-base font-medium text-sky-600 shadow hover:bg-sky-50"
             >
               Find out more

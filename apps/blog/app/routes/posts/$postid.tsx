@@ -1,7 +1,7 @@
 import { useLoaderData, Link, redirect, useTransition, Form } from "remix";
 import type { LoaderFunction } from "remix";
 import { getUser } from "~/utils/session.server";
-import { getPost } from "~/utils/db/post.server";
+import { getPostBySlug } from "~/utils/db/post.server";
 import invariant from "tiny-invariant";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -18,8 +18,8 @@ import dayjs from "dayjs";
 export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(params.postid, "expected params.postid");
 
-  const postid = params.postid;
-  const post = await getPost(Number(postid));
+  const slug = params.postid;
+  const post = await getPostBySlug(slug);
 
   const dbTags = await getTags();
 
@@ -53,7 +53,6 @@ export default function Post() {
           <h2 className="text-3xl font-extrabold tracking-tight text-light dark:text-dark sm:text-4xl">
             {post.title}
           </h2>
-
           <div className="relative mt-8">
             <div
               className="absolute inset-0 flex items-center"

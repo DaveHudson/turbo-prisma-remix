@@ -93,6 +93,25 @@ export async function getPostsByTag(tag: string) {
   return posts as PostWithUser[];
 }
 
+export async function getPostBySlug(slug: string) {
+  const post = await db.post.findFirst({
+    where: {
+      slug,
+    },
+    include: {
+      user: true,
+    },
+  });
+
+  if (!post) throw new Error("Post not found");
+
+  const postData = {
+    ...post,
+  };
+
+  return postData as PostWithUser;
+}
+
 export async function getPost(postid: number) {
   const post = await db.post.findUnique({
     where: { id: postid },
