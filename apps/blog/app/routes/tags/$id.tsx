@@ -35,7 +35,7 @@ export default function TaggedPosts() {
         <div className="mt-12 grid gap-16 pt-12 lg:grid-cols-3 lg:gap-x-5 lg:gap-y-12">
           {posts.map((post) => (
             <div key={post.title}>
-              <Link to={`${post.id}`} className="mt-4 block">
+              <Link to={`/posts/${post.slug}`} className="mt-4 block">
                 <p className="text-xl font-semibold text-light dark:text-dark">
                   {post.title}
                 </p>
