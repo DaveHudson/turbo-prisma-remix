@@ -1290,20 +1290,20 @@ a:hover:hover {
   max-width: 42rem;
 }
 
-.max-w-md {
-  max-width: 28rem;
-}
-
-.max-w-lg {
-  max-width: 32rem;
-}
-
 .max-w-none {
   max-width: none;
 }
 
 .max-w-3xl {
   max-width: 48rem;
+}
+
+.max-w-lg {
+  max-width: 32rem;
+}
+
+.max-w-md {
+  max-width: 28rem;
 }
 
 .flex-1 {
@@ -1444,14 +1444,14 @@ a:hover:hover {
   border-bottom-width: calc(2px * var(--tw-divide-y-reverse));
 }
 
-.divide-gray-300 > :not([hidden]) ~ :not([hidden]) {
-  --tw-divide-opacity: 1;
-  border-color: rgb(209 213 219 / var(--tw-divide-opacity));
-}
-
 .divide-gray-200 > :not([hidden]) ~ :not([hidden]) {
   --tw-divide-opacity: 1;
   border-color: rgb(229 231 235 / var(--tw-divide-opacity));
+}
+
+.divide-gray-300 > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-opacity: 1;
+  border-color: rgb(209 213 219 / var(--tw-divide-opacity));
 }
 
 .overflow-hidden {
@@ -1766,14 +1766,6 @@ a:hover:hover {
   padding-top: 1.5rem;
 }
 
-.pt-5 {
-  padding-top: 1.25rem;
-}
-
-.pr-10 {
-  padding-right: 2.5rem;
-}
-
 .pt-8 {
   padding-top: 2rem;
 }
@@ -1784,6 +1776,14 @@ a:hover:hover {
 
 .pb-20 {
   padding-bottom: 5rem;
+}
+
+.pt-5 {
+  padding-top: 1.25rem;
+}
+
+.pr-10 {
+  padding-right: 2.5rem;
 }
 
 .pt-12 {
@@ -2552,12 +2552,12 @@ a:hover:hover {
     display: none;
   }
 
-  .lg\:max-w-none {
-    max-width: none;
-  }
-
   .lg\:max-w-5xl {
     max-width: 64rem;
+  }
+
+  .lg\:max-w-none {
+    max-width: none;
   }
 
   .lg\:max-w-7xl {
