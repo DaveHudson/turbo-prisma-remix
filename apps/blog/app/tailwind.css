@@ -597,6 +597,14 @@ a {
   text-underline-offset: 2px;
 }
 
+a:hover {
+  text-underline-offset: 4px;
+}
+
+a:hover:hover {
+  text-underline-offset: 4px;
+}
+
 *, ::before, ::after {
   --tw-translate-x: 0;
   --tw-translate-y: 0;
@@ -2023,17 +2031,6 @@ a {
   -webkit-line-clamp: 2;
 }
 
-/* Placeholder (on every new line) */
-
-.ProseMirror .is-empty::before {
-  content: attr(data-placeholder);
-  float: left;
-  color: #ced4da;
-  pointer-events: none;
-  height: 0;
-  opacity: 0.5;
-}
-
 .selection\:bg-yellow-500 *::-moz-selection {
   --tw-bg-opacity: 1;
   background-color: rgb(234 179 8 / var(--tw-bg-opacity));
@@ -2138,6 +2135,10 @@ a {
 .hover\:decoration-solid:hover {
   -webkit-text-decoration-style: solid;
           text-decoration-style: solid;
+}
+
+.hover\:underline-offset-2:hover {
+  text-underline-offset: 2px;
 }
 
 .focus\:z-10:focus {

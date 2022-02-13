@@ -160,7 +160,7 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
 
   const navBaseStyle = `inline-flex items-center rounded-md py-2 px-3 text-lg font-medium text-light-accent dark:text-dark-accent hover:text-gray-100`;
   const inactiveClassName = `${navBaseStyle} no-underline hover:underline`;
-  const activeClassName = `${navBaseStyle} text-light dark:text-dark dark:text-dark underline-offset-4`;
+  const activeClassName = `${navBaseStyle} text-light dark:text-dark dark:text-dark`;
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -177,28 +177,6 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
                   </div>
                 </div>
                 <Search />
-                {/* <div className="relative z-0 flex flex-1 items-center justify-center px-2 sm:absolute sm:inset-0">
-                  <div className="w-full sm:max-w-xs">
-                    <label htmlFor="search" className="sr-only">
-                      Search
-                    </label>
-                    <div className="relative">
-                      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                        <SearchIcon
-                          className="h-5 w-5 text-gray-400"
-                          aria-hidden="true"
-                        />
-                      </div>
-                      <input
-                        id="search"
-                        name="search"
-                        className="block w-full rounded-md border border-gray-300 bg-white py-2 pl-10 pr-3 text-sm placeholder-gray-500 focus:border-sky-500 focus:text-gray-900 focus:placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-sky-500 sm:text-sm"
-                        placeholder="Search"
-                        type="search"
-                      />
-                    </div>
-                  </div>
-                </div> */}
                 <div className="relative z-10 flex items-center lg:hidden">
                   {/* Mobile menu button */}
                   <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-sky-500">
