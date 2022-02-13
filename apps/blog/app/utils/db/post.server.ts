@@ -18,14 +18,7 @@ function calculateReadingTime(text: Prisma.JsonObject) {
 
   const words = allWordsInPost.split(" ").length;
   const readingTimeMin = Number(words / 200).toFixed(1);
-  const readingTimeSecs = Number((words / 200).toFixed(3).substring(3)) * 0.6;
-  let finalReadingTime;
-
-  if (readingTimeSecs > 30) {
-    finalReadingTime = Math.round(Number(readingTimeMin));
-  } else {
-    finalReadingTime = readingTimeMin;
-  }
+  const finalReadingTime = Math.round(Number(readingTimeMin));
 
   return `${finalReadingTime} min read`;
 }
