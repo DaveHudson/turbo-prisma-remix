@@ -85,6 +85,7 @@ export async function getPostsByTag(tag: string) {
         array_contains: selectedTag?.id.toString(),
       },
     },
+    orderBy: { createdAt: "desc" },
     include: {
       user: true,
     },
