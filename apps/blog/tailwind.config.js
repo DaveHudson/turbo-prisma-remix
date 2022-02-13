@@ -9,7 +9,7 @@ module.exports = {
       typography: ({ theme }) => ({
         DEFAULT: {               
           css: {
-            '--tw-prose-p': theme('colors.gray[600]'),
+            '--tw-prose-p': theme('colors.gray[800]'),
             '--tw-prose-headings': theme('colors.gray[600]'),
             '--tw-prose-lead': theme('colors.gray[600]'),
             '--tw-prose-links': theme('colors.sky[600]'),
@@ -25,7 +25,7 @@ module.exports = {
             '--tw-prose-pre-bg': theme('colors.gray[800]'),
             '--tw-prose-th-borders': theme('colors.gray[600]'),
             '--tw-prose-td-borders': theme('colors.gray[600]'),
-            '--tw-prose-invert-p': theme('colors.gray[200]'),
+            '--tw-prose-invert-p': theme('colors.gray[800]'),
             '--tw-prose-invert-headings': '#D1D1D1',
             '--tw-prose-invert-lead': theme('colors.gray[200]'),
             '--tw-prose-invert-links': theme('colors.sky[600]'),

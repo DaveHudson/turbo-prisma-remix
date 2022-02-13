@@ -155,7 +155,7 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
     return classes.filter(Boolean).join(" ");
   }
 
-  const navBaseStyle = `inline-flex items-center rounded-md py-2 px-3 text-lg font-medium text-light-accent dark:text-dark-accent hover:text-gray-100`;
+  const navBaseStyle = `inline-flex items-center rounded-md py-2 px-3 text-lg font-medium text-light-accent dark:text-dark-accent`;
   const inactiveClassName = `${navBaseStyle} no-underline hover:underline`;
   const activeClassName = `${navBaseStyle} text-light dark:text-dark dark:text-dark`;
 

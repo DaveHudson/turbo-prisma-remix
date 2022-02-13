@@ -40,7 +40,7 @@ export default function Post() {
     editorProps: {
       attributes: {
         class:
-          "prose focus:outline-none dark:prose-invert max-w-none max-w-3xl prose-img:rounded-lg pt-8",
+          "prose focus:outline-none max-w-none max-w-3xl prose-img:rounded-lg pt-8 first-line:uppercase first-line:tracking-widest first-letter:text-7xl first-letter:font-bold first-letter:mr-3 first-letter:float-left dark:prose-invert",
       },
     },
     content,
