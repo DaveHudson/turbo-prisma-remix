@@ -107,7 +107,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 
   await updatePost(post);
 
-  return redirect(`/posts`);
+  return redirect(`/posts/${params.id}`);
 };
 
 export default function EditPost() {
