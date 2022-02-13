@@ -78,8 +78,8 @@ export default function Contact() {
               Get in touch
             </h2>
             <p className="mt-3 text-lg leading-6 text-gray-500">
-              Nullam risus blandit ac aliquam justo ipsum. Quam mauris volutpat
-              massa dictumst amet. Sapien tortor lacus arcu.
+              I'm always happy to be contacted about work opportunities or
+              random enquiries. If you'd like to do so just use this form.
             </p>
           </div>
         </div>

@@ -1,37 +1,7 @@
 import { Link } from "remix";
+import SitePromo from "~/components/SitePromo";
 
 export default function Index() {
-  const techstack = [
-    {
-      id: 1,
-      title: "Remix (React)",
-      description:
-        "A full stack framework focused on web fundamentals and modern UX.",
-      url: "/tags/remix",
-    },
-    {
-      id: 2,
-      title: "Tailwind CSS",
-      description:
-        "A utility-first CSS framework to rapidly build modern websites without ever leaving HTML",
-      url: "/tags/tailwind",
-    },
-    {
-      id: 3,
-      title: "Prisma",
-      description:
-        "TypeScript ORM for PostgreSQL MySQL & MongoDB to build faster and with fewer errors",
-      url: "/tags/prisma",
-    },
-    {
-      id: 4,
-      title: "Cypress + Testing Library",
-      description:
-        "Fast, easy and reliable testing for anything that runs in a browser",
-      url: "/tags/cypress",
-    },
-  ];
-
   return (
     <>
       <div className="p-4">
@@ -66,41 +36,9 @@ export default function Index() {
               My sweet spot is architecting greenfield web applications and
               leading small teams to deliver.
             </p>
-
-            <p className="text-md pt-6 tracking-wide subpixel-antialiased">
-              Preferred tech stack:
-            </p>
-
-            <div className="mt-6 flow-root">
-              <ul
-                role="list"
-                className="-my-5 ml-4 mr-4 divide-y divide-gray-300 dark:divide-gray-50"
-              >
-                {techstack.map((tech) => (
-                  <li key={tech.id} className="py-5">
-                    <div className="relative focus-within:ring-2 focus-within:ring-sky-500">
-                      <h3 className="text-md font-semibold text-light dark:text-dark">
-                        <Link
-                          to={tech.url}
-                          className="hover:underline focus:outline-none"
-                        >
-                          <span
-                            className="absolute inset-0"
-                            aria-hidden="true"
-                          />
-                          {tech.title}
-                        </Link>
-                      </h3>
-                      <p className="text-md mt-1 line-clamp-2">
-                        {tech.description}
-                      </p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
           </div>
         </div>
+        <SitePromo />
       </div>
 
       <div className="flex flex-row justify-center">
