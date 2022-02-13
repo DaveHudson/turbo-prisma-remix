@@ -35,7 +35,32 @@ export async function getPosts() {
     where: {
       published: PostStatus.PUBLISHED,
     },
-    take: 20,
+    orderBy: { createdAt: "desc" },
+    include: {
+      user: true,
+    },
+  });
+  return posts as PostWithUser[];
+}
+
+export async function getPostsBySearchQuery(query: string) {
+  const posts = await db.post.findMany({
+    where: {
+      OR: [
+        {
+          title: {
+            contains: query,
+            mode: "insensitive",
+          },
+        },
+        {
+          description: {
+            contains: query,
+            mode: "insensitive",
+          },
+        },
+      ],
+    },
     orderBy: { createdAt: "desc" },
     include: {
       user: true,

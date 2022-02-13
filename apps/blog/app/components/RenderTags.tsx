@@ -19,11 +19,11 @@ export default function RenderTags({
         const selectedTag = dbTags.find((x) => x.id === Number(tag));
         return (
           <Link
+            key={tag}
             to={`/tags/${selectedTag?.name}`}
             className={`no-underline text-${selectedTag?.color}-800`}
           >
             <span
-              key={tag}
               className={`inline-flex items-center rounded px-2 py-0.5 text-xs font-medium bg-${selectedTag?.color}-100 hover:underline hover:underline-offset-2`}
             >
               {selectedTag?.name}
