@@ -63,7 +63,7 @@ function Document({
   return (
     <html
       lang="en"
-      className="bg-gray-200 dark:bg-gray-800 dark:text-dark-accent"
+      className="bg-gray-200 text-base dark:bg-gray-800 dark:text-dark-accent"
     >
       <head>
         <meta charSet="utf-8" />

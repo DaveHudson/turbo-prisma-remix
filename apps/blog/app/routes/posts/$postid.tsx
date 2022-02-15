@@ -40,7 +40,7 @@ export default function Post() {
     editorProps: {
       attributes: {
         class:
-          "prose focus:outline-none max-w-none max-w-3xl prose-img:rounded-lg pt-8 first-line:uppercase first-line:tracking-widest first-letter:text-7xl first-letter:font-bold first-letter:mr-3 first-letter:float-left dark:prose-invert",
+          "prose focus:outline-none max-w-none max-w-3xl prose-img:rounded-lg pt-8 first-line:uppercase first-line:tracking-widest tracking-wider first-letter:text-7xl first-letter:font-bold first-letter:mr-3 first-letter:float-left dark:prose-invert",
       },
     },
     content,
@@ -50,7 +50,7 @@ export default function Post() {
     <div className="px-4 pt-16 pb-20 sm:px-6 lg:px-8 lg:pt-16 lg:pb-14">
       <div className="relative mx-auto max-w-lg divide-gray-200 md:max-w-3xl lg:max-w-5xl">
         <div>
-          <h2 className="text-3xl font-extrabold tracking-tight text-light dark:text-dark sm:text-4xl">
+          <h2 className="text-3xl font-extrabold tracking-wider text-light dark:text-dark sm:text-4xl md:flex md:justify-center">
             {post.title}
           </h2>
           <div className="relative mt-8">

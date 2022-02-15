@@ -18,18 +18,19 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
 export default function TaggedPosts() {
   const { posts, tags, tag } =
-    useLoaderData<{ posts: PostWithUser[]; tags: Tag[]; tag: Tag }>();
+    useLoaderData<{ posts: PostWithUser[]; tags: Tag[]; tag: string }>();
 
   return (
     <div className="px-4 pt-16 pb-20 sm:px-6 lg:px-8 lg:pt-16 lg:pb-14">
       <div className="relative mx-auto max-w-lg divide-y-2 divide-gray-200 lg:max-w-7xl">
         <div>
           <h2 className="text-3xl font-extrabold tracking-tight text-light dark:text-dark sm:text-4xl">
-            Recent musings on {tag}
+            My latest thoughts on {tag}
           </h2>
           <p className="mt-3 text-xl sm:mt-4">
-            Nullam risus blandit ac aliquam justo ipsum. Quam mauris volutpat
-            massa dictumst amet. Sapien tortor lacus arcu.
+            I have a brain like a sieve. These posts are reminders to myself
+            about solutions I've implemented, if others find them useful too I
+            consider that a win!
           </p>
         </div>
         <div className="mt-12 grid gap-16 pt-12 lg:grid-cols-3 lg:gap-x-5 lg:gap-y-12">
