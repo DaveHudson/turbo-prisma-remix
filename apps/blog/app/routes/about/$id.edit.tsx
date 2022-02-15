@@ -25,7 +25,9 @@ import {
   PhotographIcon,
   CodeIcon,
   DotsHorizontalIcon,
+  LinkIcon,
 } from "@heroicons/react/solid";
+import { useCallback } from "react";
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(params.id, "expected params.id");
@@ -112,6 +114,31 @@ export default function EditPage() {
     },
     content: page.body,
   });
+
+  const setLink = useCallback(() => {
+    const previousUrl = editor?.getAttributes("link").href;
+    const url = window.prompt("URL", previousUrl);
+
+    // cancelled
+    if (url === null) {
+      return;
+    }
+
+    // empty
+    if (url === "") {
+      editor?.chain().focus().extendMarkRange("link").unsetLink().run();
+
+      return;
+    }
+
+    // update link
+    editor
+      ?.chain()
+      .focus()
+      .extendMarkRange("link")
+      .setLink({ href: url, target: "_self" })
+      .run();
+  }, [editor]);
 
   const addImage = (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -209,9 +236,17 @@ export default function EditPage() {
           <div className="pt-6">
             <span className="relative z-0 inline-flex rounded-md shadow-sm">
               <button
-                onClick={addImage}
+                onClick={setLink}
                 type="button"
                 className="relative inline-flex items-center rounded-l-md border border-gray-500 bg-none px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 dark:hover:text-gray-100"
+              >
+                <span className="sr-only">Add image</span>
+                <LinkIcon className="h-5 w-5" aria-hidden="true" />
+              </button>
+              <button
+                onClick={addImage}
+                type="button"
+                className="relative inline-flex items-center border-t border-b border-r border-gray-500 bg-none px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 dark:hover:text-gray-100"
               >
                 <span className="sr-only">Add image</span>
                 <PhotographIcon className="h-5 w-5" aria-hidden="true" />

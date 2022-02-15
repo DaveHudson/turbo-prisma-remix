@@ -109,9 +109,10 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
   const user = useLoaderData();
 
   const navigation = [
-    { name: "Home", href: "/", current: true },
-    { name: "Posts", href: "/posts", current: false },
-    { name: "Contact", href: "/contact", current: false },
+    { name: "Home", href: "/" },
+    { name: "About", href: "/about/me" },
+    { name: "Posts", href: "/posts" },
+    { name: "Contact", href: "/contact" },
   ];
   const userNavigation = [{ name: "New Post", href: "/posts/new" }];
 
@@ -253,12 +254,12 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
               >
                 {navigation.map((item) => (
                   <NavLink
-                    to={`${item.href}`}
+                    prefetch="intent"
+                    to={item.href}
                     key={item.name}
                     className={({ isActive }) =>
                       isActive ? activeClassName : inactiveClassName
                     }
-                    aria-current={item.current ? "page" : undefined}
                   >
                     {item.name}
                   </NavLink>
@@ -277,13 +278,7 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
                     key={item.name}
                     as="a"
                     href={item.href}
-                    className={classNames(
-                      item.current
-                        ? "bg-gray-100 text-light"
-                        : "text-light hover:bg-gray-50 hover:text-gray-900 dark:text-dark",
-                      "block rounded-md py-2 px-3 text-base font-medium"
-                    )}
-                    aria-current={item.current ? "page" : undefined}
+                    className="block rounded-md py-2 px-3 text-base font-medium text-light hover:bg-gray-50 hover:text-gray-900 dark:text-dark"
                   >
                     {item.name}
                   </Disclosure.Button>
