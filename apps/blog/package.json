@@ -11,8 +11,8 @@
     "dev:css": "tailwindcss -i ./tailwind.css -o ./app/tailwind.css --watch",
     "lint": "TIMING=1 eslint ./app --ext js,jsx,ts,tsx",
     "postinstall": "remix setup node",
-    "start": "NODE_ENV=production node server/index.js",
-    "start:dev": "NODE_ENV=development node server/index.js"
+    "start": "NODE_ENV=production node ./server/index.js",
+    "start:dev": "NODE_ENV=development node ./server/index.js"
   },
   "dependencies": {
     "@headlessui/react": "^1.4.3",
