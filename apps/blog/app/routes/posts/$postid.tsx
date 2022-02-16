@@ -1,4 +1,4 @@
-import { useLoaderData, Link, redirect, useTransition, Form } from "remix";
+import { useLoaderData, Link } from "remix";
 import type { LoaderFunction } from "remix";
 import { getUser } from "~/utils/session.server";
 import { getPostBySlug } from "~/utils/db/post.server";

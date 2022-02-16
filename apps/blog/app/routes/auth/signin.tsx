@@ -1,7 +1,4 @@
-import {
-  ExclamationCircleIcon,
-  LockClosedIcon,
-} from "@heroicons/react/outline";
+import { LockClosedIcon } from "@heroicons/react/outline";
 import {
   useActionData,
   json,
@@ -9,8 +6,7 @@ import {
   ActionFunction,
   Form,
 } from "remix";
-import { checkIfUserExists } from "~/utils/db/user.server";
-import { login, register, createUserSession } from "~/utils/session.server";
+import { login, createUserSession } from "~/utils/session.server";
 
 function validateUsername(username: string) {
   if (typeof username !== "string" || username.length < 3) {

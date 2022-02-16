@@ -116,7 +116,7 @@ export default function EditPost() {
   const actionData = useActionData();
   const transition = useTransition();
 
-  const { post, dbTags, user, selectedTags } = useLoaderData();
+  const { post, dbTags, selectedTags } = useLoaderData();
 
   const editor = useEditor({
     extensions: [
