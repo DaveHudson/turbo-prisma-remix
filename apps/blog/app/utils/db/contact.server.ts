@@ -9,7 +9,7 @@ export async function createEnquiry(fields: Message) {
   const res = await db.message.create({ data: { ...message } });
   await sendEmail({
     to: "dave@applification.net",
-    from: "blog@applification.net",
+    from: "dave@applification.net",
     subject: `Blog Enquiry from ${message.email}`,
     text: message.message,
     html: message.message,
@@ -41,6 +41,7 @@ type MailgunMessage = {
 
 async function sendEmail({ to, from, subject, text, html }: MailgunMessage) {
   const auth = `${Buffer.from(`api:${mailgunSendingKey}`).toString("base64")}`;
+  console.log("auth", auth);
 
   if (html === undefined) {
     html = text;
@@ -56,11 +57,18 @@ async function sendEmail({ to, from, subject, text, html }: MailgunMessage) {
     html,
   });
 
-  await fetch(`https://api.mailgun.net/v3/${mailgunDomain}/messages`, {
-    method: "post",
-    body,
-    headers: {
-      Authorization: `Basic ${auth}`,
-    },
-  });
+  const res = await fetch(
+    `https://api.mailgun.net/v3/${mailgunDomain}/messages`,
+    {
+      method: "post",
+      body,
+      headers: {
+        Authorization: `Basic ${auth}`,
+      },
+    }
+  );
+
+  console.log("res", res);
+
+  return res;
 }
