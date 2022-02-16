@@ -40,6 +40,8 @@ type MailgunMessage = {
 };
 
 async function sendEmail({ to, from, subject, text, html }: MailgunMessage) {
+  console.log("mailgunSendingKey", mailgunSendingKey);
+  console.log("mailgunDomain", mailgunDomain);
   const auth = `${Buffer.from(`api:${mailgunSendingKey}`).toString("base64")}`;
   console.log("auth", auth);
 
