@@ -12,7 +12,7 @@
     "lint": "TIMING=1 eslint ./app --ext js,jsx,ts,tsx",
     "postinstall": "remix setup node",
     "deploy": "fly deploy --remote-only",
-    "start": "NODE_ENV=production node server/index.js",
+    "start": "NODE_ENV=production node server/build/index.js",
     "start:dev": "NODE_ENV=development node server/index.js"
   },
   "dependencies": {
