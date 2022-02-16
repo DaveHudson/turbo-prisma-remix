@@ -29,8 +29,8 @@ export default function Index() {
         <div className="flex flex-row justify-center pt-6">
           <div className="flex max-w-2xl flex-col">
             <p className="pt-6 text-lg tracking-wide text-light subpixel-antialiased dark:text-dark">
-              I'm an experienced software engineer, technical lead and certified
-              Scrum Master / Product Owner (Scrum Alliance).
+              I am an experienced software engineer, technical lead and
+              certified Scrum Master / Product Owner (Scrum Alliance).
             </p>
             <p className="pt-6 text-lg tracking-wide text-light subpixel-antialiased dark:text-dark">
               My sweet spot is architecting greenfield web applications and

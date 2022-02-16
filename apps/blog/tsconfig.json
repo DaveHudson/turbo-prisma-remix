@@ -1,9 +1,7 @@
 {
-  "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx", "server/index.js"],
   "compilerOptions": {
-    "lib": ["DOM", "DOM.Iterable", "ES2019"],
-    "isolatedModules": true,
-    "esModuleInterop": true,
+    "lib": ["DOM", "DOM.Iterable", "ES2021"],
     "jsx": "react-jsx",
     "moduleResolution": "node",
     "resolveJsonModule": true,
