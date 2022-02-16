@@ -80,7 +80,7 @@ COPY --from=production-deps /app/node_modules /app/node_modules
 COPY --from=build /app/packages/ui/dist /app/packages/ui/dist
 COPY packages/ui/package.json /app/packages/ui/package.json
 
-COPY --from=build /app/apps/blog/build /app/build
+COPY --from=build /app/apps/blog/server/build /app/build
 COPY --from=build /app/apps/blog/public /app/public
 COPY --from=build /app/prisma /app/prisma
 COPY --from=build /app/start_with_migrations.sh /app/start_with_migrations.sh
