@@ -9,7 +9,6 @@ datasource postgresql {
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["filterJson"]
-  // output   = "../node_modules/.prisma/client"
 }
 
 enum PostStatus {

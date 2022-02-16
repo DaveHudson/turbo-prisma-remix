@@ -1,16 +1,35 @@
-# Turborepo starter with NPM
+# Applification Blog
 
-This is an official starter turborepo.
+> Source code for [Applification.net](https://applification.net).
 
 ## What's inside?
 
-This turborepo uses [NPM](https://www.npmjs.com/) as a package manager. It includes the following packages/apps:
+The primary technologies used in this site are:
+
+- [React](https://reactjs.org/): for the UI
+- [Tailwind CSS](https://tailwindcss.com/): Utility classes for consistent/maintainable styling
+- [Remix.run](http://remix.run/): Framework for the Client/Server/Routing
+- [TypeScript](https://www.typescriptlang.org/): Typed JavaScript
+- [Prisma](https://www.prisma.io/): ORM with migrations and TypeScript client support
+- [Postgres](https://www.postgresql.org/): Battle tested SQL database
+- [Turborepo](https://turborepo.org): High performance build system for TypeScript monorepos
+
+The services this site uses:
+
+- [Fly.io](http://fly.io/): Edge hosting platform
+- [GitHub Actions](https://github.com/features/actions): Hosted CI pipeline services
+- [Cloudinary](https://cloudinary.com/): Image hosting and transformation services
+- [Sentry](https://sentry.io/): Error reporting services
+- [Metronome](https://metronome.sh/): Remix metrics service
+
+## Architure choices
+
+> Read about the choices behind this stack at [https://applification.net/posts/remixing-this-blog](https://applification.net/posts/remixing-this-blog)
 
 ### Apps and Packages
 
-- `docs`: a [Next.js](https://nextjs.org) app
-- `web`: another [Next.js](https://nextjs.org) app
-- `ui`: a stub React component library shared by both `web` and `docs` applications
+- `blog`: a Remix app
+- `ui`: a React component library that can be shared by other applications in the monorepo
 - `config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
 - `tsconfig`: `tsconfig.json`s used throughout the monorepo
 
@@ -18,22 +37,15 @@ Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 
 ### Utilities
 
-This turborepo has some additional tools already setup for you:
-
 - [TypeScript](https://www.typescriptlang.org/) for static type checking
 - [ESLint](https://eslint.org/) for code linting
 - [Prettier](https://prettier.io) for code formatting
-
-## Setup
-
-This repository is used in the `npx create-turbo@latest` command, and selected when choosing which package manager you wish to use with your monorepo (NPM).
 
 ### Build
 
 To build all apps and packages, run the following command:
 
-```
-cd my-turborepo
+```bash
 npm run build
 ```
 
@@ -41,37 +53,40 @@ npm run build
 
 To develop all apps and packages, run the following command:
 
+Provisioning a PostgreSQL database:
+
+```bash
+docker compuse up
 ```
-cd my-turborepo
+
+To sync Prisma schema with PostgresSQL database:
+
+```bash
+npx prisma db push
+```
+
+To seed the database with some dummy data:
+
+```bash
+npx prisma db seed
+```
+
+Run the app in development mode:
+
+```bash
 npm run dev
 ```
 
-### Remote Caching
+<!-- TODO: merge dev command into docker compose -->
 
-Turborepo can use a technique known as [Remote Caching (Beta)](https://turborepo.org/docs/features/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+When changes to `prisma/schema.prisma` are made migrations need to be run with:
 
-By default, Turborepo will cache locally. To enable Remote Caching (Beta) you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
+```bash
+npx prisma migrate dev --name ${name_the_migration}
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+## C.I Deployment
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your turborepo:
+The app is configured with GitHub Actions and Fly. Any push to the `main` branch will deploy to Fly.io.
 
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Pipelines](https://turborepo.org/docs/features/pipelines)
-- [Caching](https://turborepo.org/docs/features/caching)
-- [Remote Caching (Beta)](https://turborepo.org/docs/features/remote-caching)
-- [Scoped Tasks](https://turborepo.org/docs/features/scopes)
-- [Configuration Options](https://turborepo.org/docs/reference/configuration)
-- [CLI Usage](https://turborepo.org/docs/reference/command-line-reference)
+Database migrations are automatically applied on deployment via the `start_with_migrations.sh` script triggered from the `fly.toml` config.
