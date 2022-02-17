@@ -8,7 +8,7 @@ import {
 } from "~/utils/db/post.server";
 import dayjs from "dayjs";
 import { getTags } from "~/utils/db/tag.server";
-import { Tag } from "@prisma/client";
+import { Tag, PostStatus } from "@prisma/client";
 import RenderTags from "~/components/RenderTags";
 import { getUser } from "~/utils/session.server";
 
@@ -63,7 +63,19 @@ export default function Posts() {
                   {post.title}
                 </p>
               </Link>
-              <p className="mt-3 text-base  ">{post.description}</p>
+              <p className="mt-3 text-base">{post.description}</p>
+              {post.published === PostStatus.DRAFT && (
+                <span className="mt-2 inline-flex items-center rounded bg-neutral-700 px-2 py-0.5 text-xs font-medium text-neutral-200">
+                  <svg
+                    className="text-netural-400 mr-1.5 h-2 w-2"
+                    fill="currentColor"
+                    viewBox="0 0 8 8"
+                  >
+                    <circle cx={4} cy={4} r={3} />
+                  </svg>
+                  Draft
+                </span>
+              )}
               <div className="mt-6 flex items-center">
                 <div className="flex-shrink-0">
                   <span className="sr-only">{post.user.name}</span>

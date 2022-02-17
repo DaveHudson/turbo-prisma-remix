@@ -1,4 +1,4 @@
-import { Tag } from "@prisma/client";
+import { PostStatus, Tag } from "@prisma/client";
 import dayjs from "dayjs";
 import { Link, LoaderFunction, useLoaderData } from "remix";
 import invariant from "tiny-invariant";
@@ -41,21 +41,31 @@ export default function TaggedPosts() {
                   {post.title}
                 </p>
               </Link>
-              <p className="mt-3 text-base  ">{post.description}</p>
+              <p className="mt-3 text-base">{post.description}</p>
+              {post.published === PostStatus.DRAFT && (
+                <span className="mt-2 inline-flex items-center rounded bg-neutral-700 px-2 py-0.5 text-xs font-medium text-neutral-200">
+                  <svg
+                    className="text-netural-400 mr-1.5 h-2 w-2"
+                    fill="currentColor"
+                    viewBox="0 0 8 8"
+                  >
+                    <circle cx={4} cy={4} r={3} />
+                  </svg>
+                  Draft
+                </span>
+              )}
               <div className="mt-6 flex items-center">
                 <div className="flex-shrink-0">
-                  <Link to={`${post.user.id}`}>
-                    <span className="sr-only">{post.user.name}</span>
-                    <img
-                      className="h-10 w-10 rounded-full"
-                      src={post.user.profileUrl!}
-                      alt=""
-                    />
-                  </Link>
+                  <span className="sr-only">{post.user.name}</span>
+                  <img
+                    className="h-10 w-10 rounded-full"
+                    src={post.user.profileUrl!}
+                    alt=""
+                  />
                 </div>
                 <div className="ml-3">
                   <p className="text-sm font-medium text-light dark:text-dark">
-                    <Link to={`${post.user.id}`}>{post.user.name}</Link>
+                    {post.user.name}
                   </p>
                   <div className="flex space-x-1 text-sm">
                     <time
