@@ -110,7 +110,7 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
 
   const navigation = [
     { name: "Home", href: "/" },
-    { name: "About", href: "/about/me" },
+    { name: "About", href: "/about" },
     { name: "Posts", href: "/posts" },
     { name: "Contact", href: "/contact" },
   ];

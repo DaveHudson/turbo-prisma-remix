@@ -8,7 +8,7 @@ import {
   useSearchParams,
   useTransition,
 } from "remix";
-import SitePromo from "~/components/SitePromo";
+import { SitePromo } from "ui";
 import { emailSignup } from "~/utils/db/emaillist.server";
 
 function validateEmail(email: string) {
@@ -48,6 +48,8 @@ export default function Index() {
   const actionData = useActionData();
   const transition = useTransition();
 
+  //"prose focus:outline-none max-w-none max-w-3xl prose-img:rounded-lg pt-8 first-line:uppercase first-line:tracking-widest tracking-wider first-letter:text-7xl first-letter:font-bold first-letter:mr-3 first-letter:float-left dark:prose-invert",
+
   return (
     <>
       <div className="p-4">
@@ -74,13 +76,13 @@ export default function Index() {
         </p>
         <div className="flex flex-row justify-center pt-6">
           <div className="flex max-w-2xl flex-col">
-            <p className="pt-6 text-lg tracking-wide text-light subpixel-antialiased dark:text-dark">
-              I am an experienced software engineer, technical lead and
-              certified Scrum Master / Product Owner (Scrum Alliance).
+            <p className="pt-6 text-xl tracking-wide text-light subpixel-antialiased dark:text-dark">
+              Experienced full-stack software engineer, tech lead and certified
+              Scrum Master / Product Owner (Scrum Alliance).
             </p>
-            <p className="pt-6 text-lg tracking-wide text-light subpixel-antialiased dark:text-dark">
-              My sweet spot is architecting greenfield web applications and
-              leading small teams to deliver.
+            <p className="pt-6 text-xl tracking-wide text-light subpixel-antialiased dark:text-dark ">
+              I love architecting greenfield web applications and leading small
+              delivery teams.
             </p>
           </div>
         </div>
@@ -88,7 +90,7 @@ export default function Index() {
       </div>
 
       <div className="flex flex-row justify-center">
-        <div className="mx-auto py-12 px-4 text-center sm:px-6 lg:py-16 lg:px-8">
+        <div className="mx-auto py-8 px-4 text-center sm:px-6 lg:py-12 lg:px-8">
           <h2 className="inline text-center text-3xl font-bold tracking-tight text-light dark:text-dark sm:block sm:text-3xl">
             Want blog post updates?
           </h2>
