@@ -57,6 +57,12 @@ export default function TagList() {
         <span className="inline-flex items-center rounded bg-teal-100 px-2 py-0.5 text-xs font-medium text-teal-800">
           Git
         </span>
+        <span className="inline-flex items-center rounded bg-fuchsia-100 px-2 py-0.5 text-xs font-medium text-fuchsia-800">
+          AWS Amplify
+        </span>
+        <span className="inline-flex items-center rounded bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800">
+          TypeScript
+        </span>
       </div>
     </>
   );
