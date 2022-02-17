@@ -67,7 +67,5 @@ async function sendEmail({ to, from, subject, text, html }: MailgunMessage) {
     }
   );
 
-  console.log("res", res);
-
   return res;
 }

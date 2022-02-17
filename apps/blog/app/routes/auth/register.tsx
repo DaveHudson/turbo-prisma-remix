@@ -23,7 +23,6 @@ function validatePassword(password: string) {
 
 export const action: ActionFunction = async ({ request }) => {
   const form = await request.formData();
-  console.log("form", form);
 
   const userCredentials = {
     username: form.get("username") as string,
