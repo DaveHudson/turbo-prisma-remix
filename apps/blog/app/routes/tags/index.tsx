@@ -63,6 +63,9 @@ export default function TagList() {
         <span className="inline-flex items-center rounded bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800">
           TypeScript
         </span>
+        <span className="inline-flex items-center rounded bg-stone-100 px-2 py-0.5 text-xs font-medium text-stone-800">
+          Delivery
+        </span>
       </div>
     </>
   );

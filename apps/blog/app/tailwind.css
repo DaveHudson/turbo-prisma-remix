@@ -1637,6 +1637,11 @@ a:hover:hover {
   background-color: rgb(250 232 255 / var(--tw-bg-opacity));
 }
 
+.bg-stone-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(245 245 244 / var(--tw-bg-opacity));
+}
+
 .bg-gradient-to-b {
   background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
 }
@@ -2022,6 +2027,11 @@ a:hover:hover {
 .text-fuchsia-800 {
   --tw-text-opacity: 1;
   color: rgb(134 25 143 / var(--tw-text-opacity));
+}
+
+.text-stone-800 {
+  --tw-text-opacity: 1;
+  color: rgb(41 37 36 / var(--tw-text-opacity));
 }
 
 .underline {
