@@ -45,7 +45,7 @@ export default function TaggedPosts() {
               {post.published === PostStatus.DRAFT && (
                 <span className="mt-2 inline-flex items-center rounded bg-neutral-700 px-2 py-0.5 text-xs font-medium text-neutral-200">
                   <svg
-                    className="text-netural-400 mr-1.5 h-2 w-2"
+                    className="mr-1.5 h-2 w-2 text-red-400"
                     fill="currentColor"
                     viewBox="0 0 8 8"
                   >

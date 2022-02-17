@@ -60,7 +60,7 @@ export default function Page() {
                   id="message-heading"
                   className="text-lg font-medium text-light dark:text-dark"
                 >
-                  About me
+                  {page.title}
                 </h1>
                 <p className="mt-1 overflow-hidden overflow-ellipsis text-sm text-gray-500">
                   <time dateTime={dayjs(page.updatedAt).format("MMM D, YYYY")}>
@@ -70,16 +70,6 @@ export default function Page() {
               </div>
 
               <div className="mt-4 flex items-center justify-between sm:mt-0 sm:ml-6 sm:flex-shrink-0 sm:justify-start">
-                {/* <span className="inline-flex items-center rounded bg-neutral-700 px-2 py-0.5 text-xs font-medium text-neutral-200">
-                  <svg
-                    className="mr-1.5 h-2 w-2 text-red-400"
-                    fill="currentColor"
-                    viewBox="0 0 8 8"
-                  >
-                    <circle cx={4} cy={4} r={3} />
-                  </svg>
-                  Draft
-                </span> */}
                 <span className="inline-flex items-center rounded bg-neutral-700 px-2 py-0.5 text-xs font-medium text-neutral-200">
                   <svg
                     className="mr-1.5 h-2 w-2 text-green-400"
