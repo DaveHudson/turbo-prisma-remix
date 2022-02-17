@@ -87,6 +87,7 @@ COPY --from=build /app/start_with_migrations.sh /app/start_with_migrations.sh
 # COPY --from=build /app/fly.toml /app/fly.toml
 COPY --from=build /app/apps/blog/package.json /app/package.json
 
-# COPY .env /app/.env
+# Copy secrets from local file system
+COPY .env /app/.env
 
 CMD ["npm", "run", "start"]

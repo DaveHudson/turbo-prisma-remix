@@ -2,10 +2,8 @@
  * @type {import('@remix-run/dev/config').AppConfig}
  */
 module.exports = {
-  appDirectory: "app",
-  assetsBuildDirectory: "public/build",
-  publicPath: "/build/",
-  serverBuildDirectory: "server/build",
-  devServerPort: 8002,
-  ignoredRouteFiles: [".*"]
-};
+  server: "./server.ts",
+  ignoredRouteFiles: [".*"],
+  devServerBroadcastDelay: 1000,
+  serverBuildTarget: "node-cjs"
+}

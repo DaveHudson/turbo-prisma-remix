@@ -87,6 +87,17 @@ npx prisma migrate dev --name ${name_the_migration}
 
 ## C.I Deployment
 
+### Testing Docker Builds
+
+```bash
+# Run the app
+docker compose up
+
+# Inspect files in image
+docker build -f Dockerfile.dev . -t blog-dev
+docker run -it blog-dev sh
+```
+
 The app is configured with GitHub Actions and Fly. Any push to the `main` branch will deploy to Fly.io.
 
 Database migrations are automatically applied on deployment via the `start_with_migrations.sh` script triggered from the `fly.toml` config.
