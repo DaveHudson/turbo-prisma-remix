@@ -6,8 +6,8 @@ export interface PostWithUser extends Post {
   user: User;
 }
 
-let allWordsInPost = "";
 function calculateReadingTime(text: Prisma.JsonObject) {
+  let allWordsInPost = "";
   // ? Text is sotred in JSON blocks we need to dig into each block to get all the words
   //@ts-ignore
   text.content?.forEach((element: any) => {
