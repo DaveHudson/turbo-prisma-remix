@@ -2,6 +2,25 @@
 
 > Source code for [Applification.net](https://applification.net).
 
+## Architecture
+
+```mermaid
+  flowchart LR
+  A(Turborepo) --> B(Packages)
+  B(Packages) --> C(UI Library)
+  B(Packages) --> D(Config)
+  C(UI Library) --> E(Apps)
+  D(Config) --> E(Apps)
+  E(Apps) --> F(Remix)
+  F(Remix) <--> G(Prisma Client)
+  F(Remix) <--> L(Tailwind CSS)
+  I(Prisma) <--> H(Node JS)
+  H(Node JS) <--> F(Remix)
+  I(Prisma) <--> J(PostgreSQL)
+  H(Node JS) <--> K(Fly.io)
+  J(PostgresSQL) <--> K(Fly.io)
+```
+
 ## What's inside?
 
 The primary technologies used in this site are:
