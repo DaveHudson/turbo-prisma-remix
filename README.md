@@ -75,7 +75,7 @@ To develop all apps and packages, run the following command:
 Provisioning a PostgreSQL database:
 
 ```bash
-docker compuse up
+docker compose up
 ```
 
 To sync Prisma schema with PostgresSQL database:
