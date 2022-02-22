@@ -32,12 +32,15 @@ import { useCallback } from "react";
 export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(params.id, "expected params.id");
 
+  const user = await getUser(request);
+  if (!user) {
+    throw json("Unauthorized", { status: 401 });
+  }
+
   const pageid = params.id;
 
   const page = await getPage(Number(pageid));
   invariant(page, "expected page to exist");
-
-  const user = await getUser(request);
 
   const data = { page, user };
   return data;
