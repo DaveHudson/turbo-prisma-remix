@@ -21,6 +21,7 @@ import favicon from "./images/logo-light.svg";
 import favicondark from "./images/logo-dark.svg";
 import faviconapple from "./images/favicon.png";
 import { Search } from "ui";
+import { XCircleIcon } from "@heroicons/react/solid";
 
 export function links() {
   return [
@@ -365,6 +366,7 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
   );
 }
 
+// renders when an action or loader throws
 export function CatchBoundary() {
   const caught = useCatch();
 
@@ -391,27 +393,47 @@ export function CatchBoundary() {
   return (
     <Document title={`${caught.status} ${caught.statusText}`}>
       <Layout>
-        <h1>
-          {caught.status}: {caught.statusText}
-        </h1>
-        {message}
+        <div className="rounded-md bg-red-50 p-4">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <XCircleIcon
+                className="h-8 w-8 text-red-400"
+                aria-hidden="true"
+              />
+            </div>
+            <div className="ml-3">
+              <h1 className="text-2xl font-medium text-red-800">
+                {caught.status}: {caught.statusText}
+              </h1>
+              <div className="mt-2 text-sm text-red-700">{message}</div>
+            </div>
+          </div>
+        </div>
       </Layout>
     </Document>
   );
 }
 
+// renders when there is an error anywhere on the route
 export function ErrorBoundary({ error }: { error: Error }) {
   return (
     <Document title="Error!">
       <Layout>
-        <div>
-          <h1>There was an error</h1>
-          <p>{error.message}</p>
-          <hr />
-          <p>
-            Hey, developer, you should replace this with what you want your
-            users to see.
-          </p>
+        <div className="rounded-md bg-red-50 p-4">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <XCircleIcon
+                className="h-8 w-8 text-red-400"
+                aria-hidden="true"
+              />
+            </div>
+            <div className="ml-3">
+              <h1 className="text-2xl font-medium text-red-800">
+                {`${error.name}: ${error.message}`}
+              </h1>
+              <div className="mt-2 text-sm text-red-700">{error.stack}</div>
+            </div>
+          </div>
         </div>
       </Layout>
     </Document>
