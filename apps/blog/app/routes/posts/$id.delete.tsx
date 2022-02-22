@@ -1,6 +1,7 @@
 import {
   ActionFunction,
   Form,
+  json,
   LoaderFunction,
   redirect,
   useLoaderData,
@@ -13,10 +14,13 @@ import { getUser } from "~/utils/session.server";
 export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(params.id, "expected params.id");
 
+  const user = await getUser(request);
+  if (!user) {
+    throw json("Unauthorized", { status: 401 });
+  }
+
   const postid = params.id;
   const post = await getPost(Number(postid));
-
-  const user = await getUser(request);
 
   const data = { post, user };
   return data;

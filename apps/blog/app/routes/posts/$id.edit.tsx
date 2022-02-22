@@ -32,6 +32,12 @@ import { getTags } from "~/utils/db/tag.server";
 export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(params.id, "expected params.id");
 
+  const user = await getUser(request);
+
+  if (!user) {
+    throw json("Unauthorized", { status: 401 });
+  }
+
   const postid = params.id;
 
   const dbTags = (await getTags()) as Tag[];
@@ -50,8 +56,6 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     const tagDetails = dbTags.find((x) => x.id === Number(tag)) as Tag;
     selectedTags.push(tagDetails);
   });
-
-  const user = await getUser(request);
 
   const data = { post, dbTags, user, selectedTags };
   return data;

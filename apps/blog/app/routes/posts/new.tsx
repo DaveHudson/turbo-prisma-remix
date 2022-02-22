@@ -29,7 +29,12 @@ import {
 import Select from "react-select";
 import { getTags } from "~/utils/db/tag.server";
 
-export const loader: LoaderFunction = async () => {
+export const loader: LoaderFunction = async ({ request }) => {
+  const user = await getUser(request);
+  if (!user) {
+    throw json("Unauthorized", { status: 401 });
+  }
+
   const dbTags = getTags();
 
   return dbTags;
