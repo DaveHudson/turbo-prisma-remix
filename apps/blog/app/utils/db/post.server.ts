@@ -49,6 +49,7 @@ export async function getPublishedPosts() {
 export async function getPostsBySearchQuery(query: string) {
   const posts = await db.post.findMany({
     where: {
+      published: PostStatus.PUBLISHED,
       OR: [
         {
           title: {
