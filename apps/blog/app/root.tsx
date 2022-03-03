@@ -22,6 +22,9 @@ import favicondark from "./images/logo-dark.svg";
 import faviconapple from "./images/favicon.png";
 import { Search } from "ui";
 import { XCircleIcon } from "@heroicons/react/solid";
+import CommandPalette from "./components/CommandPalette";
+import { getPublishedPosts, PostWithUser } from "./utils/db/post.server";
+import { User } from "@prisma/client";
 
 export function links() {
   return [
@@ -35,11 +38,11 @@ export const meta: MetaFunction = () => {
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const data = await getUser(request);
+  const user = await getUser(request);
 
-  if (!data) {
-    return null;
-  }
+  const posts = await getPublishedPosts();
+
+  const data = { user, posts };
 
   return data;
 };
@@ -107,7 +110,8 @@ function Document({
 }
 
 function Layout({ children }: React.PropsWithChildren<{}>) {
-  const user = useLoaderData();
+  const { user, posts } =
+    useLoaderData<{ user: User; posts: PostWithUser[] }>();
 
   const navigation = [
     { name: "Home", href: "/" },
@@ -166,6 +170,7 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
       <Disclosure as="header">
         {({ open }) => (
           <>
+            <CommandPalette posts={posts} />
             <div className="mx-auto max-w-7xl px-2 sm:px-4  lg:px-8 ">
               <div className="relative flex h-16 justify-between">
                 <div className="relative z-10 flex px-2 lg:px-0">
@@ -195,7 +200,7 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
                           <span className="sr-only">Open user menu</span>
                           <img
                             className="h-8 w-8 rounded-full"
-                            src={user?.profileUrl}
+                            src={user?.profileUrl!}
                             alt=""
                           />
                         </Menu.Button>
@@ -291,7 +296,7 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
                     <div className="flex-shrink-0">
                       <img
                         className="h-10 w-10 rounded-full"
-                        src={user?.profileUrl}
+                        src={user?.profileUrl!}
                         alt=""
                       />
                     </div>
@@ -300,7 +305,7 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
                         {user?.name}
                       </div>
                       <div className="text-sm font-medium text-light-accent dark:text-dark-accent">
-                        {user?.email}
+                        {user?.username}
                       </div>
                     </div>
                   </div>
