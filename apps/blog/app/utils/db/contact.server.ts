@@ -1,12 +1,10 @@
 import { Message } from "@prisma/client";
-import { db } from "~/utils/db.server";
 
 export async function createEnquiry(fields: Message) {
   const message = {
     ...fields,
   };
 
-  const res = await db.message.create({ data: { ...message } });
   await sendEmail({
     to: "dave@applification.net",
     from: "dave@applification.net",
@@ -15,7 +13,7 @@ export async function createEnquiry(fields: Message) {
     html: message.message,
   });
 
-  return res.id;
+  return true;
 }
 
 let mailgunDomain = "mg.example.com";
