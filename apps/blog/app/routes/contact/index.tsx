@@ -126,7 +126,7 @@ export default function Contact() {
                   </p>
                 )}
 
-                <div>
+                <div className="hidden">
                   <label htmlFor="name" className="sr-only">
                     Second name
                   </label>
