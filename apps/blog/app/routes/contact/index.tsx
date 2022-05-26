@@ -36,6 +36,12 @@ export const action: ActionFunction = async ({ request }) => {
   const name = form.get("name");
   const email = form.get("email");
   const message = form.get("message");
+  const second_name = form.get("second_name");
+
+  // honey pot form
+  if (second_name) {
+    return redirect("/contact?sent=true");
+  }
 
   const enquiry = {
     name,
@@ -119,6 +125,18 @@ export default function Contact() {
                     {actionData?.errors.name && actionData?.errors.name}
                   </p>
                 )}
+
+                <div>
+                  <label htmlFor="name" className="sr-only">
+                    Second name
+                  </label>
+                  <input
+                    type="text"
+                    name="second_name"
+                    id="second_name"
+                    placeholder="Second name"
+                  />
+                </div>
 
                 <div className="relative mt-1 rounded-md shadow-sm">
                   <label htmlFor="email" className="sr-only">
