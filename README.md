@@ -1,6 +1,6 @@
 # Applification Blog
 
-> Source code for [Applification.net](https://applification.net).
+> Source code for [applification.net](https://applification.net).
 
 ## Architecture
 
