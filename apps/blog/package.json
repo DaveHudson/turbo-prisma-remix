@@ -28,7 +28,7 @@
     "@tiptap/extension-highlight": "^2.0.0-beta.33",
     "@tiptap/extension-image": "^2.0.0-beta.26",
     "@tiptap/extension-link": "^2.0.0-beta.36",
-    "@tiptap/extension-paragraph": "^2.0.0-beta.23",
+    "@tiptap/extension-paragraph": "^2.0.0-beta.199",
     "@tiptap/extension-text": "^2.0.0-beta.15",
     "@tiptap/extension-typography": "^2.0.0-beta.20",
     "@tiptap/react": "^2.0.0-beta.108",
