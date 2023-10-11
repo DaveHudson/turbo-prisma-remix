@@ -28,7 +28,7 @@ COPY . .
 # Install root deps
 # turbo etc
 RUN npm install --production=false
-RUN npx metronome setup
+# RUN npx metronome setup
 
 # -----------------------------------------------
 # SET UP PRODUCTION NODE_MODULES
