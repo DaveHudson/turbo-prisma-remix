@@ -33,6 +33,18 @@ export async function getPosts() {
   return posts as PostWithUser[];
 }
 
+export async function getLatestPosts() {
+  const posts = await db.post.findMany({
+    orderBy: { createdAt: "desc" },
+    include: {
+      user: true,
+    },
+    take: 3,
+    where: { published: PostStatus.PUBLISHED },
+  });
+  return posts as PostWithUser[];
+}
+
 export async function getPublishedPosts() {
   const posts = await db.post.findMany({
     where: {

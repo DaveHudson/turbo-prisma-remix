@@ -39,8 +39,10 @@ export default function Posts() {
   let [searchParams] = useSearchParams();
   let search = searchParams.get("search");
 
-  const { posts, tags } =
-    useLoaderData<{ posts: PostWithUser[]; tags: Tag[] }>();
+  const { posts, tags } = useLoaderData<{
+    posts: PostWithUser[];
+    tags: Tag[];
+  }>();
 
   return (
     <div className="px-4 pt-16 pb-20 sm:px-6 lg:px-8 lg:pt-16 lg:pb-14">
@@ -50,9 +52,10 @@ export default function Posts() {
             {search ? `Search results for "${search}"` : "My latest thoughts"}
           </h2>
           <p className="mt-3 text-xl sm:mt-4">
-            I have a brain like a sieve. These posts are reminders to myself
-            about solutions I've implemented, if others find them useful too I
-            consider that a win!
+            These posts serve as my digital Post-it notes, not just for tech
+            solutions I've implemented, but also for thoughts and musings I
+            don't want slipping through the cracks. If you find them handy too,
+            well, that's a proper win!
           </p>
         </div>
         <div className="mt-12 grid gap-16 pt-12 lg:grid-cols-3 lg:gap-x-5 lg:gap-y-12">

@@ -1,21 +1,37 @@
+import { PostStatus, Tag } from "@prisma/client";
+import dayjs from "dayjs";
 import {
   ActionFunction,
   Form,
   json,
   Link,
+  LoaderFunction,
   redirect,
   useActionData,
+  useLoaderData,
   useSearchParams,
   useTransition,
 } from "remix";
 import { SitePromo } from "ui";
+import RenderTags from "~/components/RenderTags";
 import { emailSignup } from "~/utils/db/emaillist.server";
+import { getLatestPosts, PostWithUser } from "~/utils/db/post.server";
+import { getTags } from "~/utils/db/tag.server";
 
 function validateEmail(email: string) {
   if (typeof email !== "string" || email.length < 1) {
     return "Email is required";
   }
 }
+
+export const loader: LoaderFunction = async () => {
+  let posts = await getLatestPosts();
+
+  const tags = await getTags();
+
+  const data = { posts, tags };
+  return data;
+};
 
 export const action: ActionFunction = async ({ request }) => {
   const form = await request.formData();
@@ -49,6 +65,11 @@ export default function Index() {
   const transition = useTransition();
 
   //"prose focus:outline-none max-w-none max-w-3xl prose-img:rounded-lg pt-8 first-line:uppercase first-line:tracking-widest tracking-wider first-letter:text-7xl first-letter:font-bold first-letter:mr-3 first-letter:float-left dark:prose-invert",
+
+  const { posts, tags } = useLoaderData<{
+    posts: PostWithUser[];
+    tags: Tag[];
+  }>();
 
   return (
     <>
@@ -85,6 +106,60 @@ export default function Index() {
               delivery teams.
             </p>
           </div>
+        </div>
+        <h2 className="mt-6 text-center text-2xl font-bold tracking-wide text-light subpixel-antialiased dark:text-dark md:text-3xl lg:text-4xl">
+          Recent posts
+        </h2>
+        <div className="grid gap-16 pl-12 pt-6 lg:grid-cols-3 lg:gap-x-2">
+          {posts.map((post) => (
+            <div key={post.id}>
+              <Link to={`${post.slug}`} className="mt-4 block">
+                <p className="text-xl font-semibold text-light dark:text-dark">
+                  {post.title}
+                </p>
+              </Link>
+              <p className="mt-3 text-base">{post.description}</p>
+              {post.published === PostStatus.DRAFT && (
+                <span className="mt-2 inline-flex items-center rounded bg-neutral-700 px-2 py-0.5 text-xs font-medium text-neutral-200">
+                  <svg
+                    className="mr-1.5 h-2 w-2 text-red-400"
+                    fill="currentColor"
+                    viewBox="0 0 8 8"
+                  >
+                    <circle cx={4} cy={4} r={3} />
+                  </svg>
+                  Draft
+                </span>
+              )}
+              <div className="mt-6 flex items-center">
+                <div className="flex-shrink-0">
+                  <span className="sr-only">{post.user.name}</span>
+                  <img
+                    className="h-10 w-10 rounded-full"
+                    src={post.user.profileUrl!}
+                    alt=""
+                  />
+                </div>
+                <div className="ml-3">
+                  <p className="text-sm font-medium text-light dark:text-dark">
+                    {post.user.name}
+                  </p>
+                  <div className="flex space-x-1 text-sm">
+                    <time
+                      dateTime={dayjs(post.createdAt).format("MMM D, YYYY")}
+                    >
+                      {dayjs(post.createdAt).format("MMM D, YYYY")}
+                    </time>
+                    <span aria-hidden="true">&middot;</span>
+                    <span>{post.readingTime} read</span>
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-start pt-2">
+                <RenderTags tags={post.tags as []} dbTags={tags} />
+              </div>
+            </div>
+          ))}
         </div>
         <SitePromo />
       </div>
