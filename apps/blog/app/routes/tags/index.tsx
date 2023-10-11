@@ -66,6 +66,9 @@ export default function TagList() {
         <span className="inline-flex items-center rounded bg-stone-100 px-2 py-0.5 text-xs font-medium text-stone-800">
           Delivery
         </span>
+        <span className="inline-flex items-center rounded bg-rose-100 px-2 py-0.5 text-xs font-medium text-rose-800">
+          AI
+        </span>
       </div>
     </>
   );
