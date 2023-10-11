@@ -113,7 +113,7 @@ export default function Index() {
         <div className="grid gap-16 pl-12 pt-6 lg:grid-cols-3 lg:gap-x-2">
           {posts.map((post) => (
             <div key={post.id}>
-              <Link to={`${post.slug}`} className="mt-4 block">
+              <Link to={`/posts/${post.slug}`} className="mt-4 block">
                 <p className="text-xl font-semibold text-light dark:text-dark">
                   {post.title}
                 </p>
