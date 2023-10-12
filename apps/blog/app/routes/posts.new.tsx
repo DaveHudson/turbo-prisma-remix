@@ -1,6 +1,6 @@
 import { getUser } from "~/utils/session.server";
 import { createPost } from "~/utils/db/post.server";
-import type { Post, Prisma, Tag } from "@prisma/client";
+import type { Post, Prisma, Tag, User } from "@prisma/client";
 import { PostStatus } from "@prisma/client";
 import invariant from "tiny-invariant";
 import { useEditor, EditorContent } from "@tiptap/react";
@@ -20,8 +20,8 @@ import {
 import Select from "react-select";
 import { getTags } from "~/utils/db/tag.server";
 import type {
-  LoaderFunction,
-  ActionFunctionArgs} from "@remix-run/node";
+  ActionFunctionArgs,
+  LoaderFunctionArgs} from "@remix-run/node";
 import {
   redirect,
   json
@@ -33,15 +33,15 @@ import {
   useNavigation,
 } from "@remix-run/react";
 
-export const loader: LoaderFunction = async ({ request }) => {
-  const user = await getUser(request);
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const user = await getUser(request) as User;
   if (!user) {
     throw json("Unauthorized", { status: 401 });
   }
 
-  const dbTags = getTags();
+  const dbTags = await getTags() as Tag[];
 
-  return dbTags;
+  return json({ tags: dbTags});
 };
 
 function validateTitle(title: string) {
@@ -53,6 +53,24 @@ function validateTitle(title: string) {
 function validateUserId(userId: number) {
   if (typeof userId === undefined) {
     return "Expected a user id";
+  }
+}
+
+type actionDataType = {
+  errors?: {
+    title: string;
+    slug: string;
+    body: string;
+    userId: string;
+    description: string;  
+    category: string;
+    imageUrl: string;
+    readingTime: string;  
+  },
+  fields?: {
+    description: string;
+    title: string;
+    slug: string;
   }
 }
 
@@ -100,11 +118,14 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function NewPost() {
-  // @ts-expect-error
-  const { errors, fields } = useActionData<typeof action>();
+
+  const actionData = useActionData<typeof action>() as unknown as actionDataType;
+  const errors = actionData?.errors;
+  const fields = actionData?.fields;
+
   const transition = useNavigation();
 
-  const tags = useLoaderData<Tag[]>();
+  const tags = useLoaderData<typeof loader>();
 
   const editor = useEditor({
     extensions: [
@@ -167,7 +188,7 @@ export default function NewPost() {
               name="title"
               id="title"
               className={`${
-                errors.title
+                errors && errors.title
                   ? "block w-full rounded-md border-red-300 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm"
                   : "block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 sm:text-sm"
               }`}
@@ -175,7 +196,7 @@ export default function NewPost() {
               aria-invalid="true"
               aria-describedby="title-error"
             />
-            {errors.title && (
+            {errors && errors.title && (
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                 <ExclamationCircleIcon
                   className="h-5 w-5 text-red-500"
@@ -185,7 +206,7 @@ export default function NewPost() {
             )}
           </div>
           <p className="mt-2 text-sm text-red-600" id="title-error">
-            {errors.title && errors.title}
+            {errors && errors.title && errors.title}
           </p>
 
           <label htmlFor="slug" className="block text-sm font-medium">
@@ -197,7 +218,7 @@ export default function NewPost() {
               name="slug"
               id="slug"
               className={`${
-                errors.slug
+                errors && errors.slug
                   ? "block w-full rounded-md border-red-300 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm"
                   : "block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 sm:text-sm"
               }`}
@@ -205,7 +226,7 @@ export default function NewPost() {
               aria-invalid="true"
               aria-describedby="slug-error"
             />
-            {errors.slug && (
+            {errors && errors.slug && (
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                 <ExclamationCircleIcon
                   className="h-5 w-5 text-red-500"
@@ -215,7 +236,7 @@ export default function NewPost() {
             )}
           </div>
           <p className="mt-2 text-sm text-red-600" id="slug-error">
-            {errors.slug && errors.slug}
+            {errors && errors.slug && errors.slug}
           </p>
 
           <label htmlFor="description" className="block text-sm font-medium">
@@ -227,7 +248,7 @@ export default function NewPost() {
               name="description"
               id="description"
               className={`${
-                errors.description
+                errors && errors.description
                   ? "block w-full rounded-md border-red-300 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm"
                   : "block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 sm:text-sm"
               }`}
@@ -235,7 +256,7 @@ export default function NewPost() {
               aria-invalid="true"
               aria-describedby="description-error"
             />
-            {errors.description && (
+            {errors && errors.description && (
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                 <ExclamationCircleIcon
                   className="h-5 w-5 text-red-500"
@@ -245,7 +266,7 @@ export default function NewPost() {
             )}
           </div>
           <p className="mt-2 text-sm text-red-600" id="description-error">
-            {errors.description && errors.description}
+            {errors && errors.description && errors.description}
           </p>
 
           <label htmlFor="tags" className="block text-sm font-medium">
@@ -254,7 +275,7 @@ export default function NewPost() {
           <Select
             name="tags"
             id="tags"
-            options={tags}
+            options={tags.tags}
             getOptionValue={(tags) => tags.id.toString()}
             getOptionLabel={(tags) => tags.name}
             isMulti
@@ -317,10 +338,10 @@ export default function NewPost() {
                 value={JSON.stringify(json)}
               />
               <p className="mt-2 text-sm text-red-600" id="body-error">
-                {errors.body && errors.body}
+                {errors && errors.body && errors.body}
               </p>
               <p className="mt-2 text-sm text-red-600" id="userid-error">
-                {errors.userId && errors.userId}
+                {errors && errors.userId && errors.userId}
               </p>
             </div>
           </div>
