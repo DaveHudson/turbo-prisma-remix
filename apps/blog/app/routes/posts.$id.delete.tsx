@@ -1,29 +1,27 @@
+import { Post, User } from "@prisma/client";
 import {
   ActionFunction,
-  Form,
-  json,
-  LoaderFunction,
   redirect,
-  useLoaderData,
-  useTransition,
-} from "remix";
+  json,
+  LoaderFunctionArgs,
+} from "@remix-run/node";
+import { useLoaderData, Form, useNavigation } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { deletePost, getPost } from "~/utils/db/post.server";
 import { getUser } from "~/utils/session.server";
 
-export const loader: LoaderFunction = async ({ request, params }) => {
+export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   invariant(params.id, "expected params.id");
 
-  const user = await getUser(request);
+  const user = (await getUser(request)) as User;
   if (!user) {
     throw json("Unauthorized", { status: 401 });
   }
 
   const postid = params.id;
-  const post = await getPost(Number(postid));
+  const post = (await getPost(Number(postid))) as Post;
 
-  const data = { post, user };
-  return data;
+  return { post, user };
 };
 
 export const action: ActionFunction = async ({ request, params }) => {
@@ -50,13 +48,13 @@ export const action: ActionFunction = async ({ request, params }) => {
 };
 
 export default function EditPost() {
-  const { post, user } = useLoaderData();
-  const transition = useTransition();
+  const { post, user } = useLoaderData<typeof loader>();
+  const transition = useNavigation();
 
   return (
     <div>
       Delete post - {post.id} by User - {user.id}
-      <Form method="post">
+      <Form method="POST">
         <input type="hidden" name="_method" value="delete" />
         <button
           type="submit"

@@ -1,15 +1,14 @@
-import { ExclamationCircleIcon } from "@heroicons/react/outline";
-import { Message } from "@prisma/client";
+import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
+import type { Message } from "@prisma/client";
+import type { ActionFunctionArgs } from "@remix-run/node";
+import { redirect, json } from "@remix-run/node";
 import {
-  ActionFunction,
-  Form,
-  json,
-  redirect,
+  useSearchParams,
   useActionData,
-  useTransition,
-} from "remix";
+  Form,
+  useNavigation,
+} from "@remix-run/react";
 import { createEnquiry } from "~/utils/db/contact.server";
-import { useSearchParams } from "remix";
 
 function validateName(name: string) {
   if (typeof name !== "string" || name.length < 1) {
@@ -29,7 +28,7 @@ function validateMessage(message: string) {
   }
 }
 
-export const action: ActionFunction = async ({ request }) => {
+export const action = async ({ request }: ActionFunctionArgs) => {
   // Grab form data
   const form = await request.formData();
 
@@ -69,8 +68,9 @@ export default function Contact() {
   let [searchParams] = useSearchParams();
   let sent = searchParams.get("sent");
 
-  const actionData = useActionData();
-  const transition = useTransition();
+  const actionData = useActionData<typeof action>();
+  const errors = actionData?.errors;
+  const transition = useNavigation();
 
   return (
     <div className="relative">
@@ -94,7 +94,7 @@ export default function Contact() {
             {sent ? (
               <div className="text-2xl">Message received, thank you!</div>
             ) : (
-              <Form method="post" className="grid grid-cols-1 gap-y-6">
+              <Form method="POST" className="grid grid-cols-1 gap-y-6">
                 <div className="relative mt-1 rounded-md shadow-sm">
                   <label htmlFor="name" className="sr-only">
                     Full name
@@ -105,13 +105,13 @@ export default function Contact() {
                     id="name"
                     autoComplete="name"
                     className={`${
-                      actionData?.errors.name
+                      errors && errors.name
                         ? "focus:ring-red-500m block w-full rounded-md border-red-300 py-3 px-4 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none"
                         : "block w-full rounded-md border-gray-300 py-3 px-4 shadow-sm focus:border-sky-500 focus:ring-sky-500"
                     }`}
                     placeholder="Full name"
                   />
-                  {actionData?.errors.name && (
+                  {errors && errors.name && (
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                       <ExclamationCircleIcon
                         className="h-5 w-5 text-red-500"
@@ -120,9 +120,9 @@ export default function Contact() {
                     </div>
                   )}
                 </div>
-                {actionData?.errors.name && (
+                {errors && errors.name && (
                   <p className="text-sm text-red-600" id="name-error">
-                    {actionData?.errors.name && actionData?.errors.name}
+                    {errors.name && errors.name}
                   </p>
                 )}
 
@@ -148,13 +148,13 @@ export default function Contact() {
                     type="email"
                     autoComplete="email"
                     className={`${
-                      actionData?.errors.email
+                     errors && errors.email
                         ? "focus:ring-red-500m block w-full rounded-md border-red-300 py-3 px-4 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none"
                         : "block w-full rounded-md border-gray-300 py-3 px-4 shadow-sm focus:border-sky-500 focus:ring-sky-500"
                     }`}
                     placeholder="Email"
                   />
-                  {actionData?.errors.name && (
+                  {errors && errors.name && (
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                       <ExclamationCircleIcon
                         className="h-5 w-5 text-red-500"
@@ -163,9 +163,9 @@ export default function Contact() {
                     </div>
                   )}
                 </div>
-                {actionData?.errors.email && (
+                {errors && errors.email && (
                   <p className="text-sm text-red-600" id="email-error">
-                    {actionData?.errors.email && actionData?.errors.email}
+                    {errors.email && errors.email}
                   </p>
                 )}
 
@@ -178,14 +178,14 @@ export default function Contact() {
                     name="message"
                     rows={4}
                     className={`${
-                      actionData?.errors.message
+                      errors && errors.message
                         ? "focus:ring-red-500m block w-full rounded-md border-red-300 py-3 px-4 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none"
                         : "block w-full rounded-md border-gray-300 py-3 px-4 shadow-sm focus:border-sky-500 focus:ring-sky-500"
                     }`}
                     placeholder="Message"
                     defaultValue={""}
                   />
-                  {actionData?.errors.name && (
+                  {errors && errors.name && (
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                       <ExclamationCircleIcon
                         className="h-5 w-5 text-red-500"
@@ -194,9 +194,9 @@ export default function Contact() {
                     </div>
                   )}
                 </div>
-                {actionData?.errors.message && (
+                {errors && errors.message && (
                   <p className="text-sm text-red-600" id="message-error">
-                    {actionData?.errors.message && actionData?.errors.message}
+                    {errors.message && errors.message}
                   </p>
                 )}
 

@@ -1,11 +1,8 @@
-import { ExclamationCircleIcon } from "@heroicons/react/outline";
-import {
-  useActionData,
-  json,
-  useTransition,
-  ActionFunction,
-  Form,
-} from "remix";
+import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
+import type { ActionFunctionArgs } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import { useActionData, Form, useNavigation } from "@remix-run/react";
+
 import { checkIfUserExists } from "~/utils/db/user.server";
 import { register, createUserSession } from "~/utils/session.server";
 
@@ -21,7 +18,18 @@ function validatePassword(password: string) {
   }
 }
 
-export const action: ActionFunction = async ({ request }) => {
+type actionDataType = {
+  errors?: {
+    username: string;
+    password: string;
+  },
+  userCredentials?: {
+    username: string;
+    password: string;
+  },
+}
+
+export const action = async ({ request }: ActionFunctionArgs) => {
   const form = await request.formData();
 
   const userCredentials = {
@@ -60,12 +68,14 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 export default function Login() {
-  const actionData = useActionData();
-  const transition = useTransition();
+  const actionData = useActionData<typeof action>() as actionDataType;
+  const errors = actionData?.errors;
+  const fields = actionData?.userCredentials;
+  const transition = useNavigation();
 
   return (
     <div className="pt-5">
-      <Form action="/auth/register" method="post">
+      <Form action="/auth/register" method="POST">
         <label className="text-base font-medium text-light dark:text-dark">
           Register
         </label>
@@ -83,15 +93,15 @@ export default function Login() {
                 name="username"
                 id="username"
                 className={`${
-                  actionData?.errors.username
+                  errors && errors.username
                     ? "block w-full rounded-md border-red-300 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm"
                     : "block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 sm:text-sm"
                 }`}
-                defaultValue={actionData?.fields?.username}
+                defaultValue={fields?.username}
                 aria-invalid="true"
                 aria-describedby="username-error"
               />
-              {actionData?.errors.username && (
+              {errors && errors.username && (
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                   <ExclamationCircleIcon
                     className="h-5 w-5 text-red-500"
@@ -101,7 +111,7 @@ export default function Login() {
               )}
             </div>
             <p className="mt-2 text-sm text-red-600" id="username-error">
-              {actionData?.errors.username && actionData?.errors.username}
+              {errors && errors.username && errors && errors.username}
             </p>
           </div>
 
@@ -118,15 +128,15 @@ export default function Login() {
                 name="password"
                 id="password"
                 className={`${
-                  actionData?.errors.password
+                  errors && errors.password
                     ? "block w-full rounded-md border-red-300 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm"
                     : "block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 sm:text-sm"
                 }`}
-                defaultValue={actionData?.fields?.password}
+                defaultValue={errors && fields?.password}
                 aria-invalid="true"
                 aria-describedby="password-error"
               />
-              {actionData?.errors.password && (
+              {errors && errors.password && (
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                   <ExclamationCircleIcon
                     className="h-5 w-5 text-red-500"
@@ -136,7 +146,7 @@ export default function Login() {
               )}
             </div>
             <p className="mt-2 text-sm text-red-600" id="password-error">
-              {actionData?.errors.password && actionData?.errors.password}
+              {errors && errors.password && errors && errors.password}
             </p>
           </div>
 

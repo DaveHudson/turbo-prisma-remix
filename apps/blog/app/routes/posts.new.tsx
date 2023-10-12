@@ -1,17 +1,7 @@
-import {
-  redirect,
-  useActionData,
-  json,
-  Form,
-  useTransition,
-  LoaderFunction,
-  useLoaderData,
-} from "remix";
-import type { ActionFunction } from "remix";
 import { getUser } from "~/utils/session.server";
-import { getPage, updatePage } from "~/utils/db/page.server";
-import { Page, Prisma } from "@prisma/client";
-import { ExclamationCircleIcon } from "@heroicons/react/solid";
+import { createPost } from "~/utils/db/post.server";
+import type { Post, Prisma, Tag } from "@prisma/client";
+import { PostStatus } from "@prisma/client";
 import invariant from "tiny-invariant";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -22,28 +12,36 @@ import Dropcursor from "@tiptap/extension-dropcursor";
 import Gapcursor from "@tiptap/extension-gapcursor";
 import Link from "@tiptap/extension-link";
 import {
-  PhotographIcon,
-  CodeIcon,
-  DotsHorizontalIcon,
-  LinkIcon,
-} from "@heroicons/react/solid";
-import { useCallback } from "react";
+  PhotoIcon,
+  CodeBracketIcon,
+  EllipsisHorizontalIcon,
+  ExclamationCircleIcon
+} from "@heroicons/react/24/solid";
+import Select from "react-select";
+import { getTags } from "~/utils/db/tag.server";
+import type {
+  LoaderFunction,
+  ActionFunctionArgs} from "@remix-run/node";
+import {
+  redirect,
+  json
+} from "@remix-run/node";
+import {
+  useActionData,
+  useLoaderData,
+  Form,
+  useNavigation,
+} from "@remix-run/react";
 
-export const loader: LoaderFunction = async ({ request, params }) => {
-  invariant(params.id, "expected params.id");
-
+export const loader: LoaderFunction = async ({ request }) => {
   const user = await getUser(request);
   if (!user) {
     throw json("Unauthorized", { status: 401 });
   }
 
-  const pageid = params.id;
+  const dbTags = getTags();
 
-  const page = await getPage(Number(pageid));
-  invariant(page, "expected page to exist");
-
-  const data = { page, user };
-  return data;
+  return dbTags;
 };
 
 function validateTitle(title: string) {
@@ -58,46 +56,55 @@ function validateUserId(userId: number) {
   }
 }
 
-export const action: ActionFunction = async ({ request, params }) => {
+export const action = async ({ request }: ActionFunctionArgs) => {
   const user = await getUser(request);
   invariant(user?.id, "expected user id");
 
   const form = await request.formData();
   const formbody = form.get("body");
 
+  const tags = form.getAll("tags");
+
   invariant(formbody, "expect formbody to exist");
 
-  const page = {
-    id: Number(params.id),
+  const post = {
     title: form.get("title"),
     slug: form.get("slug"),
+    description: form.get("description"),
+    published: form.get("published"),
     //@ts-ignore
     body: JSON.parse(formbody) as unknown as Prisma.JsonObject,
+    tags: tags as Prisma.JsonArray,
+    imageUrl: "http",
     userId: user.id,
-  } as Page;
+  } as Post;
 
   const errors = {
-    title: validateTitle(page.title),
+    title: validateTitle(post.title),
     slug: "",
     body: "",
-    userId: validateUserId(page.userId),
+    category: "",
+    imageUrl: "",
+    readingTime: "",
+    userId: validateUserId(post.userId),
   };
 
   // Return errors
   if (Object.values(errors).some(Boolean)) {
-    return json({ errors, page }, { status: 422 }); // Unprocessable entity
+    return json({ errors, post }, { status: 422 }); // Unprocessable entity
   }
 
-  await updatePage(page);
+  await createPost(post);
 
-  return redirect(`/about/${page.slug}`);
+  return redirect(`/posts`);
 };
 
-export default function EditPage() {
-  const actionData = useActionData();
-  const transition = useTransition();
+export default function NewPost() {
+  // @ts-expect-error
+  const { errors, fields } = useActionData<typeof action>();
+  const transition = useNavigation();
 
-  const { page } = useLoaderData();
+  const tags = useLoaderData<Tag[]>();
 
   const editor = useEditor({
     extensions: [
@@ -115,33 +122,8 @@ export default function EditPage() {
           "prose dark:prose-invert focus:outline-none mt-2 w-full p-3 border-t-2 border-gray-300  max-w-none",
       },
     },
-    content: page.body,
+    content: ``,
   });
-
-  const setLink = useCallback(() => {
-    const previousUrl = editor?.getAttributes("link").href;
-    const url = window.prompt("URL", previousUrl);
-
-    // cancelled
-    if (url === null) {
-      return;
-    }
-
-    // empty
-    if (url === "") {
-      editor?.chain().focus().extendMarkRange("link").unsetLink().run();
-
-      return;
-    }
-
-    // update link
-    editor
-      ?.chain()
-      .focus()
-      .extendMarkRange("link")
-      .setLink({ href: url, target: "_self" })
-      .run();
-  }, [editor]);
 
   const addImage = (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -161,17 +143,17 @@ export default function EditPage() {
 
   return (
     <Form
-      method="post"
+      method="POST"
       encType="multipart/form-data"
       className="space-y-8 divide-y divide-gray-300"
     >
       <div className="space-y-8 divide-y divide-gray-300">
         <div>
           <h3 className="text-lg font-medium leading-6 text-light dark:text-dark">
-            Update Post
+            New Post
           </h3>
           <p className="mt-1 text-sm">
-            Use this form to update a blog page using markdown syntax.
+            Use this form to create a new blog post using markdown syntax.
           </p>
         </div>
 
@@ -185,15 +167,15 @@ export default function EditPage() {
               name="title"
               id="title"
               className={`${
-                actionData?.errors.title
+                errors.title
                   ? "block w-full rounded-md border-red-300 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm"
                   : "block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 sm:text-sm"
               }`}
-              defaultValue={page.title}
+              defaultValue={fields?.title}
               aria-invalid="true"
               aria-describedby="title-error"
             />
-            {actionData?.errors.title && (
+            {errors.title && (
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                 <ExclamationCircleIcon
                   className="h-5 w-5 text-red-500"
@@ -203,7 +185,7 @@ export default function EditPage() {
             )}
           </div>
           <p className="mt-2 text-sm text-red-600" id="title-error">
-            {actionData?.errors.title && actionData?.errors.title}
+            {errors.title && errors.title}
           </p>
 
           <label htmlFor="slug" className="block text-sm font-medium">
@@ -215,15 +197,15 @@ export default function EditPage() {
               name="slug"
               id="slug"
               className={`${
-                actionData?.errors.slug
+                errors.slug
                   ? "block w-full rounded-md border-red-300 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm"
                   : "block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 sm:text-sm"
               }`}
-              defaultValue={page.slug}
+              defaultValue={fields?.slug}
               aria-invalid="true"
               aria-describedby="slug-error"
             />
-            {actionData?.errors.slug && (
+            {errors.slug && (
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                 <ExclamationCircleIcon
                   className="h-5 w-5 text-red-500"
@@ -233,41 +215,96 @@ export default function EditPage() {
             )}
           </div>
           <p className="mt-2 text-sm text-red-600" id="slug-error">
-            {actionData?.errors.slug && actionData?.errors.slug}
+            {errors.slug && errors.slug}
           </p>
+
+          <label htmlFor="description" className="block text-sm font-medium">
+            Description
+          </label>
+          <div className="relative mt-1 rounded-md shadow-sm">
+            <input
+              type="text"
+              name="description"
+              id="description"
+              className={`${
+                errors.description
+                  ? "block w-full rounded-md border-red-300 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm"
+                  : "block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 sm:text-sm"
+              }`}
+              defaultValue={fields?.description}
+              aria-invalid="true"
+              aria-describedby="description-error"
+            />
+            {errors.description && (
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                <ExclamationCircleIcon
+                  className="h-5 w-5 text-red-500"
+                  aria-hidden="true"
+                />
+              </div>
+            )}
+          </div>
+          <p className="mt-2 text-sm text-red-600" id="description-error">
+            {errors.description && errors.description}
+          </p>
+
+          <label htmlFor="tags" className="block text-sm font-medium">
+            Tags
+          </label>
+          <Select
+            name="tags"
+            id="tags"
+            options={tags}
+            getOptionValue={(tags) => tags.id.toString()}
+            getOptionLabel={(tags) => tags.name}
+            isMulti
+          />
+
+          <div>
+            <label
+              htmlFor="published"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Published
+            </label>
+            <select
+              id="published"
+              name="published"
+              className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm"
+              defaultValue={PostStatus.DRAFT}
+            >
+              <option>{PostStatus.DRAFT}</option>
+              <option>{PostStatus.PUBLISHED}</option>
+            </select>
+          </div>
 
           <div className="pt-6">
             <span className="relative z-0 inline-flex rounded-md shadow-sm">
               <button
-                onClick={setLink}
-                type="button"
-                className="relative inline-flex items-center rounded-l-md border border-gray-500 bg-none px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 dark:hover:text-gray-100"
-              >
-                <span className="sr-only">Add image</span>
-                <LinkIcon className="h-5 w-5" aria-hidden="true" />
-              </button>
-              <button
                 onClick={addImage}
                 type="button"
-                className="relative inline-flex items-center border-t border-b border-r border-gray-500 bg-none px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 dark:hover:text-gray-100"
+                className="relative inline-flex items-center rounded-l-md border border-gray-500 bg-none px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:hover:text-gray-100"
               >
                 <span className="sr-only">Add image</span>
-                <PhotographIcon className="h-5 w-5" aria-hidden="true" />
+                <PhotoIcon className="h-5 w-5" aria-hidden="true" />
               </button>
               <button
                 onClick={addHR}
                 type="button"
-                className="relative inline-flex items-center border-t border-b border-gray-500 bg-none px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 dark:hover:text-gray-100"
+                className="relative inline-flex items-center border-t border-b border-gray-500 bg-none px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:hover:text-gray-100"
               >
                 <span className="sr-only">Add hr</span>
-                <DotsHorizontalIcon className="h-5 w-5" aria-hidden="true" />
+                <EllipsisHorizontalIcon
+                  className="h-5 w-5"
+                  aria-hidden="true"
+                />
               </button>
               <button
                 type="button"
-                className="0 relative -ml-px inline-flex items-center rounded-r-md border border-gray-500 bg-none px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 dark:hover:text-gray-100"
+                className="0 relative -ml-px inline-flex items-center rounded-r-md border border-gray-500 bg-none px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:hover:text-gray-100"
               >
                 <span className="sr-only">Add code block</span>
-                <CodeIcon className="h-5 w-5" aria-hidden="true" />
+                <CodeBracketIcon className="h-5 w-5" aria-hidden="true" />
               </button>
             </span>
 
@@ -280,10 +317,10 @@ export default function EditPage() {
                 value={JSON.stringify(json)}
               />
               <p className="mt-2 text-sm text-red-600" id="body-error">
-                {actionData?.errors.body && actionData?.errors.body}
+                {errors.body && errors.body}
               </p>
               <p className="mt-2 text-sm text-red-600" id="userid-error">
-                {actionData?.errors.userId && actionData?.errors.userId}
+                {errors.userId && errors.userId}
               </p>
             </div>
           </div>
@@ -300,9 +337,7 @@ export default function EditPage() {
                 type="submit"
                 className="ml-3 inline-flex items-center rounded-md border border-transparent bg-sky-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
               >
-                {transition.state !== "idle"
-                  ? "Updating page..."
-                  : "Update page"}
+                {transition.state !== "idle" ? "Adding post..." : "Add post"}
               </button>
             </div>
           </div>

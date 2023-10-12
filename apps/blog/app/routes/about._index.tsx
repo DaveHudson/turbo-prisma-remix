@@ -1,5 +1,3 @@
-import { useLoaderData, Link } from "remix";
-import type { LoaderFunction } from "remix";
 import { getUser } from "~/utils/session.server";
 import { getPageBySlug } from "~/utils/db/page.server";
 import { useEditor, EditorContent } from "@tiptap/react";
@@ -9,28 +7,29 @@ import Typography from "@tiptap/extension-typography";
 import Image from "@tiptap/extension-image";
 import Dropcursor from "@tiptap/extension-dropcursor";
 import TTLink from "@tiptap/extension-link";
-import { Prisma } from "@prisma/client";
+import { Page, Prisma, User } from "@prisma/client";
 import { Menu, Transition } from "@headlessui/react";
-import { DotsVerticalIcon } from "@heroicons/react/outline";
+import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { Fragment } from "react";
 import dayjs from "dayjs";
+import { LoaderFunctionArgs } from "@remix-run/node";
+import { useLoaderData, Link } from "@remix-run/react";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export const loader: LoaderFunction = async ({ request, params }) => {
+export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const slug = "me"; // Hack to get around remix router not reloading a page from a link in TipTap which is a normal a tag
-  const page = await getPageBySlug(slug);
+  const page = (await getPageBySlug(slug)) as Page;
 
-  const user = await getUser(request);
+  const user = (await getUser(request)) as User;
 
-  const data = { page, user };
-  return data;
+  return { page, user };
 };
 
-export default function Page() {
-  const { page, user } = useLoaderData();
+export default function AboutPage() {
+  const { page, user } = useLoaderData<typeof loader>();
 
   const content = page.body as Prisma.JsonObject;
 
@@ -92,7 +91,7 @@ export default function Page() {
                   <div>
                     <Menu.Button className="-my-2 flex items-center rounded-full p-2 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                       <span className="sr-only">Open options</span>
-                      <DotsVerticalIcon
+                      <EllipsisVerticalIcon
                         className="h-5 w-5"
                         aria-hidden="true"
                       />

@@ -1,9 +1,11 @@
-import { PrismaClient } from "@prisma/client";
+import type { PrismaClient as PrismaClientType } from "@prisma/client";
+import Prisma from '@prisma/client';
+const { PrismaClient } = Prisma;
 
-let db: PrismaClient;
+let db: PrismaClientType;
 
 declare global {
-  var __db: PrismaClient | undefined;
+  var __db: PrismaClientType | undefined;
 }
 
 // this is needed because in development we don't want to restart

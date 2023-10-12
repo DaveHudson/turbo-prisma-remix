@@ -1,12 +1,12 @@
-const defaultTheme = require('tailwindcss/defaultTheme')
+import type { Config } from "tailwindcss"
+import defaultTheme from "tailwindcss/defaultTheme"
 
-module.exports = {
-  mode: "jit",
+export default {
   darkMode: "media",
-  content: ["./app/**/*.{ts,tsx,jsx,js}", "../../node_modules/ui/**/*.{ts,tsx,jsx,js}"],
+  content: ["./app/**/*.{ts,tsx,jsx,js}"],
   theme: {
     extend: {
-      typography: ({ theme }) => ({
+      typography: ({ theme }: { theme: any}) => ({
         DEFAULT: {               
           css: {
             '--tw-prose-p': theme('colors.gray[800]'),
@@ -63,7 +63,6 @@ module.exports = {
   plugins: [
     require('@tailwindcss/typography'),
     require('@tailwindcss/forms'),
-    require('@tailwindcss/aspect-ratio'),
-    require('@tailwindcss/line-clamp'),    
-  ]
-};
+    require('@tailwindcss/aspect-ratio'),  
+  ],
+} as Config

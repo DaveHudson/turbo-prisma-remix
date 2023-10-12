@@ -1,47 +1,28 @@
-import { Link, useLoaderData, useSearchParams } from "remix";
-import type { LoaderFunction } from "remix";
-import {
-  getPosts,
-  getPostsBySearchQuery,
-  getPublishedPosts,
-  PostWithUser,
-} from "~/utils/db/post.server";
+import { PostStatus, Tag } from "@prisma/client";
+import { LoaderFunction } from "@remix-run/node";
+import { useLoaderData, Link } from "@remix-run/react";
 import dayjs from "dayjs";
-import { getTags } from "~/utils/db/tag.server";
-import { Tag, PostStatus } from "@prisma/client";
+
+import invariant from "tiny-invariant";
 import RenderTags from "~/components/RenderTags";
-import { getUser } from "~/utils/session.server";
+import { getPostsByTag, PostWithUser } from "~/utils/db/post.server";
+import { getTags } from "~/utils/db/tag.server";
 
-export const loader: LoaderFunction = async ({ request }) => {
-  const user = await getUser(request);
-
-  let url = new URL(request.url);
-  let search = url.searchParams.get("search");
-
-  let posts;
-  if (search) {
-    posts = await getPostsBySearchQuery(search);
-  } else {
-    if (user?.id === 1) {
-      posts = await getPosts();
-    } else {
-      posts = await getPublishedPosts();
-    }
-  }
-
+export const loader: LoaderFunction = async ({ request, params }) => {
+  invariant(params.id, "expected params.id");
+  const tag = params.id;
+  const posts = await getPostsByTag(tag);
   const tags = await getTags();
 
-  const data = { posts, tags };
+  const data = { posts, tags, tag };
   return data;
 };
 
-export default function Posts() {
-  let [searchParams] = useSearchParams();
-  let search = searchParams.get("search");
-
-  const { posts, tags } = useLoaderData<{
+export default function TaggedPosts() {
+  const { posts, tags, tag } = useLoaderData<{
     posts: PostWithUser[];
     tags: Tag[];
+    tag: string;
   }>();
 
   return (
@@ -49,19 +30,18 @@ export default function Posts() {
       <div className="relative mx-auto max-w-lg divide-y-2 divide-gray-200 lg:max-w-7xl">
         <div>
           <h2 className="text-3xl font-extrabold tracking-tight text-light dark:text-dark sm:text-4xl">
-            {search ? `Search results for "${search}"` : "My latest thoughts"}
+            My latest thoughts on {tag}
           </h2>
           <p className="mt-3 text-xl sm:mt-4">
-            These posts serve as my digital Post-it notes, not just for tech
-            solutions I've implemented, but also for thoughts and musings I
-            don't want slipping through the cracks. If you find them handy too,
-            well, that's a proper win!
+            I have a brain like a sieve. These posts are reminders to myself
+            about solutions I've implemented, if others find them useful too I
+            consider that a win!
           </p>
         </div>
         <div className="mt-12 grid gap-16 pt-12 lg:grid-cols-3 lg:gap-x-5 lg:gap-y-12">
           {posts.map((post) => (
-            <div key={post.id}>
-              <Link to={`${post.slug}`} className="mt-4 block">
+            <div key={post.title}>
+              <Link to={`/posts/${post.slug}`} className="mt-4 block">
                 <p className="text-xl font-semibold text-light dark:text-dark">
                   {post.title}
                 </p>
