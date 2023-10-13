@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { Combobox, Dialog, Transition } from "@headlessui/react";
-import { Post } from "@prisma/client";
+import type { Post } from "@prisma/client";
 
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(" ");

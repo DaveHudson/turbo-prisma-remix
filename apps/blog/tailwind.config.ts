@@ -3,7 +3,7 @@ import defaultTheme from "tailwindcss/defaultTheme"
 
 export default {
   darkMode: "media",
-  content: ["./app/**/*.{ts,tsx,jsx,js}"],
+  content: ["./app/**/*.{ts,tsx,jsx,js}", "../../node_modules/ui/**/*.{ts,tsx,jsx,js}"],
   theme: {
     extend: {
       typography: ({ theme }: { theme: any}) => ({
