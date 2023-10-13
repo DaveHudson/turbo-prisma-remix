@@ -80,6 +80,12 @@ function validateTitle(title: string) {
   }
 }
 
+function validateSlug(slug: string) {
+  if (typeof slug !== "string" || slug.length < 3) {
+    return "Slug should be at least 3 characters long";
+  }
+}
+
 function validateUserId(userId: number) {
   if (typeof userId === undefined) {
     return "Expected a user id";
@@ -111,7 +117,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
 
   const errors = {
     title: validateTitle(post.title),
-    slug: "",
+    slug: validateSlug(post.slug),
     body: "",
     category: "",
     imageUrl: "",
