@@ -8,12 +8,12 @@ import Typography from "@tiptap/extension-typography";
 import Image from "@tiptap/extension-image";
 import Dropcursor from "@tiptap/extension-dropcursor";
 import TTLink from "@tiptap/extension-link";
-import { Page, Prisma, User } from "@prisma/client";
+import type { Page, Prisma, User } from "@prisma/client";
 import dayjs from "dayjs";
 import { Menu, Transition } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { Fragment } from "react";
-import { LoaderFunctionArgs } from "@remix-run/node";
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData, Link } from "@remix-run/react";
 
 function classNames(...classes: string[]) {
@@ -23,7 +23,7 @@ function classNames(...classes: string[]) {
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   invariant(params.id, "expected params.id");
 
-  const slug = params.id;
+  const slug = params.id as string;
   const page = (await getPageBySlug(slug)) as Page;
 
   const user = (await getUser(request)) as User;

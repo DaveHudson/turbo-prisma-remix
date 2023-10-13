@@ -1,5 +1,6 @@
 import { getUser } from "~/utils/session.server";
-import { PostWithUser, getPostBySlug } from "~/utils/db/post.server";
+import type { PostWithUser } from "~/utils/db/post.server";
+import { getPostBySlug } from "~/utils/db/post.server";
 import invariant from "tiny-invariant";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -8,14 +9,16 @@ import Typography from "@tiptap/extension-typography";
 import Image from "@tiptap/extension-image";
 import Dropcursor from "@tiptap/extension-dropcursor";
 import TTLink from "@tiptap/extension-link";
-import { PostStatus, Prisma, Tag, User } from "@prisma/client";
+import type { Prisma, Tag, User } from "@prisma/client";
+import { PostStatus } from "@prisma/client";
 import RenderTags from "~/components/RenderTags";
 import { getTags } from "~/utils/db/tag.server";
 import dayjs from "dayjs";
 import { Menu, Transition } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { Fragment } from "react";
-import { LoaderFunctionArgs, json } from "@remix-run/node";
+import type { LoaderFunctionArgs} from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 
 function classNames(...classes: string[]) {
@@ -23,20 +26,24 @@ function classNames(...classes: string[]) {
 }
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
-  invariant(params.postid, "expected params.postid");
+  invariant(params.id, "expected params.postid");
 
-  const slug = params.postid;
+  const slug = params.id;
   const post = (await getPostBySlug(slug)) as PostWithUser;
 
   const dbTags = (await getTags()) as Tag[];
 
-  const user = (await getUser(request)) as User;
+  const user = (await getUser(request)) as User | null;
 
   return json({ post, dbTags, user });
 };
 
 export default function BlogPost() {
-  const { post, dbTags, user } = useLoaderData<typeof loader>();
+  const { post, dbTags, user } = useLoaderData<{
+    post: PostWithUser;
+    dbTags: Tag[];
+    user: User;
+  }>();
 
   const content = post.body as Prisma.JsonObject;
 
@@ -190,16 +197,16 @@ export default function BlogPost() {
           </div>
           <div className="mt-6 mb-3 flex justify-center">
             <div className="flex-shrink-0">
-              <span className="sr-only">{post.user.name}</span>
-              <img
+              <span className="sr-only">{post?.user?.name}</span>
+              {user?.profileUrl && <img
                 className="h-10 w-10 rounded-full"
                 src={user.profileUrl!}
                 alt=""
-              />
+              />}
             </div>
             <div className="ml-3">
               <p className="text-sm font-medium text-light dark:text-dark">
-                {user.name}
+                {user?.name}
               </p>
               <div className="flex space-x-1 text-sm">
                 <time dateTime={dayjs(post.createdAt).format("MMM D, YYYY")}>

@@ -141,11 +141,11 @@ export default function Index() {
               <div className="mt-6 flex items-center">
                 <div className="flex-shrink-0">
                   <span className="sr-only">{post.user.name}</span>
-                  <img
+                  {post?.user?.profileUrl && <img
                     className="h-10 w-10 rounded-full"
                     src={post.user.profileUrl!}
                     alt=""
-                  />
+                  />}
                 </div>
                 <div className="ml-3">
                   <p className="text-sm font-medium text-light dark:text-dark">

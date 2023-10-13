@@ -1,4 +1,4 @@
-import { Page, User, Prisma } from "@prisma/client";
+import  type { Page, User, Prisma } from "@prisma/client";
 import invariant from "tiny-invariant";
 import { db } from "~/utils/db.server";
 
@@ -16,7 +16,7 @@ export async function getPageBySlug(slug: string) {
     },
   });
 
-  if (!page) throw new Error("Page not found");
+  if (!page) throw new Error("Page by slug not found");
 
   const pageData = {
     ...page,

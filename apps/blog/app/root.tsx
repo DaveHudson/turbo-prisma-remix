@@ -11,8 +11,10 @@ import {
   isRouteErrorResponse,
   useLoaderData,
 } from "@remix-run/react";
-import { LoaderFunction, MetaFunction, json } from "@remix-run/node";
-import { Fragment, SVGProps } from "react";
+import type { LoaderFunction, MetaFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import type { SVGProps } from "react";
+import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { getUser } from "./utils/session.server";
@@ -23,8 +25,9 @@ import faviconapple from "./images/favicon.png";
 import { Search } from "ui";
 import { XCircleIcon } from "@heroicons/react/24/solid";
 import CommandPalette from "./components/CommandPalette";
-import { getPublishedPosts, PostWithUser } from "./utils/db/post.server";
-import { User } from "@prisma/client";
+import type { PostWithUser } from "./utils/db/post.server";
+import { getPublishedPosts } from "./utils/db/post.server";
+import type { User } from "@prisma/client";
 
 export function links() {
   return [
@@ -36,6 +39,11 @@ export function links() {
 export const meta: MetaFunction = () => {
   return [{ title: "Applification" }];
 };
+
+type loaderDataType = {
+  user: User | null;
+  posts: PostWithUser[];
+}
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = (await getUser(request)) as User;
@@ -109,8 +117,9 @@ function Document({
 }
 
 function Layout({ children }: React.PropsWithChildren<{}>) {
-  // @ts-expect-error
-  const { user, posts } = useLoaderData<typeof loader>();
+
+  const { user, posts } = useLoaderData<typeof loader>() as unknown as loaderDataType;
+  
 
   const navigation = [
     { name: "Home", href: "/" },
@@ -197,11 +206,11 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
                       <div>
                         <Menu.Button className="flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2">
                           <span className="sr-only">Open user menu</span>
-                          <img
+                          {user?.profileUrl && <img
                             className="h-8 w-8 rounded-full"
-                            src={user?.profileUrl!}
+                            src={user?.profileUrl}
                             alt=""
-                          />
+                          />}                          
                         </Menu.Button>
                       </div>
                       <Transition
@@ -293,18 +302,18 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
                 <div className="mb-5 border-b border-gray-200 pt-4 pb-3">
                   <div className="flex items-center px-4">
                     <div className="flex-shrink-0">
-                      <img
+                      {user?.profileUrl && <img
                         className="h-10 w-10 rounded-full"
-                        src={user?.profileUrl!}
+                        src={user?.profileUrl}
                         alt=""
-                      />
+                      />}
                     </div>
                     <div className="ml-3">
                       <div className="text-base font-medium text-light dark:text-dark">
-                        {user?.name}
+                        {user && user?.name}
                       </div>
                       <div className="text-sm font-medium text-light-accent dark:text-dark-accent">
-                        {user?.username}
+                        {user && user?.username}
                       </div>
                     </div>
                   </div>
@@ -403,7 +412,7 @@ export function ErrorBoundary() {
 
   // Don't forget to typecheck with your own logic.
   // Any value can be thrown, not just errors!
-  let errorMessage = "Unknown error";
+  // let errorMessage = "Unknown error";
   // if (isDefinitelyAnError(error)) {
   //   errorMessage = error.message;
   // }

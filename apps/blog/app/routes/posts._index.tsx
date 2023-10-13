@@ -1,38 +1,41 @@
+import type {
+  PostWithUser} from "~/utils/db/post.server";
 import {
   getPosts,
   getPostsBySearchQuery,
-  getPublishedPosts,
-  PostWithUser,
+  getPublishedPosts
 } from "~/utils/db/post.server";
 import dayjs from "dayjs";
 import { getTags } from "~/utils/db/tag.server";
-import { Tag, PostStatus } from "@prisma/client";
+import type { Tag, User} from "@prisma/client";
+import { PostStatus } from "@prisma/client";
 import RenderTags from "~/components/RenderTags";
 import { getUser } from "~/utils/session.server";
-import { LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import type { LoaderFunction } from "@remix-run/node";
 import { useSearchParams, useLoaderData, Link } from "@remix-run/react";
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const user = await getUser(request);
+  const user = (await getUser(request)) as User;
 
   let url = new URL(request.url);
   let search = url.searchParams.get("search");
 
-  let posts;
+  let posts:PostWithUser[];
   if (search) {
     posts = await getPostsBySearchQuery(search);
   } else {
-    if (user?.id === 1) {
-      posts = await getPosts();
+    if (user && user?.id === 1) {
+      posts = await getPosts() as PostWithUser[];
     } else {
-      posts = await getPublishedPosts();
+      posts = await getPublishedPosts() as PostWithUser[];
     }
   }
 
-  const tags = await getTags();
+  const tags = await getTags() as Tag[];
 
-  const data = { posts, tags };
-  return data;
+  return json({ posts, tags });
+
 };
 
 export default function Posts() {
@@ -81,16 +84,16 @@ export default function Posts() {
               )}
               <div className="mt-6 flex items-center">
                 <div className="flex-shrink-0">
-                  <span className="sr-only">{post.user.name}</span>
-                  <img
+                  <span className="sr-only">{post?.user?.name}</span>
+                  {post?.user?.profileUrl && <img
                     className="h-10 w-10 rounded-full"
                     src={post.user.profileUrl!}
                     alt=""
-                  />
+                  />}                  
                 </div>
                 <div className="ml-3">
                   <p className="text-sm font-medium text-light dark:text-dark">
-                    {post.user.name}
+                    {post?.user?.name}
                   </p>
                   <div className="flex space-x-1 text-sm">
                     <time

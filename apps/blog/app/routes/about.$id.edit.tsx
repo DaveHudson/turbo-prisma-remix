@@ -32,6 +32,16 @@ import {
   useNavigation,
 } from "@remix-run/react";
 
+type actionDataType = {
+  errors?: {
+    title: string;
+    slug: string;
+    body: string;
+    userId: string;
+    description: string;    
+  },
+}
+
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   invariant(params.id, "expected params.id");
 
@@ -45,7 +55,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const page = (await getPage(Number(pageid))) as Page;
   invariant(page, "expected page to exist");
 
-  return { page, user };
+  return json({ page, user });
 };
 
 function validateTitle(title: string) {
@@ -97,7 +107,8 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
 
 export default function EditPage() {
   
-  const actionData = useActionData<typeof action>();
+  const actionData = useActionData<typeof action>() as unknown as actionDataType;
+  const errors = actionData?.errors;
   const transition = useNavigation();
 
   const { page } = useLoaderData<typeof loader>();
@@ -188,7 +199,7 @@ export default function EditPage() {
               name="title"
               id="title"
               className={`${
-                actionData?.errors.title
+                errors && errors.title
                   ? "block w-full rounded-md border-red-300 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm"
                   : "block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 sm:text-sm"
               }`}
@@ -196,7 +207,7 @@ export default function EditPage() {
               aria-invalid="true"
               aria-describedby="title-error"
             />
-            {actionData?.errors.title && (
+            {errors && errors.title && (
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                 <ExclamationCircleIcon
                   className="h-5 w-5 text-red-500"
@@ -206,7 +217,7 @@ export default function EditPage() {
             )}
           </div>
           <p className="mt-2 text-sm text-red-600" id="title-error">
-            {actionData?.errors.title && actionData?.errors.title}
+            {errors && errors.title && errors.title}
           </p>
 
           <label htmlFor="slug" className="block text-sm font-medium">
@@ -218,7 +229,7 @@ export default function EditPage() {
               name="slug"
               id="slug"
               className={`${
-                actionData?.errors.slug
+                errors && errors.slug
                   ? "block w-full rounded-md border-red-300 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm"
                   : "block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 sm:text-sm"
               }`}
@@ -226,7 +237,7 @@ export default function EditPage() {
               aria-invalid="true"
               aria-describedby="slug-error"
             />
-            {actionData?.errors.slug && (
+            {errors && errors.slug && (
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                 <ExclamationCircleIcon
                   className="h-5 w-5 text-red-500"
@@ -236,7 +247,7 @@ export default function EditPage() {
             )}
           </div>
           <p className="mt-2 text-sm text-red-600" id="slug-error">
-            {actionData?.errors.slug && actionData?.errors.slug}
+            {errors && errors.slug && errors.slug}
           </p>
 
           <div className="pt-6">
@@ -286,10 +297,10 @@ export default function EditPage() {
                 value={JSON.stringify(json)}
               />
               <p className="mt-2 text-sm text-red-600" id="body-error">
-                {actionData?.errors.body && actionData?.errors.body}
+                {errors && errors.body && errors.body}
               </p>
               <p className="mt-2 text-sm text-red-600" id="userid-error">
-                {actionData?.errors.userId && actionData?.errors.userId}
+                {errors && errors.userId && errors.userId}
               </p>
             </div>
           </div>
