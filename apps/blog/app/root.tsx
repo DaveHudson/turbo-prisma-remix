@@ -386,7 +386,7 @@ export function ErrorBoundary() {
   if (isRouteErrorResponse(error)) {
     return (
       <Document title="Error!">
-        <Layout>
+        {/* <Layout> */}
           <div className="rounded-md bg-red-50 p-4">
             <div className="flex">
               <div className="flex-shrink-0">
@@ -405,7 +405,7 @@ export function ErrorBoundary() {
               </div>
             </div>
           </div>
-        </Layout>
+        {/* </Layout> */}
       </Document>
     );
   }
@@ -419,7 +419,7 @@ export function ErrorBoundary() {
 
   return (
     <Document title="Error!">
-      <Layout>
+      {/* <Layout> */}
         <div className="rounded-md bg-red-50 p-4">
           <div className="flex">
             <div className="flex-shrink-0">
@@ -436,7 +436,7 @@ export function ErrorBoundary() {
             </div>
           </div>
         </div>
-      </Layout>
+      {/* </Layout> */}
     </Document>
   );
 }
