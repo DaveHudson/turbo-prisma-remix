@@ -1,9 +1,13 @@
-import { PostStatus, Tag } from "@prisma/client";
+import type { Tag } from "@prisma/client";
+import { PostStatus } from "@prisma/client";
+import type { LoaderFunction } from "@remix-run/node";
+import { useLoaderData, Link } from "@remix-run/react";
 import dayjs from "dayjs";
-import { Link, LoaderFunction, useLoaderData } from "remix";
+
 import invariant from "tiny-invariant";
 import RenderTags from "~/components/RenderTags";
-import { getPostsByTag, PostWithUser } from "~/utils/db/post.server";
+import type { PostWithUser } from "~/utils/db/post.server";
+import { getPostsByTag } from "~/utils/db/post.server";
 import { getTags } from "~/utils/db/tag.server";
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -17,8 +21,11 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 };
 
 export default function TaggedPosts() {
-  const { posts, tags, tag } =
-    useLoaderData<{ posts: PostWithUser[]; tags: Tag[]; tag: string }>();
+  const { posts, tags, tag } = useLoaderData<{
+    posts: PostWithUser[];
+    tags: Tag[];
+    tag: string;
+  }>();
 
   return (
     <div className="px-4 pt-16 pb-20 sm:px-6 lg:px-8 lg:pt-16 lg:pb-14">
@@ -57,11 +64,11 @@ export default function TaggedPosts() {
               <div className="mt-6 flex items-center">
                 <div className="flex-shrink-0">
                   <span className="sr-only">{post.user.name}</span>
-                  <img
+                  {post?.user?.profileUrl && <img
                     className="h-10 w-10 rounded-full"
                     src={post.user.profileUrl!}
                     alt=""
-                  />
+                  />}                 
                 </div>
                 <div className="ml-3">
                   <p className="text-sm font-medium text-light dark:text-dark">

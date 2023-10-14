@@ -1,11 +1,7 @@
-import { LockClosedIcon } from "@heroicons/react/outline";
-import {
-  useActionData,
-  json,
-  useTransition,
-  ActionFunction,
-  Form,
-} from "remix";
+import { LockClosedIcon } from "@heroicons/react/24/outline";
+import type { ActionFunctionArgs } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import { useActionData, Form, useNavigation } from "@remix-run/react";
 import { login, createUserSession } from "~/utils/session.server";
 
 function validateUsername(username: string) {
@@ -14,13 +10,24 @@ function validateUsername(username: string) {
   }
 }
 
+type actionDataType = {
+  errors?: {
+    username: string;
+    password: string;
+  },
+  userCredentials?: {
+    username: string;
+    password: string;
+  },
+}
+
 function validatePassword(password: string) {
   if (typeof password !== "string" || password.length < 3) {
     return "password should be at least 3 characters long";
   }
 }
 
-export const action: ActionFunction = async ({ request }) => {
+export const action = async ({ request }: ActionFunctionArgs) => {
   const form = await request.formData();
 
   const userCredentials = {
@@ -55,13 +62,16 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 export default function Login() {
-  const actionData = useActionData();
-  const transition = useTransition();
+  const actionData = useActionData<typeof action>() as actionDataType;
+  const errors = actionData?.errors;
+  const fields = actionData?.userCredentials;
+
+  const transition = useNavigation();
 
   return (
     <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8">
-        <Form action="/auth/signin" method="post" className="mt-8 space-y-6">
+        <Form action="/auth/signin" method="POST" className="mt-8 space-y-6">
           <input type="hidden" name="remember" defaultValue="true" />
           <div className="-space-y-px rounded-md shadow-sm">
             <div>
@@ -74,11 +84,11 @@ export default function Login() {
                 name="username"
                 type="text"
                 className={`${
-                  actionData?.errors.username
+                 errors && errors.username
                     ? "relative block w-full appearance-none rounded-none rounded-t-md border border-red-300 px-3 py-2 text-red-900 placeholder-red-300 focus:z-10 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm"
                     : "relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm"
                 }`}
-                defaultValue={actionData?.fields?.username}
+                defaultValue={fields?.username}
                 placeholder="Username"
               />
             </div>
@@ -92,7 +102,7 @@ export default function Login() {
                 type="password"
                 autoComplete="current-password"
                 className={`${
-                  actionData?.errors.username
+                  errors && errors.username
                     ? "relative block w-full appearance-none rounded-none rounded-b-md border border-red-300 px-3 py-2 text-red-900 placeholder-red-300 focus:z-10 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm"
                     : "relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm"
                 }`}

@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
-import { SearchIcon } from "@heroicons/react/solid";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { Combobox, Dialog, Transition } from "@headlessui/react";
-import { Post } from "@prisma/client";
+import type { Post } from "@prisma/client";
 
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(" ");
@@ -71,7 +71,7 @@ export default function CommandPalette({ posts }: { posts: Post[] }) {
             }}
           >
             <div className="relative">
-              <SearchIcon
+              <MagnifyingGlassIcon
                 className="pointer-events-none absolute top-3.5 left-4 h-5 w-5 text-gray-400"
                 aria-hidden="true"
               />

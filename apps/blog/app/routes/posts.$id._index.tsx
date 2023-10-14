@@ -1,6 +1,5 @@
-import { useLoaderData, Link } from "remix";
-import type { LoaderFunction } from "remix";
 import { getUser } from "~/utils/session.server";
+import type { PostWithUser } from "~/utils/db/post.server";
 import { getPostBySlug } from "~/utils/db/post.server";
 import invariant from "tiny-invariant";
 import { useEditor, EditorContent } from "@tiptap/react";
@@ -10,34 +9,41 @@ import Typography from "@tiptap/extension-typography";
 import Image from "@tiptap/extension-image";
 import Dropcursor from "@tiptap/extension-dropcursor";
 import TTLink from "@tiptap/extension-link";
-import { PostStatus, Prisma } from "@prisma/client";
+import type { Prisma, Tag, User } from "@prisma/client";
+import { PostStatus } from "@prisma/client";
 import RenderTags from "~/components/RenderTags";
 import { getTags } from "~/utils/db/tag.server";
 import dayjs from "dayjs";
 import { Menu, Transition } from "@headlessui/react";
-import { DotsVerticalIcon } from "@heroicons/react/outline";
+import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { Fragment } from "react";
+import type { LoaderFunctionArgs} from "@remix-run/node";
+import { json } from "@remix-run/node";
+import { Link, useLoaderData } from "@remix-run/react";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export const loader: LoaderFunction = async ({ request, params }) => {
-  invariant(params.postid, "expected params.postid");
+export const loader = async ({ request, params }: LoaderFunctionArgs) => {
+  invariant(params.id, "expected params.postid");
 
-  const slug = params.postid;
-  const post = await getPostBySlug(slug);
+  const slug = params.id;
+  const post = (await getPostBySlug(slug)) as PostWithUser;
 
-  const dbTags = await getTags();
+  const dbTags = (await getTags()) as Tag[];
 
-  const user = await getUser(request);
+  const user = (await getUser(request)) as User | null;
 
-  const data = { post, dbTags, user };
-  return data;
+  return json({ post, dbTags, user });
 };
 
-export default function Post() {
-  const { post, dbTags, user } = useLoaderData();
+export default function BlogPost() {
+  const { post, dbTags, user } = useLoaderData<{
+    post: PostWithUser;
+    dbTags: Tag[];
+    user: User;
+  }>();
 
   const content = post.body as Prisma.JsonObject;
 
@@ -102,7 +108,7 @@ export default function Post() {
                   <div>
                     <Menu.Button className="-my-2 flex items-center rounded-full p-2 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                       <span className="sr-only">Open options</span>
-                      <DotsVerticalIcon
+                      <EllipsisVerticalIcon
                         className="h-5 w-5"
                         aria-hidden="true"
                       />
@@ -189,19 +195,18 @@ export default function Post() {
               </span>
             </div>
           </div>
-
           <div className="mt-6 mb-3 flex justify-center">
             <div className="flex-shrink-0">
-              <span className="sr-only">{post.user.name}</span>
-              <img
+              <span className="sr-only">{post?.user?.name}</span>
+              {user?.profileUrl && <img
                 className="h-10 w-10 rounded-full"
-                src={post.user.profileUrl}
+                src={user.profileUrl!}
                 alt=""
-              />
+              />}
             </div>
             <div className="ml-3">
               <p className="text-sm font-medium text-light dark:text-dark">
-                {post.user.name}
+                {user?.name}
               </p>
               <div className="flex space-x-1 text-sm">
                 <time dateTime={dayjs(post.createdAt).format("MMM D, YYYY")}>
@@ -210,15 +215,13 @@ export default function Post() {
               </div>
             </div>
           </div>
-
+          {/* @ts-expect-error */}
           <RenderTags tags={post.tags} dbTags={dbTags} />
-
           <div className="flex justify-center space-x-3 pt-4">
             <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
               {post.readingTime}
             </span>
           </div>
-
           <div className="relative mt-8">
             <div
               className="absolute inset-0 flex items-center"

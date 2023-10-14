@@ -7,8 +7,7 @@ datasource postgresql {
 }
 
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["filterJson"]
+  provider = "prisma-client-js"
 }
 
 enum PostStatus {

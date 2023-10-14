@@ -2,29 +2,32 @@ import {
   Link,
   Links,
   LiveReload,
-  LoaderFunction,
   Meta,
   NavLink,
   Outlet,
   Scripts,
   ScrollRestoration,
-  useCatch,
+  useRouteError,
+  isRouteErrorResponse,
   useLoaderData,
-} from "remix";
-import { Fragment, SVGProps } from "react";
+} from "@remix-run/react";
+import type { LoaderFunction, MetaFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import type { SVGProps } from "react";
+import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { MenuIcon, XIcon } from "@heroicons/react/outline";
-import type { MetaFunction } from "remix";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { getUser } from "./utils/session.server";
 import styles from "./tailwind.css";
 import favicon from "./images/logo-light.svg";
 import favicondark from "./images/logo-dark.svg";
 import faviconapple from "./images/favicon.png";
 import { Search } from "ui";
-import { XCircleIcon } from "@heroicons/react/solid";
+import { XCircleIcon } from "@heroicons/react/24/solid";
 import CommandPalette from "./components/CommandPalette";
-import { getPublishedPosts, PostWithUser } from "./utils/db/post.server";
-import { User } from "@prisma/client";
+import type { PostWithUser } from "./utils/db/post.server";
+import { getPublishedPosts } from "./utils/db/post.server";
+import type { User } from "@prisma/client";
 
 export function links() {
   return [
@@ -34,17 +37,20 @@ export function links() {
 }
 
 export const meta: MetaFunction = () => {
-  return { title: "Applification" };
+  return [{ title: "Applification" }];
 };
 
+type loaderDataType = {
+  user: User | null;
+  posts: PostWithUser[];
+}
+
 export const loader: LoaderFunction = async ({ request }) => {
-  const user = await getUser(request);
+  const user = (await getUser(request)) as User;
 
-  const posts = await getPublishedPosts();
+  const posts = (await getPublishedPosts()) as PostWithUser[];
 
-  const data = { user, posts };
-
-  return data;
+  return json({ user, posts });
 };
 
 export default function App() {
@@ -103,15 +109,17 @@ function Document({
         {children}
         <ScrollRestoration />
         <Scripts />
-        {process.env.NODE_ENV === "development" ? <LiveReload /> : null}
+        <LiveReload />
+        {/* {process.env.NODE_ENV === "development" ? <LiveReload /> : null} */}
       </body>
     </html>
   );
 }
 
 function Layout({ children }: React.PropsWithChildren<{}>) {
-  const { user, posts } =
-    useLoaderData<{ user: User; posts: PostWithUser[] }>();
+
+  const { user, posts } = useLoaderData<typeof loader>() as unknown as loaderDataType;
+  
 
   const navigation = [
     { name: "Home", href: "/" },
@@ -186,9 +194,9 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
                   <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-sky-500">
                     <span className="sr-only">Open menu</span>
                     {open ? (
-                      <XIcon className="block h-6 w-6" aria-hidden="true" />
+                      <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
                     ) : (
-                      <MenuIcon className="block h-6 w-6" aria-hidden="true" />
+                      <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
                     )}
                   </Disclosure.Button>
                 </div>
@@ -198,11 +206,11 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
                       <div>
                         <Menu.Button className="flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2">
                           <span className="sr-only">Open user menu</span>
-                          <img
+                          {user?.profileUrl && <img
                             className="h-8 w-8 rounded-full"
-                            src={user?.profileUrl!}
+                            src={user?.profileUrl}
                             alt=""
-                          />
+                          />}                          
                         </Menu.Button>
                       </div>
                       <Transition
@@ -294,18 +302,18 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
                 <div className="mb-5 border-b border-gray-200 pt-4 pb-3">
                   <div className="flex items-center px-4">
                     <div className="flex-shrink-0">
-                      <img
+                      {user?.profileUrl && <img
                         className="h-10 w-10 rounded-full"
-                        src={user?.profileUrl!}
+                        src={user?.profileUrl}
                         alt=""
-                      />
+                      />}
                     </div>
                     <div className="ml-3">
                       <div className="text-base font-medium text-light dark:text-dark">
-                        {user?.name}
+                        {user && user?.name}
                       </div>
                       <div className="text-sm font-medium text-light-accent dark:text-dark-accent">
-                        {user?.username}
+                        {user && user?.username}
                       </div>
                     </div>
                   </div>
@@ -371,56 +379,44 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
   );
 }
 
-// renders when an action or loader throws
-export function CatchBoundary() {
-  const caught = useCatch();
+export function ErrorBoundary() {
+  const error = useRouteError();
 
-  let message;
-  switch (caught.status) {
-    case 401:
-      message = (
-        <p>
-          Oops! Looks like you tried to visit a page that you do not have access
-          to.
-        </p>
-      );
-      break;
-    case 404:
-      message = (
-        <p>Oops! Looks like you tried to visit a page that does not exist.</p>
-      );
-      break;
-
-    default:
-      throw new Error(caught.data || caught.statusText);
-  }
-
-  return (
-    <Document title={`${caught.status} ${caught.statusText}`}>
-      <Layout>
-        <div className="rounded-md bg-red-50 p-4">
-          <div className="flex">
-            <div className="flex-shrink-0">
-              <XCircleIcon
-                className="h-8 w-8 text-red-400"
-                aria-hidden="true"
-              />
-            </div>
-            <div className="ml-3">
-              <h1 className="text-2xl font-medium text-red-800">
-                {caught.status}: {caught.statusText}
-              </h1>
-              <div className="mt-2 text-sm text-red-700">{message}</div>
+  // when true, this is what used to go to `CatchBoundary`
+  if (isRouteErrorResponse(error)) {
+    return (
+      <Document title="Error!">
+        <Layout>
+          <div className="rounded-md bg-red-50 p-4">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <XCircleIcon
+                  className="h-8 w-8 text-red-400"
+                  aria-hidden="true"
+                />
+              </div>
+              <div className="ml-3">
+                <h1 className="text-2xl font-medium text-red-800">
+                  {`${error.status}: ${error.data.message}`}
+                </h1>
+                <div className="mt-2 text-sm text-red-700">
+                  {error.data.message}
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </Layout>
-    </Document>
-  );
-}
+        </Layout>
+      </Document>
+    );
+  }
 
-// renders when there is an error anywhere on the route
-export function ErrorBoundary({ error }: { error: Error }) {
+  // Don't forget to typecheck with your own logic.
+  // Any value can be thrown, not just errors!
+  // let errorMessage = "Unknown error";
+  // if (isDefinitelyAnError(error)) {
+  //   errorMessage = error.message;
+  // }
+
   return (
     <Document title="Error!">
       <Layout>
@@ -433,10 +429,10 @@ export function ErrorBoundary({ error }: { error: Error }) {
               />
             </div>
             <div className="ml-3">
-              <h1 className="text-2xl font-medium text-red-800">
-                {`${error.name}: ${error.message}`}
-              </h1>
-              <div className="mt-2 text-sm text-red-700">{error.stack}</div>
+              <h1 className="text-2xl font-medium text-red-800">Uh oh ...</h1>
+              <div className="mt-2 text-sm text-red-700">
+                Something went wrong.
+              </div>
             </div>
           </div>
         </div>

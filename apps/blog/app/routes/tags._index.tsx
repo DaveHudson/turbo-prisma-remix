@@ -1,22 +1,21 @@
-import { Tag } from "@prisma/client";
-import { Link, LoaderFunction, useLoaderData } from "remix";
+import { LoaderFunctionArgs, json } from "@remix-run/node";
+import { useLoaderData, Link } from "@remix-run/react";
 import { getTags } from "~/utils/db/tag.server";
 
-export const loader: LoaderFunction = async () => {
-  const tags = await getTags();
-
-  const data = { tags };
-  return data;
-};
+export async function loader({ request }: LoaderFunctionArgs) {
+  return json({
+    tags: await getTags(),
+  });
+}
 
 export default function TagList() {
-  const { tags } = useLoaderData<{ tags: Tag[] }>();
+  const { tags } = useLoaderData<typeof loader>();
 
   return (
     <>
       <p>Need to list all tags and colours so they get inserted into the CSS</p>
       <div className="flex justify-center space-x-3 pt-3">
-        {tags.map((tag: Tag) => (
+        {tags.map((tag) => (
           <span
             className={`inline-flex items-center rounded px-2 py-0.5 text-xs font-medium bg-${tag.color}-100`}
           >

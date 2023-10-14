@@ -1,21 +1,26 @@
-import { PostStatus, Tag } from "@prisma/client";
-import dayjs from "dayjs";
+import type {  Tag } from "@prisma/client";
+import { PostStatus  } from "@prisma/client";
+import type {
+  ActionFunctionArgs,
+  LoaderFunctionArgs} from "@remix-run/node";
 import {
-  ActionFunction,
-  Form,
-  json,
-  Link,
-  LoaderFunction,
   redirect,
+  json
+} from "@remix-run/node";
+import {
+  useSearchParams,
   useActionData,
   useLoaderData,
-  useSearchParams,
-  useTransition,
-} from "remix";
+  Link,
+  Form,
+  useNavigation,
+} from "@remix-run/react";
+import dayjs from "dayjs";
 import { SitePromo } from "ui";
 import RenderTags from "~/components/RenderTags";
 import { emailSignup } from "~/utils/db/emaillist.server";
-import { getLatestPosts, PostWithUser } from "~/utils/db/post.server";
+import type { PostWithUser } from "~/utils/db/post.server";
+import { getLatestPosts } from "~/utils/db/post.server";
 import { getTags } from "~/utils/db/tag.server";
 
 function validateEmail(email: string) {
@@ -24,16 +29,16 @@ function validateEmail(email: string) {
   }
 }
 
-export const loader: LoaderFunction = async () => {
-  let posts = await getLatestPosts();
+export async function loader ({ request }: LoaderFunctionArgs) {
+  let posts = await getLatestPosts() as PostWithUser[];
 
-  const tags = await getTags();
+  const tags = await getTags() as Tag[];
 
-  const data = { posts, tags };
-  return data;
-};
+  return { posts, tags };
 
-export const action: ActionFunction = async ({ request }) => {
+}
+
+export async function action({ request }: ActionFunctionArgs) {
   const form = await request.formData();
 
   const emailSignUpDetails = {
@@ -46,23 +51,25 @@ export const action: ActionFunction = async ({ request }) => {
 
   // Return errors
   if (Object.values(errors).some(Boolean)) {
-    return json({ errors, emailSignUpDetails }, { status: 422 }); // Unprocessable entity
+    // return json({ errors, emailSignUpDetails }, { status: 422 }); // Unprocessable entity
+    return json({ errors }); 
   }
 
   const res = await emailSignup(emailSignUpDetails);
   if (!res) {
-    return json({ ...emailSignUpDetails, formError: "Something went wrong" });
+    // return json({ ...emailSignUpDetails, formError: "Something went wrong" });
+    return json({ errors: { email: "Something went wrong" }});
   }
 
   return redirect("/?sent=true");
-};
+}
 
 export default function Index() {
   let [searchParams] = useSearchParams();
   let sent = searchParams.get("sent");
 
-  const actionData = useActionData();
-  const transition = useTransition();
+  const actionData  = useActionData<typeof action>();
+  const transition = useNavigation();
 
   //"prose focus:outline-none max-w-none max-w-3xl prose-img:rounded-lg pt-8 first-line:uppercase first-line:tracking-widest tracking-wider first-letter:text-7xl first-letter:font-bold first-letter:mr-3 first-letter:float-left dark:prose-invert",
 
@@ -134,11 +141,11 @@ export default function Index() {
               <div className="mt-6 flex items-center">
                 <div className="flex-shrink-0">
                   <span className="sr-only">{post.user.name}</span>
-                  <img
+                  {post?.user?.profileUrl && <img
                     className="h-10 w-10 rounded-full"
                     src={post.user.profileUrl!}
                     alt=""
-                  />
+                  />}
                 </div>
                 <div className="ml-3">
                   <p className="text-sm font-medium text-light dark:text-dark">
@@ -175,7 +182,7 @@ export default function Index() {
           {sent ? (
             <div className="text-2xl">You are signed up, thank you!</div>
           ) : (
-            <Form method="post" className="mt-8 sm:flex">
+            <Form method="POST" className="mt-8 sm:flex">
               <label htmlFor="email" className="sr-only">
                 Email address
               </label>

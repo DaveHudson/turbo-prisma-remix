@@ -23,7 +23,7 @@ export async function emailSignup({ email }: { email: string }) {
   const res = await fetch(
     `https://api.mailgun.net/v3/lists/dave@${mailgunDomain}/members`,
     {
-      method: "post",
+      method: "POST",
       body,
       headers: {
         Authorization: `Basic ${auth}`,
