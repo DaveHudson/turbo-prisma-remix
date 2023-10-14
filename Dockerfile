@@ -1,7 +1,7 @@
 # -----------------------------------------------
 # BASE NODE IMAGE!!
 # -----------------------------------------------
-FROM node:20.5.1-bookworm-slim as base
+FROM node:18-bullseye-slim as base
 
 # Install openssl for Prisma & git for Turbo repo 
 
