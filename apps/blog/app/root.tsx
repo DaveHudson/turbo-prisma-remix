@@ -13,7 +13,6 @@ import {
 } from "@remix-run/react";
 import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import type { SVGProps } from "react";
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -28,6 +27,8 @@ import CommandPalette from "./components/CommandPalette";
 import type { PostWithUser } from "./utils/db/post.server";
 import { getPublishedPosts } from "./utils/db/post.server";
 import type { User } from "@prisma/client";
+import Footer from "./components/Footer";
+import { LayoutError } from "./components/LayoutError";
 
 export function links() {
   return [
@@ -43,7 +44,7 @@ export const meta: MetaFunction = () => {
 type loaderDataType = {
   user: User | null;
   posts: PostWithUser[];
-}
+};
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = (await getUser(request)) as User;
@@ -117,9 +118,9 @@ function Document({
 }
 
 function Layout({ children }: React.PropsWithChildren<{}>) {
-
-  const { user, posts } = useLoaderData<typeof loader>() as unknown as loaderDataType;
-  
+  const { user, posts } = useLoaderData<
+    typeof loader
+  >() as unknown as loaderDataType;
 
   const navigation = [
     { name: "Home", href: "/" },
@@ -128,42 +129,6 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
     { name: "Contact", href: "/contact" },
   ];
   const userNavigation = [{ name: "New Post", href: "/posts/new" }];
-
-  const footernavigation = [
-    {
-      name: "Twitter",
-      href: "https://twitter.com/applificationhq",
-      icon: (props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) => (
-        <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
-          <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
-        </svg>
-      ),
-    },
-    {
-      name: "GitHub",
-      href: "https://github.com/DaveHudson",
-      icon: (props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) => (
-        <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
-          <path
-            fillRule="evenodd"
-            d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
-            clipRule="evenodd"
-          />
-        </svg>
-      ),
-    },
-    {
-      name: "Linked In",
-      href: "https://www.linkedin.com/in/hudsond/",
-      icon: (props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) => (
-        <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24">
-            <path d="M19 0H5a5 5 0 0 0-5 5v14a5 5 0 0 0 5 5h14a5 5 0 0 0 5-5V5a5 5 0 0 0-5-5zM8 19H5V8h3v11zM6.5 6.732c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zM20 19h-3v-5.604c0-3.368-4-3.113-4 0V19h-3V8h3v1.765c1.396-2.586 7-2.777 7 2.476V19z" />
-          </svg>
-        </svg>
-      ),
-    },
-  ];
 
   function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(" ");
@@ -206,11 +171,13 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
                       <div>
                         <Menu.Button className="flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2">
                           <span className="sr-only">Open user menu</span>
-                          {user?.profileUrl && <img
-                            className="h-8 w-8 rounded-full"
-                            src={user?.profileUrl}
-                            alt=""
-                          />}                          
+                          {user?.profileUrl && (
+                            <img
+                              className="h-8 w-8 rounded-full"
+                              src={user?.profileUrl}
+                              alt=""
+                            />
+                          )}
                         </Menu.Button>
                       </div>
                       <Transition
@@ -302,11 +269,13 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
                 <div className="mb-5 border-b border-gray-200 pt-4 pb-3">
                   <div className="flex items-center px-4">
                     <div className="flex-shrink-0">
-                      {user?.profileUrl && <img
-                        className="h-10 w-10 rounded-full"
-                        src={user?.profileUrl}
-                        alt=""
-                      />}
+                      {user?.profileUrl && (
+                        <img
+                          className="h-10 w-10 rounded-full"
+                          src={user?.profileUrl}
+                          alt=""
+                        />
+                      )}
                     </div>
                     <div className="ml-3">
                       <div className="text-base font-medium text-light dark:text-dark">
@@ -352,29 +321,7 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
         )}
       </Disclosure>
       {children}
-      <footer>
-        <div className="mx-auto max-w-7xl py-12 px-4 sm:px-6 md:flex md:items-center md:justify-between lg:px-8">
-          <div className="flex justify-center space-x-6 md:order-2">
-            {footernavigation.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                target="_blank"
-                rel="noreferrer"
-                className="text-gray-400 hover:text-gray-500"
-              >
-                <span className="sr-only">{item.name}</span>
-                <item.icon className="h-6 w-6" aria-hidden="true" />
-              </a>
-            ))}
-          </div>
-          <div className="mt-8 md:order-1 md:mt-0">
-            <p className="text-center text-base text-gray-400">
-              &copy; {new Date().getFullYear()} Applification Ltd.
-            </p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
@@ -386,7 +333,7 @@ export function ErrorBoundary() {
   if (isRouteErrorResponse(error)) {
     return (
       <Document title="Error!">
-        {/* <Layout> */}
+        <LayoutError>
           <div className="rounded-md bg-red-50 p-4">
             <div className="flex">
               <div className="flex-shrink-0">
@@ -405,7 +352,7 @@ export function ErrorBoundary() {
               </div>
             </div>
           </div>
-        {/* </Layout> */}
+        </LayoutError>
       </Document>
     );
   }
@@ -419,7 +366,7 @@ export function ErrorBoundary() {
 
   return (
     <Document title="Error!">
-      {/* <Layout> */}
+      <LayoutError>
         <div className="rounded-md bg-red-50 p-4">
           <div className="flex">
             <div className="flex-shrink-0">
@@ -436,12 +383,14 @@ export function ErrorBoundary() {
             </div>
           </div>
         </div>
-      {/* </Layout> */}
+      </LayoutError>
     </Document>
   );
 }
 
-function ApplificationLogo(props: React.ComponentPropsWithoutRef<"svg">) {
+export function ApplificationLogo(
+  props: React.ComponentPropsWithoutRef<"svg">
+) {
   return (
     <svg
       version="1.0"
