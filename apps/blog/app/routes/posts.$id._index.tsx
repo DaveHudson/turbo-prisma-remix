@@ -17,7 +17,7 @@ import dayjs from "dayjs";
 import { Menu, Transition } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { Fragment } from "react";
-import type { LoaderFunctionArgs} from "@remix-run/node";
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 
@@ -198,11 +198,13 @@ export default function BlogPost() {
           <div className="mt-6 mb-3 flex justify-center">
             <div className="flex-shrink-0">
               <span className="sr-only">{post?.user?.name}</span>
-              {user?.profileUrl && <img
-                className="h-10 w-10 rounded-full"
-                src={user.profileUrl!}
-                alt=""
-              />}
+              {user?.profileUrl && (
+                <img
+                  className="h-10 w-10 rounded-full"
+                  src={user.profileUrl!}
+                  alt=""
+                />
+              )}
             </div>
             <div className="ml-3">
               <p className="text-sm font-medium text-light dark:text-dark">
@@ -251,7 +253,7 @@ export default function BlogPost() {
         </div>
 
         <div className="md:flex md:justify-center">
-          <EditorContent editor={editor} />
+          <EditorContent editor={editor} className="content" />
         </div>
       </div>
     </div>
