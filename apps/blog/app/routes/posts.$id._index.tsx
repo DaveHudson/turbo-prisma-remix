@@ -252,9 +252,9 @@ export default function BlogPost() {
           </div>
         </div>
 
-        <div className="md:flex md:justify-center">
+        <main className="md:flex md:justify-center">
           <EditorContent editor={editor} className="content" />
-        </div>
+        </main>
       </div>
     </div>
   );
