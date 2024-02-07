@@ -15,7 +15,7 @@ export default function Hudson() {
             CV, blog posts, and more.
           </p>
         </div>
-        <div className="mt-12 pt-12 lg:grid-cols-3 lg:gap-x-5 lg:gap-y-12 space-y-6 text-slate-200 font-sans first-line:uppercase first-line:tracking-widest tracking-wider first-letter:text-7xl first-letter:font-bold first-letter:mr-3 first-letter:float-left ">
+        <div className="mt-12 pt-12 lg:grid-cols-3 lg:gap-x-5 lg:gap-y-12 space-y-6 dark:text-slate-200 font-sans first-line:uppercase first-line:tracking-widest tracking-wider first-letter:text-7xl first-letter:font-bold first-letter:mr-3 first-letter:float-left ">
           <p>
             The front-end of Hudson is a Next.js web app paired with the Vercel
             AI SDK, providing a chat UI to interact with the AI.
