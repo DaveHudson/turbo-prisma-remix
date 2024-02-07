@@ -1,4 +1,5 @@
-import { LoaderFunctionArgs, json } from "@remix-run/node";
+import type { LoaderFunctionArgs } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { useLoaderData, Link } from "@remix-run/react";
 import { getTags } from "~/utils/db/tag.server";
 
@@ -67,6 +68,15 @@ export default function TagList() {
         </span>
         <span className="inline-flex items-center rounded bg-rose-100 px-2 py-0.5 text-xs font-medium text-rose-800">
           AI
+        </span>
+        <span className="inline-flex items-center rounded bg-rose-100 px-2 py-0.5 text-xs font-medium text-indigo-800">
+          Python
+        </span>
+        <span className="inline-flex items-center rounded bg-rose-100 px-2 py-0.5 text-xs font-medium text-violet-800">
+          LangChain
+        </span>
+        <span className="inline-flex items-center rounded bg-rose-100 px-2 py-0.5 text-xs font-medium text-sky-800">
+          Next.js
         </span>
       </div>
     </>

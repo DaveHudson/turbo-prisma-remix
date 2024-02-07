@@ -104,6 +104,10 @@ When changes to `prisma/schema.prisma` are made migrations need to be run with:
 npx prisma migrate dev --name ${name_the_migration}
 ```
 
+## DB Connection
+
+`fly proxy 15432:5432 -a c-pg-dev`
+
 ## C.I Deployment
 
 ### Testing Docker Builds
