@@ -69,13 +69,13 @@ export default function TagList() {
         <span className="inline-flex items-center rounded bg-rose-100 px-2 py-0.5 text-xs font-medium text-rose-800">
           AI
         </span>
-        <span className="inline-flex items-center rounded bg-rose-100 px-2 py-0.5 text-xs font-medium text-indigo-800">
+        <span className="inline-flex items-center rounded bg-indigo-100 px-2 py-0.5 text-xs font-medium text-indigo-800">
           Python
         </span>
-        <span className="inline-flex items-center rounded bg-rose-100 px-2 py-0.5 text-xs font-medium text-violet-800">
+        <span className="inline-flex items-center rounded bg-violet-100 px-2 py-0.5 text-xs font-medium text-violet-800">
           LangChain
         </span>
-        <span className="inline-flex items-center rounded bg-rose-100 px-2 py-0.5 text-xs font-medium text-sky-800">
+        <span className="inline-flex items-center rounded bg-sky-100 px-2 py-0.5 text-xs font-medium text-sky-800">
           Next.js
         </span>
       </div>
