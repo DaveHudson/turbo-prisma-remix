@@ -18,6 +18,7 @@ export default function TagList() {
       <div className="flex justify-center space-x-3 pt-3">
         {tags.map((tag) => (
           <span
+            key={tag.id}
             className={`inline-flex items-center rounded px-2 py-0.5 text-xs font-medium bg-${tag.color}-100`}
           >
             <Link
@@ -77,6 +78,9 @@ export default function TagList() {
         </span>
         <span className="inline-flex items-center rounded bg-sky-100 px-2 py-0.5 text-xs font-medium text-sky-800">
           Next.js
+        </span>
+        <span className="inline-flex items-center rounded bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800">
+          Weeknote
         </span>
       </div>
     </>
