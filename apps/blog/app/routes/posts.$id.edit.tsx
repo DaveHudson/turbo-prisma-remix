@@ -12,12 +12,14 @@ import Dropcursor from "@tiptap/extension-dropcursor";
 import Gapcursor from "@tiptap/extension-gapcursor";
 import Link from "@tiptap/extension-link";
 import YouTube from "@tiptap/extension-youtube";
+import ReactComponent from "../components/tiptap/react/extension";
 import {
   PhotoIcon,
   CodeBracketIcon,
   EllipsisHorizontalIcon,
   ExclamationCircleIcon,
   VideoCameraIcon,
+  ChatBubbleLeftRightIcon,
 } from "@heroicons/react/24/solid";
 import Select from "react-select";
 import { getTags } from "~/utils/db/tag.server";
@@ -151,6 +153,7 @@ export default function EditPost() {
       Link,
       Gapcursor,
       YouTube.configure({}),
+      ReactComponent,
     ],
     editorProps: {
       attributes: {
@@ -187,6 +190,15 @@ export default function EditPost() {
         // width: Math.max(320, parseInt(widthRef.current.value, 10)) || 640,
         // height: Math.max(180, parseInt(heightRef.current.value, 10)) || 480,
       });
+    }
+  };
+
+  const addTweetEmbed = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    const url = prompt("Enter Tweet ID");
+
+    if (url) {
+      editor?.commands.setReactComponent({ src: url });
     }
   };
 
@@ -354,10 +366,21 @@ export default function EditPost() {
               <button
                 onClick={addYoutubeVideo}
                 type="button"
-                className="relative inline-flex items-center border-t border-b border-gray-500 bg-none px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 dark:hover:text-gray-100"
+                className="relative inline-flex items-center border-t border-b border-r border-gray-500 bg-none px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 dark:hover:text-gray-100"
               >
                 <span className="sr-only">Add YouTube video</span>
                 <VideoCameraIcon className="h-5 w-5" aria-hidden="true" />
+              </button>
+              <button
+                onClick={addTweetEmbed}
+                type="button"
+                className="relative inline-flex items-center border-t border-b border-gray-500 bg-none px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 dark:hover:text-gray-100"
+              >
+                <span className="sr-only">Add Tweet embed</span>
+                <ChatBubbleLeftRightIcon
+                  className="h-5 w-5"
+                  aria-hidden="true"
+                />
               </button>
               <button
                 type="button"
