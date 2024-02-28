@@ -41,7 +41,6 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 };
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
-  console.log("data", data);
   return [
     { title: data?.post.title },
     {
@@ -62,11 +61,31 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
     },
     {
       property: "og:image",
-      content: "https://applification.net/logo-light.svg",
+      content: "https://applification.net/og_image.png",
     },
     {
       property: "twitter:card",
-      content: "summary",
+      content: "summary_large_image",
+    },
+    {
+      property: "twitter:domain",
+      content: `https://applification.net`,
+    },
+    {
+      property: "twitter:url",
+      content: `https://applification.net/posts/${data?.post.slug}`,
+    },
+    {
+      property: "twitter:title",
+      content: data?.post.title,
+    },
+    {
+      property: "twitter:description",
+      content: data?.post.description,
+    },
+    {
+      property: "twitter:image",
+      content: "https://applification.net/og_image.png",
     },
   ];
 };
