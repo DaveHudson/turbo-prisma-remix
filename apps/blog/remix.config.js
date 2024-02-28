@@ -3,7 +3,10 @@ export default {
   assetsBuildDirectory: "./public/build",
   server: "./server.ts",
   ignoredRouteFiles: [".*"],
-  devServerBroadcastDelay: 1000,
+  dev: {
+    port: 8002,
+    devServerBroadcastDelay: 1000,
+  },
   // serverBuildTarget: "node-cjs",
   // serverModuleFormat: "esm"
 }

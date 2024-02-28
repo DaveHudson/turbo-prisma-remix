@@ -11,21 +11,20 @@ import Image from "@tiptap/extension-image";
 import Dropcursor from "@tiptap/extension-dropcursor";
 import Gapcursor from "@tiptap/extension-gapcursor";
 import Link from "@tiptap/extension-link";
+import YouTube from "@tiptap/extension-youtube";
+import ReactComponent from "../components/tiptap/react/extension";
 import {
   PhotoIcon,
   CodeBracketIcon,
   EllipsisHorizontalIcon,
-  ExclamationCircleIcon
+  ExclamationCircleIcon,
+  VideoCameraIcon,
+  ChatBubbleLeftRightIcon,
 } from "@heroicons/react/24/solid";
 import Select from "react-select";
 import { getTags } from "~/utils/db/tag.server";
-import type {
-  LoaderFunctionArgs,
-  ActionFunctionArgs} from "@remix-run/node";
-import {
-  redirect,
-  json
-} from "@remix-run/node";
+import type { LoaderFunctionArgs, ActionFunctionArgs } from "@remix-run/node";
+import { redirect, json } from "@remix-run/node";
 import {
   useActionData,
   useLoaderData,
@@ -39,9 +38,9 @@ type actionDataType = {
     slug: string;
     body: string;
     userId: string;
-    description: string;    
-  },
-}
+    description: string;
+  };
+};
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   invariant(params.id, "expected params.id");
@@ -136,7 +135,9 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
 };
 
 export default function EditPost() {
-  const actionData = useActionData<typeof action>() as unknown as actionDataType;
+  const actionData = useActionData<
+    typeof action
+  >() as unknown as actionDataType;
   const errors = actionData?.errors;
   const transition = useNavigation();
 
@@ -151,6 +152,8 @@ export default function EditPost() {
       Dropcursor,
       Link,
       Gapcursor,
+      YouTube.configure({}),
+      ReactComponent,
     ],
     editorProps: {
       attributes: {
@@ -173,6 +176,30 @@ export default function EditPost() {
   const addHR = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     editor?.commands.setHorizontalRule();
+  };
+
+  const addYoutubeVideo = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    const url = prompt("Enter YouTube URL");
+
+    if (url) {
+      editor?.commands.setYoutubeVideo({
+        src: url,
+        width: 640,
+        height: 360,
+        // width: Math.max(320, parseInt(widthRef.current.value, 10)) || 640,
+        // height: Math.max(180, parseInt(heightRef.current.value, 10)) || 480,
+      });
+    }
+  };
+
+  const addTweetEmbed = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    const url = prompt("Enter Tweet ID");
+
+    if (url) {
+      editor?.commands.setReactComponent({ src: url });
+    }
   };
 
   const json = editor?.getJSON();
@@ -233,7 +260,7 @@ export default function EditPost() {
               name="slug"
               id="slug"
               className={`${
-               errors &&  errors.slug
+                errors && errors.slug
                   ? "block w-full rounded-md border-red-300 pr-10 text-red-900 placeholder-red-300 focus:border-red-500 focus:outline-none focus:ring-red-500 sm:text-sm"
                   : "block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 sm:text-sm"
               }`}
@@ -328,10 +355,29 @@ export default function EditPost() {
               <button
                 onClick={addHR}
                 type="button"
-                className="relative inline-flex items-center border-t border-b border-gray-500 bg-none px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 dark:hover:text-gray-100"
+                className="relative inline-flex items-center border-t border-b border-r border-gray-500 bg-none px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 dark:hover:text-gray-100"
               >
                 <span className="sr-only">Add hr</span>
                 <EllipsisHorizontalIcon
+                  className="h-5 w-5"
+                  aria-hidden="true"
+                />
+              </button>
+              <button
+                onClick={addYoutubeVideo}
+                type="button"
+                className="relative inline-flex items-center border-t border-b border-r border-gray-500 bg-none px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 dark:hover:text-gray-100"
+              >
+                <span className="sr-only">Add YouTube video</span>
+                <VideoCameraIcon className="h-5 w-5" aria-hidden="true" />
+              </button>
+              <button
+                onClick={addTweetEmbed}
+                type="button"
+                className="relative inline-flex items-center border-t border-b border-gray-500 bg-none px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 dark:hover:text-gray-100"
+              >
+                <span className="sr-only">Add Tweet embed</span>
+                <ChatBubbleLeftRightIcon
                   className="h-5 w-5"
                   aria-hidden="true"
                 />

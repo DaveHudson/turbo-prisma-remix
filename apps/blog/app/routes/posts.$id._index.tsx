@@ -9,6 +9,8 @@ import Typography from "@tiptap/extension-typography";
 import Image from "@tiptap/extension-image";
 import Dropcursor from "@tiptap/extension-dropcursor";
 import TTLink from "@tiptap/extension-link";
+import YouTube from "@tiptap/extension-youtube";
+import ReactComponent from "../components/tiptap/react/extension";
 import type { Prisma, Tag, User } from "@prisma/client";
 import { PostStatus } from "@prisma/client";
 import RenderTags from "~/components/RenderTags";
@@ -49,7 +51,16 @@ export default function BlogPost() {
 
   const editor = useEditor({
     editable: false,
-    extensions: [StarterKit, Highlight, Typography, Image, Dropcursor, TTLink],
+    extensions: [
+      StarterKit,
+      Highlight,
+      Typography,
+      Image,
+      Dropcursor,
+      TTLink,
+      YouTube.configure({}),
+      ReactComponent,
+    ],
     editorProps: {
       attributes: {
         class:

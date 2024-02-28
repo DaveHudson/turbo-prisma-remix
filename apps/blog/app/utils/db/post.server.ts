@@ -1,4 +1,5 @@
-import { Post, PostStatus, Prisma, User } from "@prisma/client";
+import type { Post, Prisma, User } from "@prisma/client";
+import { PostStatus } from "@prisma/client";
 import invariant from "tiny-invariant";
 import { db } from "~/utils/db.server";
 
@@ -25,6 +26,13 @@ function calculateReadingTime(text: Prisma.JsonObject) {
 
 export async function getPosts() {
   const posts = await db.post.findMany({
+    where: {
+      NOT: {
+        tags: {
+          array_contains: "14",
+        },
+      },
+    },
     orderBy: { createdAt: "desc" },
     include: {
       user: true,
@@ -48,6 +56,27 @@ export async function getLatestPosts() {
 export async function getPublishedPosts() {
   const posts = await db.post.findMany({
     where: {
+      NOT: {
+        tags: {
+          array_contains: "14",
+        },
+      },
+      published: PostStatus.PUBLISHED,
+    },
+    orderBy: { createdAt: "desc" },
+    include: {
+      user: true,
+    },
+  });
+  return posts as PostWithUser[];
+}
+
+export async function getPublishedWeeknotes() {
+  const posts = await db.post.findMany({
+    where: {
+      tags: {
+        array_contains: "14",
+      },
       published: PostStatus.PUBLISHED,
     },
     orderBy: { createdAt: "desc" },
