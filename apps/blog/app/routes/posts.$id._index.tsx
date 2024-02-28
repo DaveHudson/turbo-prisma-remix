@@ -64,6 +64,10 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
       property: "og:image",
       content: "https://applification.net/logo-light.svg",
     },
+    {
+      property: "twitter:card",
+      content: "summary",
+    },
   ];
 };
 
