@@ -21,7 +21,7 @@ import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { Fragment } from "react";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import { Link, MetaFunction, useLoaderData } from "@remix-run/react";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -38,6 +38,33 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const user = (await getUser(request)) as User | null;
 
   return json({ post, dbTags, user });
+};
+
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  console.log("data", data);
+  return [
+    { title: data?.post.title },
+    {
+      property: "og:title",
+      content: data?.post.title,
+    },
+    {
+      property: "og:description",
+      content: data?.post.description,
+    },
+    {
+      property: "og:type",
+      content: "article",
+    },
+    {
+      property: "og:url",
+      content: `https://applification.net/posts/${data?.post.slug}`,
+    },
+    {
+      property: "og:image",
+      content: "https://applification.net/logo-light.svg",
+    },
+  ];
 };
 
 export default function BlogPost() {
