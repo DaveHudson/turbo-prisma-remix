@@ -30,6 +30,7 @@
   "packageManager": "npm@8.4.0",
   "dependencies": {
     "@prisma/client": "^5.4.2",
+    "@remix-run/dev": "^2.7.2",
     "@remix-run/express": "^2.7.2",
     "@remix-run/node": "^2.7.2",
     "@remix-run/react": "^2.7.2",
