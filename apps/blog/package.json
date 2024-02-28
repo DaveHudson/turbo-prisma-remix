@@ -33,6 +33,7 @@
     "@tiptap/extension-paragraph": "^2.1.12",
     "@tiptap/extension-text": "^2.1.12",
     "@tiptap/extension-typography": "^2.1.12",
+    "@tiptap/extension-youtube": "^2.2.4",
     "@tiptap/react": "^2.1.12",
     "@tiptap/starter-kit": "^2.1.12",
     "bcryptjs": "^2.4.3",
