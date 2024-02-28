@@ -64,7 +64,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
       content: "https://applification.net/og_image.png",
     },
     {
-      property: "twitter:card",
+      name: "twitter:card",
       content: "summary_large_image",
     },
     {
@@ -76,15 +76,15 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
       content: `https://applification.net/posts/${data?.post.slug}`,
     },
     {
-      property: "twitter:title",
+      name: "twitter:title",
       content: data?.post.title,
     },
     {
-      property: "twitter:description",
+      name: "twitter:description",
       content: data?.post.description,
     },
     {
-      property: "twitter:image",
+      name: "twitter:image",
       content: "https://applification.net/og_image.png",
     },
   ];
