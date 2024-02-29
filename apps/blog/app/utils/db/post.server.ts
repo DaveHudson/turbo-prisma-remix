@@ -114,7 +114,7 @@ export async function getPostsBySearchQuery(query: string) {
   return posts as PostWithUser[];
 }
 
-export async function getPostsByTag(tag: string) {
+export async function getPostsByTag(tag: string, status?: PostStatus) {
   const selectedTag = await db.tag.findFirst({
     where: {
       name: tag,
@@ -126,6 +126,10 @@ export async function getPostsByTag(tag: string) {
       tags: {
         array_contains: selectedTag?.id.toString(),
       },
+      published:
+        status === PostStatus.DRAFT
+          ? PostStatus.DRAFT || PostStatus.PUBLISHED
+          : PostStatus.PUBLISHED,
     },
     orderBy: { createdAt: "desc" },
     include: {

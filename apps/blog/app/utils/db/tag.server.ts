@@ -1,4 +1,4 @@
-import { Tag } from "@prisma/client";
+import type { Tag } from "@prisma/client";
 import { db } from "~/utils/db.server";
 
 export async function getTags() {
