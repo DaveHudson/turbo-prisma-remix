@@ -10,6 +10,12 @@ import Image from "@tiptap/extension-image";
 import Dropcursor from "@tiptap/extension-dropcursor";
 import TTLink from "@tiptap/extension-link";
 import YouTube from "@tiptap/extension-youtube";
+import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
+import { common, createLowlight } from "lowlight";
+import css from "highlight.js/lib/languages/css";
+import js from "highlight.js/lib/languages/javascript";
+import ts from "highlight.js/lib/languages/typescript";
+import html from "highlight.js/lib/languages/xml";
 import ReactComponent from "../components/tiptap/react/extension";
 import type { Prisma, Tag, User } from "@prisma/client";
 import { PostStatus } from "@prisma/client";
@@ -21,11 +27,18 @@ import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { Fragment } from "react";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Link, MetaFunction, useLoaderData } from "@remix-run/react";
+import type { MetaFunction } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
+
+const lowlight = createLowlight(common);
+lowlight.register("html", html);
+lowlight.register("css", css);
+lowlight.register("js", js);
+lowlight.register("ts", ts);
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   invariant(params.id, "expected params.postid");
@@ -110,6 +123,9 @@ export default function BlogPost() {
       TTLink,
       YouTube.configure({}),
       ReactComponent,
+      CodeBlockLowlight.configure({
+        lowlight,
+      }),
     ],
     editorProps: {
       attributes: {
