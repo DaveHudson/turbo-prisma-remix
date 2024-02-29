@@ -1,5 +1,5 @@
-import type { Post, Prisma, User } from "@prisma/client";
 import { PostStatus } from "@prisma/client";
+import type { Post, Prisma, User } from "@prisma/client";
 import invariant from "tiny-invariant";
 import { db } from "~/utils/db.server";
 

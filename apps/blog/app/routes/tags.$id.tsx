@@ -1,5 +1,5 @@
-import type { Tag, User } from "@prisma/client";
 import { PostStatus } from "@prisma/client";
+import type { Tag, User } from "@prisma/client";
 import type { LoaderFunction } from "@remix-run/node";
 import { useLoaderData, Link } from "@remix-run/react";
 import dayjs from "dayjs";
