@@ -12,12 +12,7 @@ import Dropcursor from "@tiptap/extension-dropcursor";
 import Gapcursor from "@tiptap/extension-gapcursor";
 import Link from "@tiptap/extension-link";
 import YouTube from "@tiptap/extension-youtube";
-import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
-import { common, createLowlight } from "lowlight";
-import css from "highlight.js/lib/languages/css";
-import js from "highlight.js/lib/languages/javascript";
-import ts from "highlight.js/lib/languages/typescript";
-import html from "highlight.js/lib/languages/xml";
+import CodeBlockPrism from "../components/tiptap/codeblockprism";
 import ReactComponent from "../components/tiptap/react/extension";
 import {
   PhotoIcon,
@@ -47,12 +42,6 @@ type actionDataType = {
     description: string;
   };
 };
-
-const lowlight = createLowlight(common);
-lowlight.register("html", html);
-lowlight.register("css", css);
-lowlight.register("js", js);
-lowlight.register("ts", ts);
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   invariant(params.id, "expected params.id");
@@ -166,8 +155,8 @@ export default function EditPost() {
       Gapcursor,
       YouTube.configure({}),
       ReactComponent,
-      CodeBlockLowlight.configure({
-        lowlight,
+      CodeBlockPrism.configure({
+        defaultLanguage: "jsx",
       }),
     ],
     editorProps: {
