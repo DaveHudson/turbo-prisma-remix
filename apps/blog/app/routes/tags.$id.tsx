@@ -1,4 +1,4 @@
-import type { Tag } from "@prisma/client";
+import type { Tag, User } from "@prisma/client";
 import { PostStatus } from "@prisma/client";
 import type { LoaderFunction } from "@remix-run/node";
 import { useLoaderData, Link } from "@remix-run/react";
@@ -9,11 +9,19 @@ import RenderTags from "~/components/RenderTags";
 import type { PostWithUser } from "~/utils/db/post.server";
 import { getPostsByTag } from "~/utils/db/post.server";
 import { getTags } from "~/utils/db/tag.server";
+import { getUser } from "~/utils/session.server";
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   invariant(params.id, "expected params.id");
+  const user = (await getUser(request)) as User;
+
   const tag = params.id;
-  const posts = await getPostsByTag(tag);
+  let posts: PostWithUser[];
+  if (user && user?.id === 1) {
+    posts = (await getPostsByTag(tag, PostStatus.DRAFT)) as PostWithUser[];
+  } else {
+    posts = (await getPostsByTag(tag)) as PostWithUser[];
+  }
   const tags = await getTags();
 
   const data = { posts, tags, tag };
@@ -64,11 +72,13 @@ export default function TaggedPosts() {
               <div className="mt-6 flex items-center">
                 <div className="flex-shrink-0">
                   <span className="sr-only">{post.user.name}</span>
-                  {post?.user?.profileUrl && <img
-                    className="h-10 w-10 rounded-full"
-                    src={post.user.profileUrl!}
-                    alt=""
-                  />}                 
+                  {post?.user?.profileUrl && (
+                    <img
+                      className="h-10 w-10 rounded-full"
+                      src={post.user.profileUrl!}
+                      alt=""
+                    />
+                  )}
                 </div>
                 <div className="ml-3">
                   <p className="text-sm font-medium text-light dark:text-dark">
