@@ -126,7 +126,7 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
     { name: "Home", href: "/" },
     { name: "About", href: "/about" },
     { name: "Posts", href: "/posts" },
-    // { name: "Weeknotes", href: "/weeknotes" },
+    { name: "Weeknotes", href: "/weeknotes" },
     { name: "AI", href: "/ai" },
     { name: "Contact", href: "/contact" },
   ];

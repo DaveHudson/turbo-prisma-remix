@@ -53,8 +53,11 @@ export default function Posts() {
             {search ? `Search results for "${search}"` : "Weeknotes"}
           </h2>
           <p className="mt-3 text-xl sm:mt-4">
-            Weeknotes are a mind dump of what I've been up to for the past week
-            and things I've learned.
+            Weeknotes are where I embark on a journey of continuous learning and
+            discovery, documenting my insights, challenges, and triumphs along
+            the way. Through this series, I aim to cultivate a habit of
+            reflection, sharing what I've learned and how it shapes my approach
+            to development, design, and beyond.
           </p>
         </div>
         <div className="mt-12 grid gap-16 pt-12 lg:grid-cols-3 lg:gap-x-5 lg:gap-y-12">

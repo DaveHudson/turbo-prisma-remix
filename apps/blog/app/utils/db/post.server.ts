@@ -29,7 +29,7 @@ export async function getPosts() {
     where: {
       NOT: {
         tags: {
-          array_contains: "14",
+          array_contains: "17",
         },
       },
     },
@@ -58,7 +58,7 @@ export async function getPublishedPosts() {
     where: {
       NOT: {
         tags: {
-          array_contains: "14",
+          array_contains: "17",
         },
       },
       published: PostStatus.PUBLISHED,
@@ -75,7 +75,7 @@ export async function getPublishedWeeknotes() {
   const posts = await db.post.findMany({
     where: {
       tags: {
-        array_contains: "14",
+        array_contains: "17",
       },
       published: PostStatus.PUBLISHED,
     },
