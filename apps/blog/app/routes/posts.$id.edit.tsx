@@ -12,6 +12,7 @@ import Dropcursor from "@tiptap/extension-dropcursor";
 import Gapcursor from "@tiptap/extension-gapcursor";
 import Link from "@tiptap/extension-link";
 import YouTube from "@tiptap/extension-youtube";
+import CodeBlockPrism from "../components/tiptap/codeblockprism";
 import ReactComponent from "../components/tiptap/react/extension";
 import {
   PhotoIcon,
@@ -154,6 +155,9 @@ export default function EditPost() {
       Gapcursor,
       YouTube.configure({}),
       ReactComponent,
+      CodeBlockPrism.configure({
+        defaultLanguage: "jsx",
+      }),
     ],
     editorProps: {
       attributes: {
@@ -200,6 +204,11 @@ export default function EditPost() {
     if (url) {
       editor?.commands.setReactComponent({ src: url });
     }
+  };
+
+  const addCodeBlock = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    editor?.commands.setCodeBlock();
   };
 
   const json = editor?.getJSON();
@@ -383,6 +392,7 @@ export default function EditPost() {
                 />
               </button>
               <button
+                onClick={addCodeBlock}
                 type="button"
                 className="0 relative -ml-px inline-flex items-center rounded-r-md border border-gray-500 bg-none px-2 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:z-10 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 dark:hover:text-gray-100"
               >

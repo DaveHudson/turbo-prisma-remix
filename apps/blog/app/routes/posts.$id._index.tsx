@@ -11,6 +11,7 @@ import Dropcursor from "@tiptap/extension-dropcursor";
 import TTLink from "@tiptap/extension-link";
 import YouTube from "@tiptap/extension-youtube";
 import ReactComponent from "../components/tiptap/react/extension";
+import CodeBlockPrism from "../components/tiptap/codeblockprism";
 import type { Prisma, Tag, User } from "@prisma/client";
 import { PostStatus } from "@prisma/client";
 import RenderTags from "~/components/RenderTags";
@@ -21,7 +22,9 @@ import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { Fragment } from "react";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Link, MetaFunction, useLoaderData } from "@remix-run/react";
+import type { MetaFunction } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
+import "prismjs/themes/prism-tomorrow.css";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -110,6 +113,9 @@ export default function BlogPost() {
       TTLink,
       YouTube.configure({}),
       ReactComponent,
+      CodeBlockPrism.configure({
+        defaultLanguage: "jsx",
+      }),
     ],
     editorProps: {
       attributes: {

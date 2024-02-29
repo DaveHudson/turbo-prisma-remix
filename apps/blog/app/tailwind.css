@@ -1,3 +1,4 @@
+@import "./prismjs/themes/atom-dark.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,5 +9,9 @@
   }
   a:hover {
     @apply underline-offset-4 hover:underline-offset-4;
+  }
+
+  pre {
+    @apply bg-black bg-opacity-80 dark:bg-opacity-10 !important;
   }
 }
