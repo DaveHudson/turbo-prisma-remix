@@ -127,7 +127,6 @@ function Layout({ children }: React.PropsWithChildren<{}>) {
     { name: "About", href: "/about" },
     { name: "Posts", href: "/posts" },
     { name: "Weeknotes", href: "/weeknotes" },
-    { name: "AI", href: "/ai" },
     { name: "Contact", href: "/contact" },
   ];
   const userNavigation = [{ name: "New Post", href: "/posts/new" }];

@@ -14,7 +14,7 @@ export default function RenderTags({
   dbTags: Tag[];
 }) {
   return (
-    <div className="flex justify-center space-x-3 pt-3">
+    <div className="flex flex-wrap gap-x-3 gap-y-2 pt-3">
       {tags.map((tag) => {
         const selectedTag = dbTags.find((x) => x.id === Number(tag));
         return (
