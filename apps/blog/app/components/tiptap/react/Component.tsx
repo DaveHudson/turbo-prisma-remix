@@ -3,9 +3,9 @@ import { TwitterTweetEmbed } from "react-twitter-embed";
 
 const Component = (props: any) => {
   return (
-    <NodeViewWrapper className="react-component">
-      <div className="content">
-        <TwitterTweetEmbed tweetId={props.node.attrs.src} />
+    <NodeViewWrapper className="react-component flex justify-center">
+      <div className="content min-w-[550px]">
+        <TwitterTweetEmbed tweetId={props.node.attrs.src} options={{ width: 550 }} />
       </div>
     </NodeViewWrapper>
   );
