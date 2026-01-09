@@ -117,7 +117,7 @@ export default function Index() {
         <h2 className="mt-6 text-center text-2xl font-bold tracking-wide text-light subpixel-antialiased dark:text-dark md:text-3xl lg:text-4xl">
           Recent posts
         </h2>
-        <div className="grid gap-16 pl-12 pt-6 lg:grid-cols-3 lg:gap-x-2">
+        <div className="grid gap-8 px-4 pt-6 lg:grid-cols-3 lg:gap-12">
           {posts.map((post) => (
             <div key={post.id}>
               <Link to={`/posts/${post.slug}`} className="mt-4 block">
