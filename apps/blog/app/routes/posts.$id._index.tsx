@@ -120,7 +120,7 @@ export default function BlogPost() {
     editorProps: {
       attributes: {
         class:
-          "prose focus:outline-none max-w-none max-w-3xl prose-img:rounded-lg pt-8 first-line:uppercase first-line:tracking-widest tracking-wider first-letter:text-7xl first-letter:font-bold first-letter:mr-3 first-letter:float-left dark:prose-invert",
+          "prose focus:outline-none max-w-none max-w-3xl prose-img:rounded-lg prose-img:mx-auto prose-li:my-0 pt-8 first-line:uppercase first-line:tracking-widest tracking-wider first-letter:text-7xl first-letter:font-bold first-letter:mr-3 first-letter:float-left dark:prose-invert",
       },
     },
     content,
